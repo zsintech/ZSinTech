@@ -5,7 +5,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (burger && nav) {
         burger.addEventListener('click', function() {
+            // Toggle navigation - using the correct class name
             nav.classList.toggle('active');
+            
+            // Burger animation
             burger.classList.toggle('toggle');
         });
     }
