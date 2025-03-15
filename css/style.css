@@ -251,13 +251,13 @@ section {
 
 /* Navigation */
 .navbar {
-  background-color: var(--white);
-  padding: 1.5rem 0;
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
+  width: 100%;
+  background-color: var(--white);
   z-index: 1000;
+  padding: 1.5rem 0;
   border-bottom: 1px solid var(--medium-gray);
 }
 
@@ -267,21 +267,47 @@ section {
   align-items: center;
 }
 
+.logo {
+  margin-left: 0.8rem;
+}
+
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 2.5rem;
+  margin-right: 0.8rem;
 }
 
-.nav-links li a {
+.nav-links li {
+  margin-left: 2.5rem; /* Increase spacing between nav items */
+}
+
+.nav-links a {
+  color: var(--black);
+  text-decoration: none;
   text-transform: uppercase;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   letter-spacing: 0.1em;
   font-weight: 400;
-  padding: 0.5rem 0;
+  transition: color var(--transition-fast);
 }
 
-.nav-links li a.active {
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--maroon);
+}
+
+/* Update the color of the nav links */
+.nav-links a {
+  color: #555;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--maroon);
+}
+
+/* Make HOME link maroon */
+.nav-links li:first-child a {
   color: var(--maroon);
 }
 
