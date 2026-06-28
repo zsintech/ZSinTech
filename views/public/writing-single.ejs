@@ -33,6 +33,12 @@
         <%- writing.bodyHtml %>
       </div>
 
+      <% if (writing.type === 'project' && writing.projectUrl) { %>
+      <p class="project-external-link">
+        <a href="<%= writing.projectUrl %>" target="_blank" rel="noopener" class="btn btn-primary">View project &rarr;</a>
+      </p>
+      <% } %>
+
       <footer class="writing-footer">
         <a href="/writings" class="back-link">&larr; Back to Writings</a>
       </footer>

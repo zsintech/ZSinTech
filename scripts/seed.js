@@ -32,6 +32,7 @@ async function seed() {
       dateAdded: admin.firestore.Timestamp.now(),
       datePublished: admin.firestore.Timestamp.fromDate(w.dateWritten),
       heroImageUrl: w.heroImageUrl || null,
+      projectUrl: w.projectUrl || null,
     };
 
     if (!data.heroImageUrl) {

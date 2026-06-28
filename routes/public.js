@@ -84,6 +84,19 @@ router.get('/writings', async (req, res) => {
   });
 });
 
+router.get('/projects', async (req, res) => {
+  const projects = await getPublicWritings({ type: 'project' });
+  res.render('public/writings', {
+    title: 'Projects',
+    writings: projects,
+    formatDate,
+    currentType: 'project',
+    currentTag: '',
+    pageHeading: 'Projects',
+    pageDesc: 'Science communication, campus leadership, journalism, and engineering — from my LinkedIn and campus work.',
+  });
+});
+
 router.get('/stories', async (req, res) => {
   const stories = staticWritings.getStories();
   res.render('public/stories', {

@@ -316,6 +316,117 @@ Co-founded alongside other campus projects — see [About](/about) for the full 
     dateWritten: new Date('2023-04-01'),
     isPublic: true,
   },
+  {
+    id: 'auis-voice',
+    title: 'The AUIS Voice',
+    slug: 'auis-voice',
+    type: 'project',
+    excerpt: 'Science, technology, and culture journalism for The AUIS Voice — Iraq\'s first independent English student newspaper.',
+    body: `## The AUIS Voice
+
+Contributor and science writer at [The AUIS Voice](https://voice.auis.edu.krd/) — the first independent English student newspaper in Iraq since 2003.
+
+### What I cover
+
+- **Science & medicine** — AI diagnosis, hope as cognitive process, Artemis and moonwalking optimism
+- **Technology & culture** — how tools reshape trust, authority, and student life
+- **Long-form essays** — written for a general audience, not just the campus bubble
+
+### Selected pieces on this site
+
+These journalism essays also live under [/journalism](/journalism): *The Diagnosis*, *MoonWalkers*, *Hope as a Cognitive Process*, and *Pressure? What Pressure?*
+
+### Why it matters
+
+Independent student journalism at AUIS is how I learned to translate research into prose people actually want to read — the same muscle I now use for PopSci AI and essay writing.
+
+Listed among my professional projects on [LinkedIn](https://www.linkedin.com/in/zheen-salih-abdullah-b88854264).`,
+    tags: ['journalism', 'AUIS', 'science communication', 'writing'],
+    heroImageUrl: 'https://images.pexels.com/photos/15047111/pexels-photo-15047111.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    dateWritten: new Date('2024-03-01'),
+    projectUrl: 'https://voice.auis.edu.krd/',
+    isPublic: true,
+  },
+  {
+    id: 'zs-in-tech',
+    title: 'ZS in Tech',
+    slug: 'zs-in-tech',
+    type: 'project',
+    excerpt: 'Science communication brand on Instagram — @zsintech — making research legible through reels, visuals, and linked long reads.',
+    body: `## ZS in Tech
+
+**ZS in Tech** is my public science-communication brand on Instagram ([@zsintech](https://www.instagram.com/zsintech/)) — the distribution layer behind PopSci AI and my returning-scholar work at BMSIS.
+
+### Format
+
+- Short-form reels that distill papers and phenomena (whale falls, quantum computing, neuroscience)
+- QR codes linking each reel to a full written explainer
+- Visual-first storytelling for audiences who will never open a journal PDF
+
+### Mission
+
+Meet people where they already scroll. Build scientific literacy without dumbing science down — wonder beats jargon.
+
+Explore reel write-ups on [/popsci](/popsci) or follow live on Instagram.`,
+    tags: ['Instagram', 'science communication', 'content creation', 'brand'],
+    heroImageUrl: 'https://images.pexels.com/photos/326503/pexels-photo-326503.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    dateWritten: new Date('2024-02-01'),
+    projectUrl: 'https://www.instagram.com/zsintech/',
+    isPublic: true,
+  },
+  {
+    id: 'popsci-ai-platform',
+    title: 'popsci.ai',
+    slug: 'popsci-ai-platform',
+    type: 'project',
+    excerpt: 'Web platform for PopSci AI — hosting articles linked from Instagram reels via QR codes.',
+    body: `## popsci.ai
+
+Open-source web companion to [PopSci AI](/writings/popsci-ai) — the site behind the QR codes in @zsintech reels.
+
+### Stack & role
+
+- Static HTML/CSS platform for long-form explainers tied to each reel
+- Repository: [github.com/zsintech/popsci.ai](https://github.com/zsintech/popsci.ai)
+- Bridges short-form video and readable science writing
+
+### Why a separate site
+
+Instagram is for discovery; the web is for depth. Each reel points somewhere durable — a place to read, cite, and share without algorithmic decay.
+
+Part of my science-communication toolchain alongside BMSIS scholarship and The AUIS Voice.`,
+    tags: ['web', 'PopSci AI', 'open source', 'GitHub'],
+    heroImageUrl: 'https://images.pexels.com/photos/8382618/pexels-photo-8382618.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    dateWritten: new Date('2024-06-01'),
+    projectUrl: 'https://github.com/zsintech/popsci.ai',
+    isPublic: true,
+  },
+  {
+    id: 'covid-science-communication',
+    title: 'COVID-19 Science Communication',
+    slug: 'covid-science-communication',
+    type: 'project',
+    excerpt: 'Combating pandemic misinformation — early activism that pushed me from medicine toward tech and science communication.',
+    body: `## COVID-19 Science Communication
+
+Before software engineering felt inevitable, I was oriented toward medicine — until the Covid-19 pandemic showed me how badly health information breaks when platforms outpace expertise.
+
+### What I did
+
+- Countered viral misinformation in Kurdish and English community spaces
+- Translated complex public-health guidance into language people could act on
+- Learned firsthand that **tools and platforms** matter as much as facts
+
+### Why it stuck
+
+That experience is the through-line in everything since: PopSci AI, AUIS Voice science essays, skepticism about AI diagnosis hype, and the essays on this site.
+
+Described in my [About](/about) page and professional narrative on [LinkedIn](https://www.linkedin.com/in/zheen-salih-abdullah-b88854264).`,
+    tags: ['activism', 'public health', 'misinformation', 'science communication'],
+    heroImageUrl: 'https://images.pexels.com/photos/5991770/pexels-photo-5991770.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    dateWritten: new Date('2022-06-01'),
+    isPublic: true,
+  },
 ];
 
 function getAll() {

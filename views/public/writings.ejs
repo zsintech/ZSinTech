@@ -3,14 +3,14 @@
 
 <main class="public-main">
   <section class="page-hero page-hero--compact">
-    <h1>Writings</h1>
-    <p>Essays, projects, research, and stories on science, philosophy, and the human condition.</p>
+    <h1><%= typeof pageHeading !== 'undefined' ? pageHeading : 'Writings' %></h1>
+    <p><%= typeof pageDesc !== 'undefined' ? pageDesc : 'Essays, projects, research, and stories on science, philosophy, and the human condition.' %></p>
   </section>
 
   <div class="filter-tabs">
     <a href="/writings" class="filter-tab<%= !currentType ? ' active' : '' %>">All</a>
     <a href="/writings?type=essay" class="filter-tab<%= currentType === 'essay' ? ' active' : '' %>">Essays</a>
-    <a href="/writings?type=project" class="filter-tab<%= currentType === 'project' ? ' active' : '' %>">Projects</a>
+    <a href="/projects" class="filter-tab<%= currentType === 'project' ? ' active' : '' %>">Projects</a>
     <a href="/stories" class="filter-tab">Stories &rarr;</a>
   </div>
 

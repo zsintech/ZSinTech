@@ -8,7 +8,9 @@
 
     <div class="nav-links">
 
-      <a href="/writings" class="<%= currentPath.startsWith('/writings') ? 'active' : '' %>">Writings</a>
+      <a href="/writings" class="<%= currentPath.startsWith('/writings') || currentPath === '/projects' ? 'active' : '' %>">Writings</a>
+
+      <a href="/projects" class="<%= currentPath === '/projects' ? 'active' : '' %>">Projects</a>
 
       <a href="/journalism" class="<%= currentPath.startsWith('/journalism') ? 'active' : '' %>">Journalism</a>
 
