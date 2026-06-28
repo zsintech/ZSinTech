@@ -1,0 +1,38 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <section class="page-header">
+    <h1>Reflections</h1>
+    <p class="page-desc">Thoughts, observations, and moments of clarity</p>
+  </section>
+
+  <div class="reflections-stream">
+    <% if (reflections.length === 0) { %>
+      <p class="empty-state">No reflections shared yet.</p>
+    <% } %>
+    <% reflections.forEach(r => { %>
+    <div class="reflection-item">
+      <div class="reflection-date">
+        <time><%= formatDate(r.date) %></time>
+        <% if (r.mood) { %>
+        <span class="reflection-mood"><%= r.mood %></span>
+        <% } %>
+      </div>
+      <div class="reflection-body">
+        <% if (r.title) { %><h3><%= r.title %></h3><% } %>
+        <p><%= r.body %></p>
+        <% if (r.tags && r.tags.length) { %>
+        <div class="tags">
+          <% r.tags.forEach(tag => { %>
+          <span class="tag"><%= tag %></span>
+          <% }) %>
+        </div>
+        <% } %>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

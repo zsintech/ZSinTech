@@ -1,0 +1,71 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1>Dashboard</h1>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-number"><%= stats.totalBooks %></span>
+        <span class="stat-label">Total Books</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number"><%= stats.reading %></span>
+        <span class="stat-label">Currently Reading</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number"><%= stats.articlesToRead %></span>
+        <span class="stat-label">Articles to Read</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number"><%= stats.moviesToWatch %></span>
+        <span class="stat-label">Movies to Watch</span>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <section class="dashboard-section">
+        <h2>Recent Additions</h2>
+        <% if (recentItems.length === 0) { %>
+          <p class="empty-state">No recent items</p>
+        <% } %>
+        <div class="recent-list">
+          <% recentItems.forEach(item => { %>
+          <div class="recent-item">
+            <span class="recent-collection"><%= item.collection %></span>
+            <span class="recent-title"><%= item.title || item.body?.substring(0, 40) || 'Untitled' %></span>
+            <span class="recent-date"><%= formatDate(item.dateAdded) %></span>
+          </div>
+          <% }) %>
+        </div>
+      </section>
+
+      <section class="dashboard-section">
+        <h2>Quick Add</h2>
+        <form action="/admin/quick-add" method="POST" class="quick-add-form">
+          <div class="form-group">
+            <select name="collection" required>
+              <option value="">Choose type...</option>
+              <option value="books">Book</option>
+              <option value="courses">Course</option>
+              <option value="articles_saved">Article</option>
+              <option value="writings">Writing</option>
+              <option value="movies">Movie</option>
+              <option value="reflections">Reflection</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" name="title" placeholder="Title" required>
+          </div>
+          <div class="form-group">
+            <textarea name="body" placeholder="Notes or body (optional)" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+      </section>
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

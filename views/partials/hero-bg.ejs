@@ -1,0 +1,9 @@
+<%#
+  Hero background — pre-optimized Pexels URL, zero JS.
+  locals: src, size ('hero'|'card'|'thumb'), className, overlay (bool)
+%>
+<% if (src) { %>
+<div class="<%= className || 'hero-bg' %>" style="background-image: url('<%= img(src, size || 'hero') %>')">
+  <% if (overlay !== false) { %><div class="hero-bg-overlay"></div><% } %>
+</div>
+<% } %>

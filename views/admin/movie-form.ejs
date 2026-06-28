@@ -1,0 +1,85 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1><%= item ? 'Edit' : 'Add' %> Movie</h1>
+      <a href="/admin/movies" class="btn btn-outline">&larr; Back</a>
+    </div>
+
+    <form action="<%= item ? '/admin/movies/' + item.id : '/admin/movies' %>" method="POST" class="content-form">
+      <div class="form-group">
+        <label for="title">Title *</label>
+        <input type="text" id="title" name="title" value="<%= item ? item.title : '' %>" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="director">Director</label>
+          <input type="text" id="director" name="director" value="<%= item ? item.director || '' : '' %>">
+        </div>
+        <div class="form-group">
+          <label for="year">Year</label>
+          <input type="number" id="year" name="year" value="<%= item ? item.year || '' : '' %>">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select id="status" name="status">
+            <option value="want-to-watch" <%= item && item.status === 'want-to-watch' ? 'selected' : '' %>>Want to Watch</option>
+            <option value="watched" <%= item && item.status === 'watched' ? 'selected' : '' %>>Watched</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="genre">Genre</label>
+          <input type="text" id="genre" name="genre" value="<%= item ? item.genre || '' : '' %>" placeholder="e.g. Sci-Fi, Drama">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="rating">Rating (1-5)</label>
+        <input type="number" id="rating" name="rating" min="1" max="5" value="<%= item && item.rating ? item.rating : '' %>">
+      </div>
+
+      <div class="form-group">
+        <label for="tags">Tags (comma-separated)</label>
+        <input type="text" id="tags" name="tags" value="<%= item && item.tags ? item.tags.join(', ') : '' %>">
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Notes</label>
+        <textarea id="notes" name="notes" rows="5"><%= item ? item.notes || '' : '' %></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="hidden" name="isPublic" value="false">
+          <input type="checkbox" name="isPublic" value="true" <%= item && item.isPublic ? 'checked' : '' %>>
+          Make public
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save Movie</button>
+      </div>
+
+      <% if (typeof connections !== 'undefined' && connections && connections.length > 0) { %>
+      <section class="connections-section">
+        <h3>Connections</h3>
+        <div class="connections-list">
+          <% connections.forEach(c => { %>
+          <div class="connection-item">
+            <span><%= c.fromTitle %></span>
+            <span class="connection-label"><%= c.label %></span>
+            <span><%= c.toTitle %></span>
+          </div>
+          <% }) %>
+        </div>
+      </section>
+      <% } %>
+    </form>
+  </main>
+</div>
+<%- include('../partials/footer') %>

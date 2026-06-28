@@ -1,0 +1,62 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <article class="writing-single">
+    <% if (writing.heroImageUrl) { %>
+    <div class="writing-hero" style="background-image: url('<%= img(writing.heroImageUrl, 'hero') %>')">
+      <div class="writing-hero-overlay"></div>
+      <div class="writing-hero-content">
+        <span class="writing-type-badge"><%= writing.type %></span>
+        <h1 class="writing-title"><%= writing.title %></h1>
+        <time class="writing-date"><%= formatDate(writing.datePublished || writing.dateWritten) %></time>
+      </div>
+    </div>
+    <% } else { %>
+    <header class="writing-header writing-header--plain">
+      <span class="writing-type-badge writing-type-badge--plain"><%= writing.type %></span>
+      <h1 class="writing-title"><%= writing.title %></h1>
+      <time class="writing-date"><%= formatDate(writing.datePublished || writing.dateWritten) %></time>
+    </header>
+    <% } %>
+
+    <div class="writing-container">
+      <% if (writing.tags && writing.tags.length) { %>
+      <div class="tags writing-tags">
+        <% writing.tags.forEach(tag => { %>
+        <span class="tag"><%= tag %></span>
+        <% }) %>
+      </div>
+      <% } %>
+
+      <div class="writing-body prose">
+        <%- writing.bodyHtml %>
+      </div>
+
+      <footer class="writing-footer">
+        <a href="/writings" class="back-link">&larr; Back to Writings</a>
+      </footer>
+
+      <% if (related && related.length) { %>
+      <section class="related-writings">
+        <h3>More like this</h3>
+        <div class="related-grid">
+          <% related.forEach(r => { %>
+          <a href="/writings/<%= r.slug %>" class="related-card">
+            <% if (r.heroImageUrl) { %>
+            <div class="related-card-image" style="background-image: url('<%= img(r.heroImageUrl, 'thumb') %>')"></div>
+            <% } %>
+            <div class="related-card-body">
+              <h4><%= r.title %></h4>
+              <p><%= r.excerpt ? r.excerpt.substring(0, 100) + '...' : '' %></p>
+            </div>
+          </a>
+          <% }) %>
+        </div>
+      </section>
+      <% } %>
+    </div>
+  </article>
+</main>
+
+<%- include('../partials/footer') %>

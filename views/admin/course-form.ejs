@@ -1,0 +1,98 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1><%= item ? 'Edit' : 'Add' %> Course</h1>
+      <a href="/admin/courses" class="btn btn-outline">&larr; Back</a>
+    </div>
+
+    <form action="<%= item ? '/admin/courses/' + item.id : '/admin/courses' %>" method="POST" class="content-form">
+      <div class="form-group">
+        <label for="title">Title *</label>
+        <input type="text" id="title" name="title" value="<%= item ? item.title : '' %>" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="instructor">Instructor</label>
+          <input type="text" id="instructor" name="instructor" value="<%= item ? item.instructor || '' : '' %>">
+        </div>
+        <div class="form-group">
+          <label for="platform">Platform</label>
+          <input type="text" id="platform" name="platform" value="<%= item ? item.platform || '' : '' %>"
+                 list="platforms-list" placeholder="e.g. Coursera, MIT OCW">
+          <datalist id="platforms-list">
+            <% if (typeof platforms !== 'undefined') { platforms.forEach(p => { %>
+            <option value="<%= p %>">
+            <% }) } %>
+          </datalist>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="url">URL</label>
+          <input type="url" id="url" name="url" value="<%= item ? item.url || '' : '' %>">
+        </div>
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select id="status" name="status">
+            <option value="want-to-take" <%= item && item.status === 'want-to-take' ? 'selected' : '' %>>Want to Take</option>
+            <option value="in-progress" <%= item && item.status === 'in-progress' ? 'selected' : '' %>>In Progress</option>
+            <option value="completed" <%= item && item.status === 'completed' ? 'selected' : '' %>>Completed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <input type="text" id="category" name="category" value="<%= item ? item.category || '' : '' %>"
+               list="categories-list">
+        <datalist id="categories-list">
+          <% if (typeof categories !== 'undefined') { categories.forEach(c => { %>
+          <option value="<%= c %>">
+          <% }) } %>
+        </datalist>
+      </div>
+
+      <div class="form-group">
+        <label for="tags">Tags (comma-separated)</label>
+        <input type="text" id="tags" name="tags" value="<%= item && item.tags ? item.tags.join(', ') : '' %>">
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Notes</label>
+        <textarea id="notes" name="notes" rows="5"><%= item ? item.notes || '' : '' %></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="hidden" name="isPublic" value="false">
+          <input type="checkbox" name="isPublic" value="true" <%= item && item.isPublic ? 'checked' : '' %>>
+          Make public
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save Course</button>
+      </div>
+
+      <% if (typeof connections !== 'undefined' && connections && connections.length > 0) { %>
+      <section class="connections-section">
+        <h3>Connections</h3>
+        <div class="connections-list">
+          <% connections.forEach(c => { %>
+          <div class="connection-item">
+            <span><%= c.fromTitle %></span>
+            <span class="connection-label"><%= c.label %></span>
+            <span><%= c.toTitle %></span>
+          </div>
+          <% }) %>
+        </div>
+      </section>
+      <% } %>
+    </form>
+  </main>
+</div>
+<%- include('../partials/footer') %>

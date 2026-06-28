@@ -1,0 +1,120 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1>Connections</h1>
+    </div>
+
+    <section class="connection-form-section">
+      <h2>Add Connection</h2>
+      <form action="/admin/connections" method="POST" class="content-form connection-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fromCollection">From (collection)</label>
+            <select id="fromCollection" name="fromCollection" required>
+              <option value="">Select...</option>
+              <% collections.forEach(col => { %>
+              <option value="<%= col %>"><%= col %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fromId">From (item)</label>
+            <select id="fromId" name="fromId" required>
+              <option value="">Select collection first</option>
+            </select>
+            <input type="hidden" id="fromTitle" name="fromTitle">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="label">Relationship</label>
+          <input type="text" id="label" name="label" list="labels-list" placeholder="e.g. led me to, inspired, relates to" required>
+          <datalist id="labels-list">
+            <option value="led me to">
+            <option value="referenced in">
+            <option value="inspired">
+            <option value="contradicts">
+            <option value="expands on">
+            <option value="relates to">
+            <option value="cited in">
+          </datalist>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="toCollection">To (collection)</label>
+            <select id="toCollection" name="toCollection" required>
+              <option value="">Select...</option>
+              <% collections.forEach(col => { %>
+              <option value="<%= col %>"><%= col %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="toId">To (item)</label>
+            <select id="toId" name="toId" required>
+              <option value="">Select collection first</option>
+            </select>
+            <input type="hidden" id="toTitle" name="toTitle">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Add Connection</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="connections-list-section">
+      <h2>All Connections</h2>
+      <% if (connections.length === 0) { %>
+        <p class="empty-state">No connections yet.</p>
+      <% } %>
+      <% connections.forEach(c => { %>
+      <div class="connection-card">
+        <div class="connection-display">
+          <span class="connection-from">[<%= c.fromCollection %>] <%= c.fromTitle %></span>
+          <span class="connection-arrow">&rarr;</span>
+          <span class="connection-label-display"><%= c.label %></span>
+          <span class="connection-arrow">&rarr;</span>
+          <span class="connection-to">[<%= c.toCollection %>] <%= c.toTitle %></span>
+        </div>
+        <form action="/admin/connections/<%= c.id %>/delete" method="POST"
+              onsubmit="return confirm('Delete this connection?')">
+          <button type="submit" class="btn btn-small btn-danger">Delete</button>
+        </form>
+      </div>
+      <% }) %>
+    </section>
+  </main>
+</div>
+
+<script>
+  const allItems = <%- JSON.stringify(allItems) %>;
+
+  function populateItems(selectEl, hiddenEl, collection) {
+    selectEl.innerHTML = '<option value="">Select item...</option>';
+    if (allItems[collection]) {
+      allItems[collection].forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item.id;
+        opt.textContent = item.title;
+        selectEl.appendChild(opt);
+      });
+    }
+    selectEl.addEventListener('change', () => {
+      const selected = allItems[collection]?.find(i => i.id === selectEl.value);
+      hiddenEl.value = selected ? selected.title : '';
+    });
+  }
+
+  document.getElementById('fromCollection').addEventListener('change', function() {
+    populateItems(document.getElementById('fromId'), document.getElementById('fromTitle'), this.value);
+  });
+  document.getElementById('toCollection').addEventListener('change', function() {
+    populateItems(document.getElementById('toId'), document.getElementById('toTitle'), this.value);
+  });
+</script>
+<%- include('../partials/footer') %>

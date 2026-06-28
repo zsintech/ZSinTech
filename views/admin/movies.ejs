@@ -1,0 +1,53 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1>Movies</h1>
+      <a href="/admin/movies/new" class="btn btn-primary">+ Add Movie</a>
+    </div>
+
+    <div class="filters">
+      <select onchange="location.href='/admin/movies?status='+this.value">
+        <option value="">All Status</option>
+        <% statusValues.forEach(s => { %>
+        <option value="<%= s %>" <%= currentStatus === s ? 'selected' : '' %>><%= s %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="tab-board">
+      <% const groups = { 'want-to-watch': [], 'watched': [] }; %>
+      <% items.forEach(item => { if (groups[item.status]) groups[item.status].push(item); }) %>
+
+      <% Object.entries(groups).forEach(([status, groupItems]) => { %>
+      <div class="tab-section">
+        <h3 class="tab-title"><%= status === 'want-to-watch' ? 'Want to Watch' : 'Watched' %> (<%= groupItems.length %>)</h3>
+        <% groupItems.forEach(item => { %>
+        <div class="item-card">
+          <div class="item-card-header">
+            <h4><%= item.title %> <% if (item.year) { %><span class="muted">(<%= item.year %>)</span><% } %></h4>
+            <button class="toggle-public-btn <%= item.isPublic ? 'is-public' : '' %>"
+                    data-collection="movies" data-id="<%= item.id %>">
+              <%= item.isPublic ? '🌐 Public' : '🔒 Private' %>
+            </button>
+          </div>
+          <p class="muted"><%= item.director || '' %></p>
+          <% if (item.genre) { %><span class="tag"><%= item.genre %></span><% } %>
+          <% if (item.rating) { %><span class="rating">★ <%= item.rating %>/5</span><% } %>
+          <div class="item-card-actions">
+            <a href="/admin/movies/<%= item.id %>/edit" class="btn btn-small">Edit</a>
+            <form action="/admin/movies/<%= item.id %>/delete" method="POST" style="display:inline"
+                  onsubmit="return confirm('Delete this movie?')">
+              <button type="submit" class="btn btn-small btn-danger">Delete</button>
+            </form>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+      <% }) %>
+    </div>
+  </main>
+</div>
+<script src="/js/toggle-public.js"></script>
+<%- include('../partials/footer') %>

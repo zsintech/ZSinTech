@@ -1,0 +1,49 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <section class="page-hero page-hero--compact">
+    <h1>Writings</h1>
+    <p>Essays, projects, research, and stories on science, philosophy, and the human condition.</p>
+  </section>
+
+  <div class="filter-tabs">
+    <a href="/writings" class="filter-tab<%= !currentType ? ' active' : '' %>">All</a>
+    <a href="/writings?type=essay" class="filter-tab<%= currentType === 'essay' ? ' active' : '' %>">Essays</a>
+    <a href="/writings?type=project" class="filter-tab<%= currentType === 'project' ? ' active' : '' %>">Projects</a>
+    <a href="/writings?type=story" class="filter-tab<%= currentType === 'story' ? ' active' : '' %>">Stories</a>
+  </div>
+
+  <% if (!writings.length) { %>
+  <p class="empty-state">No writings yet — check back soon.</p>
+  <% } else { %>
+  <div class="writings-masonry">
+    <% writings.forEach((writing, i) => { %>
+    <article class="masonry-card <%= i % 3 === 0 ? 'masonry-card--tall' : '' %>">
+      <a href="/writings/<%= writing.slug %>" class="masonry-card-link">
+        <% if (writing.heroImageUrl) { %>
+        <div class="masonry-card-image" style="background-image: url('<%= img(writing.heroImageUrl, 'card') %>')">
+          <div class="masonry-card-overlay"></div>
+          <span class="masonry-card-type"><%= writing.type %></span>
+        </div>
+        <% } %>
+        <div class="masonry-card-body">
+          <time class="masonry-date"><%= formatDate(writing.dateWritten) %></time>
+          <h2><%= writing.title %></h2>
+          <p><%= writing.excerpt %></p>
+          <% if (writing.tags && writing.tags.length) { %>
+          <div class="tags">
+            <% writing.tags.slice(0, 3).forEach(tag => { %>
+            <span class="tag"><%= tag %></span>
+            <% }) %>
+          </div>
+          <% } %>
+        </div>
+      </a>
+    </article>
+    <% }) %>
+  </div>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

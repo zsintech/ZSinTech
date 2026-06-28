@@ -1,0 +1,14 @@
+<header class="site-header">
+  <nav class="nav-public">
+    <a href="/" class="nav-logo">ZsinTech</a>
+    <div class="nav-links">
+      <a href="/writings" class="<%= currentPath.startsWith('/writings') ? 'active' : '' %>">Writings</a>
+      <a href="/shelf" class="<%= currentPath === '/shelf' ? 'active' : '' %>">Shelf</a>
+      <a href="/reflections" class="<%= currentPath === '/reflections' ? 'active' : '' %>">Reflections</a>
+      <a href="/about" class="<%= currentPath === '/about' ? 'active' : '' %>">About</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>

@@ -1,0 +1,29 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Owner (your Firebase UID) can read and write everything
+    match /{document=**} {
+      allow read, write: if request.auth.uid == "YOUR_FIREBASE_UID";
+    }
+
+    // Public reads: only documents where isPublic == true
+    match /books/{doc} {
+      allow read: if resource.data.isPublic == true;
+    }
+    match /courses/{doc} {
+      allow read: if resource.data.isPublic == true;
+    }
+    match /articles_saved/{doc} {
+      allow read: if resource.data.isPublic == true;
+    }
+    match /writings/{doc} {
+      allow read: if resource.data.isPublic == true;
+    }
+    match /movies/{doc} {
+      allow read: if resource.data.isPublic == true;
+    }
+    match /reflections/{doc} {
+      allow read: if resource.data.isPublic == true;
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "zsintech",
+  "version": "1.0.0",
+  "description": "Personal Web OS — private notebook + public portfolio",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "seed": "node scripts/seed.js",
+    "images": "node scripts/images.js",
+    "images:fetch": "node scripts/images.js fetch"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "firebase": "^10.7.0",
+    "firebase-admin": "^12.0.0",
+    "marked": "^9.1.6",
+    "openai": "^4.20.0",
+    "slugify": "^1.6.6"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

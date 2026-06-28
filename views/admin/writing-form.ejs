@@ -1,0 +1,90 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1><%= item ? 'Edit' : 'Add' %> Writing</h1>
+      <a href="/admin/writings" class="btn btn-outline">&larr; Back</a>
+    </div>
+
+    <form action="<%= item ? '/admin/writings/' + item.id : '/admin/writings' %>" method="POST" class="content-form">
+      <div class="form-group">
+        <label for="title">Title *</label>
+        <input type="text" id="title" name="title" value="<%= item ? item.title : '' %>" required>
+      </div>
+
+      <% if (item && item.slug) { %>
+      <div class="form-group">
+        <label for="slug">Slug</label>
+        <input type="text" id="slug" name="slug" value="<%= item.slug %>">
+      </div>
+      <% } %>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="type">Type</label>
+          <select id="type" name="type">
+            <option value="essay" <%= item && item.type === 'essay' ? 'selected' : '' %>>Essay</option>
+            <option value="project" <%= item && item.type === 'project' ? 'selected' : '' %>>Project</option>
+            <option value="research" <%= item && item.type === 'research' ? 'selected' : '' %>>Research</option>
+            <option value="story" <%= item && item.type === 'story' ? 'selected' : '' %>>Story</option>
+            <option value="note" <%= item && item.type === 'note' ? 'selected' : '' %>>Note</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="heroImageUrl">Hero Image URL</label>
+          <input type="url" id="heroImageUrl" name="heroImageUrl" value="<%= item ? item.heroImageUrl || '' : '' %>" placeholder="Leave blank for auto-fetch">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="excerpt">Excerpt (1-2 sentences)</label>
+        <textarea id="excerpt" name="excerpt" rows="2"><%= item ? item.excerpt || '' : '' %></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="body-input">
+          Body (Markdown supported)
+          <button type="button" id="preview-toggle" class="btn btn-small btn-outline">Preview</button>
+        </label>
+        <textarea id="body-input" name="body" rows="20"><%= item ? item.body || '' : '' %></textarea>
+        <div id="markdown-preview" class="markdown-preview prose" style="display:none"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="tags">Tags (comma-separated)</label>
+        <input type="text" id="tags" name="tags" value="<%= item && item.tags ? item.tags.join(', ') : '' %>">
+      </div>
+
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="hidden" name="isPublic" value="false">
+          <input type="checkbox" name="isPublic" value="true" <%= item && item.isPublic ? 'checked' : '' %>>
+          Make public
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save Writing</button>
+      </div>
+
+      <% if (typeof connections !== 'undefined' && connections && connections.length > 0) { %>
+      <section class="connections-section">
+        <h3>Connections</h3>
+        <div class="connections-list">
+          <% connections.forEach(c => { %>
+          <div class="connection-item">
+            <span><%= c.fromTitle %></span>
+            <span class="connection-label"><%= c.label %></span>
+            <span><%= c.toTitle %></span>
+          </div>
+          <% }) %>
+        </div>
+      </section>
+      <% } %>
+    </form>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="/js/markdown-preview.js"></script>
+<%- include('../partials/footer') %>

@@ -1,0 +1,41 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1>Reflections</h1>
+      <a href="/admin/reflections/new" class="btn btn-primary">+ Add Reflection</a>
+    </div>
+
+    <div class="items-list">
+      <% if (items.length === 0) { %>
+        <p class="empty-state">No reflections yet.</p>
+      <% } %>
+      <% items.forEach(item => { %>
+      <div class="item-card item-card-horizontal">
+        <div class="item-card-header">
+          <div>
+            <% if (item.title) { %><h4><%= item.title %></h4><% } %>
+            <p><%= item.body ? item.body.substring(0, 150) + (item.body.length > 150 ? '...' : '') : '' %></p>
+            <% if (item.mood) { %><span class="mood-badge"><%= item.mood %></span><% } %>
+          </div>
+          <button class="toggle-public-btn <%= item.isPublic ? 'is-public' : '' %>"
+                  data-collection="reflections" data-id="<%= item.id %>">
+            <%= item.isPublic ? '🌐 Public' : '🔒 Private' %>
+          </button>
+        </div>
+        <div class="item-card-actions">
+          <span class="muted"><%= formatDate(item.date || item.dateAdded) %></span>
+          <a href="/admin/reflections/<%= item.id %>/edit" class="btn btn-small">Edit</a>
+          <form action="/admin/reflections/<%= item.id %>/delete" method="POST" style="display:inline"
+                onsubmit="return confirm('Delete this reflection?')">
+            <button type="submit" class="btn btn-small btn-danger">Delete</button>
+          </form>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </main>
+</div>
+<script src="/js/toggle-public.js"></script>
+<%- include('../partials/footer') %>

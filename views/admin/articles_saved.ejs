@@ -1,0 +1,51 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1>Articles</h1>
+      <a href="/admin/articles_saved/new" class="btn btn-primary">+ Add Article</a>
+    </div>
+
+    <div class="filters">
+      <select onchange="location.href='/admin/articles_saved?status='+this.value">
+        <option value="">All Status</option>
+        <% statusValues.forEach(s => { %>
+        <option value="<%= s %>" <%= currentStatus === s ? 'selected' : '' %>><%= s %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="tab-board">
+      <% const groups = { 'want-to-read': [], 'read': [] }; %>
+      <% items.forEach(item => { if (groups[item.status]) groups[item.status].push(item); }) %>
+
+      <% Object.entries(groups).forEach(([status, groupItems]) => { %>
+      <div class="tab-section">
+        <h3 class="tab-title"><%= status === 'want-to-read' ? 'To Read' : 'Read' %> (<%= groupItems.length %>)</h3>
+        <% groupItems.forEach(item => { %>
+        <div class="item-card">
+          <div class="item-card-header">
+            <h4><% if (item.url) { %><a href="<%= item.url %>" target="_blank" rel="noopener"><%= item.title %></a><% } else { %><%= item.title %><% } %></h4>
+            <button class="toggle-public-btn <%= item.isPublic ? 'is-public' : '' %>"
+                    data-collection="articles_saved" data-id="<%= item.id %>">
+              <%= item.isPublic ? '🌐 Public' : '🔒 Private' %>
+            </button>
+          </div>
+          <p class="muted"><%= item.source || '' %></p>
+          <div class="item-card-actions">
+            <a href="/admin/articles_saved/<%= item.id %>/edit" class="btn btn-small">Edit</a>
+            <form action="/admin/articles_saved/<%= item.id %>/delete" method="POST" style="display:inline"
+                  onsubmit="return confirm('Delete this article?')">
+              <button type="submit" class="btn btn-small btn-danger">Delete</button>
+            </form>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+      <% }) %>
+    </div>
+  </main>
+</div>
+<script src="/js/toggle-public.js"></script>
+<%- include('../partials/footer') %>

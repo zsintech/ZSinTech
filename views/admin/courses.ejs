@@ -1,0 +1,51 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1>Courses</h1>
+      <a href="/admin/courses/new" class="btn btn-primary">+ Add Course</a>
+    </div>
+
+    <div class="filters">
+      <select onchange="location.href='/admin/courses?status='+this.value">
+        <option value="">All Status</option>
+        <% statusValues.forEach(s => { %>
+        <option value="<%= s %>" <%= currentStatus === s ? 'selected' : '' %>><%= s %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="kanban-board">
+      <% const groups = { 'want-to-take': [], 'in-progress': [], 'completed': [] }; %>
+      <% items.forEach(item => { if (groups[item.status]) groups[item.status].push(item); }) %>
+
+      <% Object.entries(groups).forEach(([status, groupItems]) => { %>
+      <div class="kanban-column">
+        <h3 class="kanban-title"><%= status.replace(/-/g, ' ') %> (<%= groupItems.length %>)</h3>
+        <% groupItems.forEach(item => { %>
+        <div class="item-card">
+          <div class="item-card-header">
+            <h4><%= item.title %></h4>
+            <button class="toggle-public-btn <%= item.isPublic ? 'is-public' : '' %>"
+                    data-collection="courses" data-id="<%= item.id %>">
+              <%= item.isPublic ? '🌐 Public' : '🔒 Private' %>
+            </button>
+          </div>
+          <p class="muted"><%= item.platform || '' %> <% if (item.instructor) { %>— <%= item.instructor %><% } %></p>
+          <div class="item-card-actions">
+            <a href="/admin/courses/<%= item.id %>/edit" class="btn btn-small">Edit</a>
+            <form action="/admin/courses/<%= item.id %>/delete" method="POST" style="display:inline"
+                  onsubmit="return confirm('Delete this course?')">
+              <button type="submit" class="btn btn-small btn-danger">Delete</button>
+            </form>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+      <% }) %>
+    </div>
+  </main>
+</div>
+<script src="/js/toggle-public.js"></script>
+<%- include('../partials/footer') %>

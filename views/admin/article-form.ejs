@@ -1,0 +1,74 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1><%= item ? 'Edit' : 'Add' %> Article</h1>
+      <a href="/admin/articles_saved" class="btn btn-outline">&larr; Back</a>
+    </div>
+
+    <form action="<%= item ? '/admin/articles_saved/' + item.id : '/admin/articles_saved' %>" method="POST" class="content-form">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" value="<%= item ? item.title : '' %>">
+      </div>
+
+      <div class="form-group">
+        <label for="url">URL *</label>
+        <input type="url" id="url" name="url" value="<%= item ? item.url || '' : '' %>" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="source">Source</label>
+          <input type="text" id="source" name="source" value="<%= item ? item.source || '' : '' %>" placeholder="e.g. Nature, The Atlantic">
+        </div>
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select id="status" name="status">
+            <option value="want-to-read" <%= item && item.status === 'want-to-read' ? 'selected' : '' %>>Want to Read</option>
+            <option value="read" <%= item && item.status === 'read' ? 'selected' : '' %>>Read</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="tags">Tags (comma-separated)</label>
+        <input type="text" id="tags" name="tags" value="<%= item && item.tags ? item.tags.join(', ') : '' %>">
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Notes</label>
+        <textarea id="notes" name="notes" rows="5"><%= item ? item.notes || '' : '' %></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="hidden" name="isPublic" value="false">
+          <input type="checkbox" name="isPublic" value="true" <%= item && item.isPublic ? 'checked' : '' %>>
+          Make public
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save Article</button>
+      </div>
+
+      <% if (typeof connections !== 'undefined' && connections && connections.length > 0) { %>
+      <section class="connections-section">
+        <h3>Connections</h3>
+        <div class="connections-list">
+          <% connections.forEach(c => { %>
+          <div class="connection-item">
+            <span><%= c.fromTitle %></span>
+            <span class="connection-label"><%= c.label %></span>
+            <span><%= c.toTitle %></span>
+          </div>
+          <% }) %>
+        </div>
+      </section>
+      <% } %>
+    </form>
+  </main>
+</div>
+<%- include('../partials/footer') %>

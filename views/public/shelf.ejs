@@ -1,0 +1,98 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <section class="page-header">
+    <h1>Shelf</h1>
+    <p class="page-desc">Books, courses, articles, and movies — a curated collection</p>
+  </section>
+
+  <% if (books.length > 0) { %>
+  <section class="shelf-section">
+    <h2 class="shelf-section-title">Books</h2>
+    <% const bookGroups = groupByMonth(books); %>
+    <% Object.keys(bookGroups).forEach(month => { %>
+    <div class="shelf-month">
+      <h3 class="month-label"><%= month %></h3>
+      <div class="shelf-items">
+        <% bookGroups[month].forEach(book => { %>
+        <div class="shelf-card">
+          <% if (book.coverUrl) { %>
+          <img src="<%= book.coverUrl %>" alt="<%= book.title %>" class="shelf-cover">
+          <% } %>
+          <div class="shelf-card-info">
+            <h4><%= book.title %></h4>
+            <p class="muted"><%= book.author %></p>
+            <span class="status-badge status-<%= book.status %>"><%= book.status %></span>
+            <% if (book.rating) { %>
+            <span class="rating">★ <%= book.rating %>/5</span>
+            <% } %>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+    <% }) %>
+  </section>
+  <% } %>
+
+  <% if (courses.length > 0) { %>
+  <section class="shelf-section">
+    <h2 class="shelf-section-title">Courses</h2>
+    <div class="shelf-items">
+      <% courses.forEach(course => { %>
+      <div class="shelf-card">
+        <div class="shelf-card-info">
+          <h4><%= course.title %></h4>
+          <p class="muted"><%= course.platform || '' %> <% if (course.instructor) { %>— <%= course.instructor %><% } %></p>
+          <span class="status-badge status-<%= course.status %>"><%= course.status %></span>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </section>
+  <% } %>
+
+  <% if (articles.length > 0) { %>
+  <section class="shelf-section">
+    <h2 class="shelf-section-title">Articles</h2>
+    <div class="shelf-items">
+      <% articles.forEach(article => { %>
+      <div class="shelf-card">
+        <div class="shelf-card-info">
+          <h4><% if (article.url) { %><a href="<%= article.url %>" target="_blank" rel="noopener"><%= article.title %></a><% } else { %><%= article.title %><% } %></h4>
+          <p class="muted"><%= article.source || '' %></p>
+          <span class="status-badge status-<%= article.status %>"><%= article.status %></span>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </section>
+  <% } %>
+
+  <% if (movies.length > 0) { %>
+  <section class="shelf-section">
+    <h2 class="shelf-section-title">Movies</h2>
+    <div class="shelf-items">
+      <% movies.forEach(movie => { %>
+      <div class="shelf-card">
+        <div class="shelf-card-info">
+          <h4><%= movie.title %></h4>
+          <p class="muted"><%= movie.director || '' %> <% if (movie.year) { %>(<%= movie.year %>)<% } %></p>
+          <span class="status-badge status-<%= movie.status %>"><%= movie.status %></span>
+          <% if (movie.rating) { %>
+          <span class="rating">★ <%= movie.rating %>/5</span>
+          <% } %>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </section>
+  <% } %>
+
+  <% if (books.length === 0 && courses.length === 0 && articles.length === 0 && movies.length === 0) { %>
+  <p class="empty-state">Nothing on the shelf yet.</p>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

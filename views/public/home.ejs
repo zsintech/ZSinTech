@@ -1,0 +1,75 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <section class="hero hero--image" <% if (heroImage) { %>style="background-image: url('<%= img(heroImage, 'hero') %>')"<% } %>>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Science Communicator & Creator</p>
+      <h1 class="hero-title">Hello, I'm ZsinTech</h1>
+      <p class="hero-desc">Essays, projects, and thoughts on making science accessible and fascinating for everyone.</p>
+      <div class="hero-actions">
+        <a href="/writings" class="btn btn-primary">Read My Essays</a>
+        <a href="/about" class="btn btn-ghost">About Me</a>
+      </div>
+    </div>
+  </section>
+
+  <% if (featured) { %>
+  <section class="featured-hero">
+    <a href="/writings/<%= featured.slug %>" class="featured-hero-link">
+      <div class="featured-hero-image" style="background-image: url('<%= img(featured.heroImageUrl, 'card') %>')"></div>
+      <div class="featured-hero-content">
+        <span class="featured-hero-type"><%= featured.type %></span>
+        <h2><%= featured.title %></h2>
+        <p><%= featured.excerpt %></p>
+        <span class="read-more">Read essay &rarr;</span>
+      </div>
+    </a>
+  </section>
+  <% } %>
+
+  <section class="essays-grid-section">
+    <div class="section-header">
+      <h2>Essays & Writings</h2>
+      <a href="/writings" class="section-link">View all &rarr;</a>
+    </div>
+    <div class="essays-grid">
+      <% essays.forEach((essay, i) => { %>
+      <article class="essay-card <%= i === 0 ? 'essay-card--wide' : '' %>">
+        <a href="/writings/<%= essay.slug %>" class="essay-card-link">
+          <% if (essay.heroImageUrl) { %>
+          <div class="essay-card-image" style="background-image: url('<%= img(essay.heroImageUrl, 'card') %>')">
+            <div class="essay-card-overlay"></div>
+          </div>
+          <% } %>
+          <div class="essay-card-body">
+            <div class="essay-card-meta">
+              <span class="essay-card-type"><%= essay.type %></span>
+              <time><%= formatDate(essay.dateWritten) %></time>
+            </div>
+            <h3><%= essay.title %></h3>
+            <p><%= essay.excerpt %></p>
+          </div>
+        </a>
+      </article>
+      <% }) %>
+    </div>
+  </section>
+
+  <% if (project) { %>
+  <section class="project-banner">
+    <div class="project-banner-inner" style="background-image: url('<%= img(project.heroImageUrl, 'hero') %>')">
+      <div class="project-banner-overlay"></div>
+      <div class="project-banner-content">
+        <span class="project-label">Current Project</span>
+        <h2><%= project.title %></h2>
+        <p><%= project.excerpt %></p>
+        <a href="/writings/<%= project.slug %>" class="btn btn-light">View Project &rarr;</a>
+      </div>
+    </div>
+  </section>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

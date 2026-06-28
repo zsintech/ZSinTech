@@ -1,0 +1,54 @@
+<aside class="admin-sidebar">
+  <div class="sidebar-header">
+    <a href="/admin" class="sidebar-logo">ZsinTech</a>
+    <span class="sidebar-badge">Admin</span>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="/admin" class="sidebar-link<%= title === 'Dashboard' ? ' active' : '' %>">
+      <span class="sidebar-icon">◉</span> Dashboard
+    </a>
+    <a href="/admin/books" class="sidebar-link<%= title === 'Books' ? ' active' : '' %>">
+      <span class="sidebar-icon">📚</span> Books
+      <% if (typeof counts !== 'undefined' && counts.books) { %>
+        <span class="badge"><%= counts.books %></span>
+      <% } %>
+    </a>
+    <a href="/admin/courses" class="sidebar-link<%= title === 'Courses' ? ' active' : '' %>">
+      <span class="sidebar-icon">🎓</span> Courses
+      <% if (typeof counts !== 'undefined' && counts.courses) { %>
+        <span class="badge"><%= counts.courses %></span>
+      <% } %>
+    </a>
+    <a href="/admin/articles_saved" class="sidebar-link<%= title === 'Articles' ? ' active' : '' %>">
+      <span class="sidebar-icon">📰</span> Articles
+      <% if (typeof counts !== 'undefined' && counts.articles_saved) { %>
+        <span class="badge"><%= counts.articles_saved %></span>
+      <% } %>
+    </a>
+    <a href="/admin/writings" class="sidebar-link<%= title === 'Writings' ? ' active' : '' %>">
+      <span class="sidebar-icon">✍️</span> Writings
+      <% if (typeof counts !== 'undefined' && counts.writings) { %>
+        <span class="badge"><%= counts.writings %></span>
+      <% } %>
+    </a>
+    <a href="/admin/movies" class="sidebar-link<%= title === 'Movies' ? ' active' : '' %>">
+      <span class="sidebar-icon">🎬</span> Movies
+      <% if (typeof counts !== 'undefined' && counts.movies) { %>
+        <span class="badge"><%= counts.movies %></span>
+      <% } %>
+    </a>
+    <a href="/admin/reflections" class="sidebar-link<%= title === 'Reflections' ? ' active' : '' %>">
+      <span class="sidebar-icon">💭</span> Reflections
+      <% if (typeof counts !== 'undefined' && counts.reflections) { %>
+        <span class="badge"><%= counts.reflections %></span>
+      <% } %>
+    </a>
+    <a href="/admin/connections" class="sidebar-link<%= title === 'Connections' ? ' active' : '' %>">
+      <span class="sidebar-icon">🔗</span> Connections
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="/" class="sidebar-link">← View Site</a>
+    <a href="/logout" class="sidebar-link logout-link">Logout</a>
+  </div>
+</aside>
