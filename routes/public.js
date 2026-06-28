@@ -39,20 +39,17 @@ router.get('/', async (req, res) => {
   const essays = writings.filter(w => w.type === 'essay');
   const projects = writings.filter(w => w.type === 'project');
   const featured = essays[0] || writings[0] || null;
-  const project = projects[0] || null;
   const stories = staticWritings.getStories();
   const journalism = await getJournalismArticles();
   const popsciReels = await getPopSciReels();
   const reflections = await getReflections();
   const latestReflection = reflections[0] || null;
 
-  let books = [];
-  if (isConfigured && db) {
-    try {
-      const booksSnap = await db.collection('books').where('isPublic', '==', true).where('status', '==', 'reading').limit(3).get();
-      books = booksSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-    } catch { /* optional */ }
-  }
+  const courses = await getCourses();
+  const articles = await getArticlesRead();
+  const books = await getBooks();
+  const vocationalBooks = books.filter(b => b.shelfType === 'vocational').slice(0, 3);
+  const literaryBooks = books.filter(b => b.shelfType === 'literary').slice(0, 3);
 
   res.render('public/home', {
     title: 'ZsinTech',
@@ -60,12 +57,14 @@ router.get('/', async (req, res) => {
     essays,
     projects,
     featured,
-    project,
     stories,
     journalism,
     popsciReels,
     latestReflection,
-    books,
+    courses: courses.slice(0, 4),
+    articles: articles.slice(0, 4),
+    vocationalBooks,
+    literaryBooks,
     formatDate,
     heroImage: featured?.heroImageUrl || essays[0]?.heroImageUrl,
   });
@@ -169,11 +168,13 @@ const BOOK_SHELVES = {
 
 router.get('/books/:shelfType', async (req, res) => {
   const { shelfType } = req.params;
-  const { view } = req.query;
+  const { view, category } = req.query;
   const meta = BOOK_SHELVES[shelfType];
   if (!meta) return res.status(404).render('public/404', { title: 'Not Found' });
 
-  const allBooks = await getBooks({ shelfType });
+  let allBooks = await getBooks({ shelfType });
+  if (category) allBooks = allBooks.filter(b => b.category === category);
+  const categories = [...new Set((await getBooks({ shelfType })).map(b => b.category).filter(Boolean))].sort();
   const { toRead, haveRead } = groupBooksByReadingStatus(allBooks);
 
   res.render('public/books-shelf', {
@@ -184,7 +185,9 @@ router.get('/books/:shelfType', async (req, res) => {
     otherShelf: meta.other,
     toRead,
     haveRead,
+    categories,
     currentView: view || '',
+    currentCategory: category || '',
     adminEditPath: res.locals.isAdmin ? `/admin/books?shelfType=${shelfType}` : null,
   });
 });
@@ -299,6 +302,7 @@ router.get('/solo-date', async (req, res) => {
     title: 'Solo Date',
     dates,
     formatDate,
+    adminEditPath: res.locals.isAdmin ? '/admin/content/solo_dates' : null,
   });
 });
 
@@ -361,6 +365,7 @@ router.get('/travel', async (req, res) => {
     statuses: getTravelStatuses(),
     currentStatus: status || '',
     formatDate,
+    adminEditPath: res.locals.isAdmin ? '/admin/trips' : null,
   });
 });
 
@@ -376,6 +381,7 @@ router.get('/travel/:slug', async (req, res) => {
     trip,
     related,
     formatDate,
+    adminEditPath: res.locals.isAdmin ? '/admin/trips' : null,
   });
 });
 

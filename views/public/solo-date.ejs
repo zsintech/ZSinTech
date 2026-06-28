@@ -9,7 +9,7 @@
   </section>
 
   <% if (!dates.length) { %>
-  <p class="empty-state">No solo dates logged yet. The page is ready whenever you are.</p>
+  <p class="empty-state">No solo dates logged yet.</p>
   <% } else { %>
   <div class="solo-timeline">
     <% dates.forEach(entry => { %>
@@ -19,6 +19,9 @@
         <span class="solo-activity"><%= entry.activity %></span>
       </div>
       <div class="solo-card-body">
+        <% if (entry.heroImageUrl) { %>
+        <div class="solo-card-image media-cover" style="background-image: url('<%= img(entry.heroImageUrl, 'card') %>')"></div>
+        <% } %>
         <h2><%= entry.title %></h2>
         <% if (entry.location) { %>
         <p class="solo-location"><%= entry.location %></p>

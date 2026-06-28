@@ -50,7 +50,8 @@ async function seed() {
       console.log(`  ✓ ${w.title} — using Pexels image`);
     }
 
-    await db.collection('writings').add(data);
+    await db.collection('writings').doc(w.slug).set(data, { merge: true });
+    console.log(`  ✓ ${w.title}`);
   }
 
   console.log('\nSeeding books...');

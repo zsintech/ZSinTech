@@ -1,6 +1,8 @@
 <article class="paper-card paper-card--detailed">
   <% if (paper.heroImageUrl) { %>
-  <div class="paper-card-image" style="background-image: url('<%= img(paper.heroImageUrl, 'thumb') %>')"></div>
+  <div class="paper-card-image media-cover" style="background-image: url('<%= img(paper.heroImageUrl, 'thumb') %>')"></div>
+  <% } else { %>
+  <div class="paper-card-image media-cover media-cover--placeholder"></div>
   <% } %>
   <div class="paper-card-inner">
     <div class="paper-card-meta">

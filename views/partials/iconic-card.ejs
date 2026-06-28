@@ -1,6 +1,8 @@
 <article class="iconic-card iconic-card--detailed">
   <% if (item.coverUrl) { %>
-  <div class="iconic-cover" style="background-image: url('<%= img(item.coverUrl, 'card') %>')"></div>
+  <div class="iconic-cover media-cover" style="background-image: url('<%= img(item.coverUrl, 'card') %>')"></div>
+  <% } else { %>
+  <div class="iconic-cover media-cover media-cover--placeholder"></div>
   <% } %>
   <div class="iconic-card-body">
     <span class="iconic-type"><%= item.type %></span>

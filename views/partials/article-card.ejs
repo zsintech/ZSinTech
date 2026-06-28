@@ -1,6 +1,8 @@
 <article class="article-card article-card--detailed">
   <% if (article.heroImageUrl) { %>
-  <div class="article-card-image" style="background-image: url('<%= img(article.heroImageUrl, 'card') %>')"></div>
+  <div class="article-card-image media-cover" style="background-image: url('<%= img(article.heroImageUrl, 'card') %>')"></div>
+  <% } else { %>
+  <div class="article-card-image media-cover media-cover--placeholder"></div>
   <% } %>
   <div class="article-card-inner">
     <span class="article-source"><%= article.source || 'Article' %></span>

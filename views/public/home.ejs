@@ -6,8 +6,8 @@
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <p class="hero-eyebrow">Science Communicator & Creator</p>
-      <h1 class="hero-title">Hello, I'm ZsinTech</h1>
-      <p class="hero-desc">Essays, projects, and thoughts on making science accessible and fascinating for everyone.</p>
+      <h1 class="hero-title">Hello, I'm <span class="logo-accent">Z</span>sinTech</h1>
+      <p class="hero-desc">Essays, projects, and thoughts on making science accessible and fascinating for everyone — including <a href="/popsci">PopSci AI</a>.</p>
       <div class="hero-actions">
         <a href="/writings" class="btn btn-primary">Read My Essays</a>
         <a href="/about" class="btn btn-ghost">About Me</a>
@@ -159,6 +159,77 @@
   </section>
   <% } %>
 
+  <% if (courses && courses.length || articles && articles.length || vocationalBooks && vocationalBooks.length) { %>
+  <section class="shelf-home-section">
+    <div class="section-header">
+      <h2>From the Shelf</h2>
+      <a href="/shelf" class="section-link">Full shelf &rarr;</a>
+    </div>
+
+    <% if (courses && courses.length) { %>
+    <div class="shelf-home-block">
+      <h3 class="shelf-home-label"><a href="/courses">Courses</a></h3>
+      <div class="shelf-home-items">
+        <% courses.forEach(course => { %>
+        <a href="/courses" class="shelf-home-chip">
+          <strong><%= course.title %></strong>
+          <span><%= course.status ? course.status.replace(/-/g, ' ') : 'queued' %></span>
+        </a>
+        <% }) %>
+      </div>
+    </div>
+    <% } %>
+
+    <% if (articles && articles.length) { %>
+    <div class="shelf-home-block">
+      <h3 class="shelf-home-label"><a href="/articles-read">Articles</a></h3>
+      <div class="shelf-home-items">
+        <% articles.forEach(article => { %>
+        <a href="<%= article.url || '/articles-read' %>" class="shelf-home-chip" <%= article.url ? 'target="_blank" rel="noopener"' : '' %>>
+          <strong><%= article.title %></strong>
+          <span><%= article.source || 'reading log' %></span>
+        </a>
+        <% }) %>
+      </div>
+    </div>
+    <% } %>
+
+    <% if (vocationalBooks && vocationalBooks.length) { %>
+    <div class="shelf-home-block">
+      <h3 class="shelf-home-label"><a href="/books/vocational">Vocational Books</a> · <a href="/books/literary">Literary</a></h3>
+      <div class="shelf-home-items shelf-home-items--books">
+        <% vocationalBooks.forEach(book => { %>
+        <a href="/books/vocational" class="shelf-home-book">
+          <% if (book.coverUrl) { %>
+          <div class="shelf-home-book-cover media-cover" style="background-image: url('<%= img(book.coverUrl, 'thumb') %>')"></div>
+          <% } else { %>
+          <div class="shelf-home-book-cover media-cover media-cover--placeholder"></div>
+          <% } %>
+          <div>
+            <strong><%= book.title %></strong>
+            <% if (book.category) { %><span class="shelf-home-book-cat"><%= book.category %></span><% } %>
+          </div>
+        </a>
+        <% }) %>
+        <% if (literaryBooks && literaryBooks.length) { literaryBooks.forEach(book => { %>
+        <a href="/books/literary" class="shelf-home-book">
+          <% if (book.coverUrl) { %>
+          <div class="shelf-home-book-cover media-cover" style="background-image: url('<%= img(book.coverUrl, 'thumb') %>')"></div>
+          <% } else { %>
+          <div class="shelf-home-book-cover media-cover media-cover--placeholder"></div>
+          <% } %>
+          <div>
+            <strong><%= book.title %></strong>
+            <% if (book.category) { %><span class="shelf-home-book-cat"><%= book.category %></span><% } %>
+          </div>
+        </a>
+        <% }) } %>
+      </div>
+    </div>
+    <% } %>
+  </section>
+  <% } %>
+
   <section class="reading-spaces">
     <div class="section-header">
       <h2>Reading & Research</h2>
@@ -168,7 +239,7 @@
         <a href="/articles-read">
           <span class="reading-space-label">Reading Log</span>
           <h3>Articles Read</h3>
-          <p>Journalism, essays, and long reads — 26 articles and counting.</p>
+          <p>Journalism, essays, and long reads — with personal notes on each.</p>
         </a>
       </div>
       <div class="reading-space-card">

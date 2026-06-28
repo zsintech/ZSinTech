@@ -23,6 +23,15 @@
     <a href="/books/<%= shelfType %>?view=have-read" class="filter-tab<%= currentView === 'have-read' ? ' active' : '' %>">Have Read <span class="tab-count"><%= haveRead.length %></span></a>
   </div>
 
+  <% if (categories && categories.length) { %>
+  <div class="filter-tabs filter-tabs--secondary">
+    <a href="/books/<%= shelfType %><%= currentView ? '?view=' + currentView : '' %>" class="filter-tab filter-tab--small<%= !currentCategory ? ' active' : '' %>">All categories</a>
+    <% categories.forEach(cat => { %>
+    <a href="/books/<%= shelfType %>?category=<%= encodeURIComponent(cat) %><%= currentView ? '&view=' + currentView : '' %>" class="filter-tab filter-tab--small<%= currentCategory === cat ? ' active' : '' %>"><%= cat %></a>
+    <% }) %>
+  </div>
+  <% } %>
+
   <% if (!currentView || currentView === 'to-read') { %>
   <section class="reading-shelf-section">
     <h2 class="reading-shelf-heading">To Read</h2>

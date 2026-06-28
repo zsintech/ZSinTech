@@ -131,6 +131,7 @@ module.exports = [
       { name: 'title', label: 'Title', type: 'text', required: true },
       { name: 'activity', label: 'Activity', type: 'text' },
       { name: 'location', label: 'Location', type: 'text' },
+      { name: 'mood', label: 'Mood', type: 'text' },
       { name: 'excerpt', label: 'Excerpt', type: 'textarea', rows: 3 },
       { name: 'notes', label: 'Notes', type: 'textarea', rows: 6 },
       { name: 'tags', label: 'Tags', type: 'tags' },

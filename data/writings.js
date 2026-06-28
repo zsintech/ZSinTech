@@ -236,6 +236,86 @@ Based in Seattle with operations across 25 countries, BMSIS fosters curiosity an
     dateWritten: new Date('2025-01-15'),
     isPublic: true,
   },
+  {
+    id: 'cyberproject',
+    title: 'Cyberproject',
+    slug: 'cyberproject',
+    type: 'project',
+    excerpt: 'Co-founded and lead the Cyberproject club at AUIS — project-based learning in cyberspace, digital literacy, and hands-on engineering.',
+    body: `## Cyberproject
+
+Co-founded **Cyberproject** at the [American University of Iraq, Sulaimani](https://auis.edu.krd/) to encourage project-based learning in cyberspace — bridging software engineering coursework with real builds students can ship.
+
+### What we do
+
+- **Project-based learning** — members pick problems, prototype solutions, and present outcomes instead of only taking exams
+- **Digital literacy** — workshops on security basics, tooling, and responsible use of AI in student projects
+- **Community builds** — hack nights, peer review, and cross-disciplinary teams (journalism × engineering, science × code)
+
+### My role
+
+Club leader and co-founder — organizing sessions, mentoring first-time builders, and connecting AUIS students with open-source and citizen-science communities.
+
+> From my [LinkedIn](https://www.linkedin.com/in/zheen-salih-abdullah-b88854264) — listed as leader of the Cyberproject club at AUIS.`,
+    tags: ['AUIS', 'education', 'digital literacy', 'club'],
+    heroImageUrl: 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    dateWritten: new Date('2023-09-01'),
+    isPublic: true,
+  },
+  {
+    id: 'adventure-club',
+    title: 'AUIS Adventure Club',
+    slug: 'adventure-club',
+    type: 'project',
+    excerpt: 'Co-founded the Adventure Club to promote biodiversity awareness and outdoor learning around Sulaymaniyah.',
+    body: `## AUIS Adventure Club
+
+Co-founded the **Adventure Club** at AUIS to promote biodiversity awareness and get students outside the lecture hall — hikes, field notes, and environmental consciousness as a shared practice.
+
+### Mission
+
+- Explore Kurdistan's landscapes with respect and curiosity
+- Connect ecology coursework to what we can see, hear, and document on the ground
+- Build a student community that treats nature as something to steward, not backdrop
+
+### Highlights
+
+- Organized group outings and biodiversity-themed discussions
+- Partnered with peers interested in science communication and sustainability
+- Part of a broader pattern of co-founding student projects that blend activism, education, and community
+
+From campus co-founding work described on my [About](/about) page and [LinkedIn profile](https://www.linkedin.com/in/zheen-salih-abdullah-b88854264).`,
+    tags: ['AUIS', 'biodiversity', 'outdoors', 'community'],
+    heroImageUrl: 'https://images.pexels.com/photos/957024/forest-trees-perspective-bright-957024.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    dateWritten: new Date('2023-06-01'),
+    isPublic: true,
+  },
+  {
+    id: 'writing-club',
+    title: 'AUIS Writing Club',
+    slug: 'writing-club',
+    type: 'project',
+    excerpt: 'Founded the writing club at AUIS to keep interest in writing, creativity, and literary culture alive on campus.',
+    body: `## AUIS Writing Club
+
+Founded the **Writing Club** at AUIS to maintain interest in writing and creativity — a space for essays, fiction, workshop feedback, and the kind of literary culture that feeds everything else I publish here.
+
+### Why it mattered
+
+Engineering and pre-med tracks can crowd out slow, reflective writing. The club was a deliberate counterweight: read together, share drafts, and treat language as craft.
+
+### Activities
+
+- Peer workshops for essays and short fiction
+- Read-aloud nights and cross-club collaborations with journalism and literary journal students
+- Seedbed for pieces that later became [stories](/stories) and [essays](/writings)
+
+Co-founded alongside other campus projects — see [About](/about) for the full picture of student leadership at AUIS.`,
+    tags: ['AUIS', 'writing', 'literary', 'community'],
+    heroImageUrl: 'https://images.pexels.com/photos/159866/books-book-pages-read-literature-159866.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    dateWritten: new Date('2023-04-01'),
+    isPublic: true,
+  },
 ];
 
 function getAll() {

@@ -23,7 +23,9 @@
       <article class="idea-card">
         <a href="/writing-ideas/<%= idea.id %>" class="idea-card-link">
           <% if (idea.heroImageUrl) { %>
-          <div class="idea-card-image" style="background-image: url('<%= img(idea.heroImageUrl, 'card') %>')"></div>
+          <div class="idea-card-image media-cover" style="background-image: url('<%= img(idea.heroImageUrl, 'card') %>')"></div>
+          <% } else { %>
+          <div class="idea-card-image media-cover media-cover--placeholder"></div>
           <% } %>
           <div class="idea-card-body">
             <div class="idea-card-header">

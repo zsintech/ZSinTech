@@ -16,14 +16,30 @@ async function fetchFromFirestore(filters = {}) {
 }
 
 async function getPublicWritings(filters = {}) {
+  const staticItems = staticContent.getAll();
   let items = await fetchFromFirestore(filters);
+
   if (!items || items.length === 0) {
-    items = staticContent.getAll();
-    if (filters.type) items = items.filter(w => w.type === filters.type);
-    else if (filters.excludeStories) items = items.filter(w => w.type !== 'story');
-    if (filters.tag) items = items.filter(w => w.tags && w.tags.includes(filters.tag));
+    items = staticItems;
+  } else {
+    const bySlug = new Map(items.map(i => [i.slug, i]));
+    for (const s of staticItems) {
+      if (!bySlug.has(s.slug)) {
+        bySlug.set(s.slug, { id: s.id || s.slug, ...s });
+      }
+    }
+    items = [...bySlug.values()];
   }
-  return items;
+
+  if (filters.type) items = items.filter(w => w.type === filters.type);
+  else if (filters.excludeStories) items = items.filter(w => w.type !== 'story');
+  if (filters.tag) items = items.filter(w => w.tags && w.tags.includes(filters.tag));
+
+  return items.sort((a, b) => {
+    const da = a.dateWritten?.toDate ? a.dateWritten.toDate() : a.dateWritten;
+    const db = b.dateWritten?.toDate ? b.dateWritten.toDate() : b.dateWritten;
+    return new Date(db) - new Date(da);
+  });
 }
 
 async function getWritingBySlug(slug) {
