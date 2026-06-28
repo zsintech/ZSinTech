@@ -1,0 +1,325 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+
+<%- include('../partials/nav-public') %>
+
+
+
+<main class="public-main">
+
+  <article class="idea-single">
+
+    <% if (idea.heroImageUrl) { %>
+
+    <div class="idea-hero" style="background-image: url('<%= img(idea.heroImageUrl, 'hero') %>')">
+
+      <div class="idea-hero-overlay"></div>
+
+      <div class="idea-hero-content">
+
+        <span class="idea-status idea-status--<%= idea.status %>"><%= idea.status %></span>
+
+        <span class="idea-category-label"><%= idea.category %></span>
+
+        <% if (idea.workspaceLabel) { %>
+
+        <p class="idea-workspace-label"><%= idea.workspaceLabel %></p>
+
+        <% } %>
+
+        <h1><%= idea.title %></h1>
+
+      </div>
+
+    </div>
+
+    <% } else { %>
+
+    <header class="idea-header-plain">
+
+      <span class="idea-status idea-status--<%= idea.status %>"><%= idea.status %></span>
+
+      <h1><%= idea.title %></h1>
+
+      <p class="idea-category-label"><%= idea.category %></p>
+
+      <% if (idea.workspaceLabel) { %>
+
+      <p class="idea-workspace-label"><%= idea.workspaceLabel %></p>
+
+      <% } %>
+
+    </header>
+
+    <% } %>
+
+
+
+    <div class="idea-container">
+
+      <p class="idea-lead"><%= idea.excerpt %></p>
+
+
+
+      <% if (idea.concept) { %>
+
+      <section class="idea-concept-callout">
+
+        <p class="idea-concept-label">The Concept</p>
+
+        <p class="idea-concept-text"><%= idea.concept %></p>
+
+      </section>
+
+      <% } %>
+
+
+
+      <% if (idea.concepts && idea.concepts.length) { %>
+
+      <section class="idea-concepts-section">
+
+        <h2>Concepts &amp; threads</h2>
+
+        <div class="idea-concepts">
+
+          <% idea.concepts.forEach(c => {
+
+            const label = typeof c === 'string' ? c : c.label;
+
+            const url = typeof c === 'object' ? c.url : null;
+
+          %>
+
+          <% if (url) { %>
+
+          <a href="<%= url %>" class="idea-concept-chip idea-concept-chip--linked" target="_blank" rel="noopener"><%= label %></a>
+
+          <% } else { %>
+
+          <span class="idea-concept-chip"><%= label %></span>
+
+          <% } %>
+
+          <% }) %>
+
+        </div>
+
+      </section>
+
+      <% } %>
+
+
+
+      <% if (idea.asides && idea.asides.length) { %>
+      <section class="idea-asides">
+        <% idea.asides.forEach(aside => { %>
+        <aside class="idea-aside">
+          <span class="idea-aside-icon" aria-hidden="true">💡</span>
+          <p><%= aside %></p>
+        </aside>
+        <% }) %>
+      </section>
+      <% } %>
+
+      <% if (idea.quotes && idea.quotes.length) { %>
+      <section class="idea-quotes-section">
+        <% idea.quotes.forEach(q => { %>
+        <blockquote class="idea-blockquote">
+          <p><%= q.text %></p>
+          <% if (q.cite) { %><cite><%= q.cite %></cite><% } %>
+        </blockquote>
+        <% }) %>
+      </section>
+      <% } %>
+
+      <% if (idea.sections && idea.sections.length) { %>
+      <section class="idea-sections">
+        <% idea.sections.forEach(section => { %>
+        <div class="idea-section-block">
+          <% if (section.heading) { %><h3><%= section.heading %></h3><% } %>
+          <% if (section.body) { %>
+          <div class="idea-section-body prose"><%- formatIdeaNotes(section.body) %></div>
+          <% } %>
+          <% if (section.asides && section.asides.length) { %>
+          <% section.asides.forEach(aside => { %>
+          <aside class="idea-aside">
+            <span class="idea-aside-icon" aria-hidden="true">💡</span>
+            <p><%= aside %></p>
+          </aside>
+          <% }) %>
+          <% } %>
+          <% if (section.quotes && section.quotes.length) { %>
+          <% section.quotes.forEach(q => { %>
+          <blockquote class="idea-blockquote">
+            <p><%= q.text %></p>
+            <% if (q.cite) { %><cite><%= q.cite %></cite><% } %>
+          </blockquote>
+          <% }) %>
+          <% } %>
+        </div>
+        <% }) %>
+      </section>
+      <% } %>
+
+      <% if (idea.articles && idea.articles.length) { %>
+
+      <section class="idea-articles-section">
+
+        <h2>Linked articles</h2>
+
+        <div class="idea-articles-grid">
+
+          <% idea.articles.forEach(article => { %>
+
+          <a href="<%= article.url || '#' %>" class="idea-article-card" <%= article.url ? 'target="_blank" rel="noopener"' : '' %>>
+
+            <h3><%= article.title %></h3>
+
+            <% if (article.excerpt) { %>
+
+            <p><%= article.excerpt %></p>
+
+            <% } %>
+
+            <% if (article.url) { %>
+
+            <span class="idea-article-domain"><%= article.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0] %></span>
+
+            <% } %>
+
+          </a>
+
+          <% }) %>
+
+        </div>
+
+      </section>
+
+      <% } %>
+
+
+
+      <% if (idea.notes) { %>
+
+      <section class="idea-notes prose">
+
+        <h2>Research Notes</h2>
+
+        <div class="idea-notes-body"><%- formatIdeaNotes(idea.notes) %></div>
+
+      </section>
+
+      <% } %>
+
+
+
+      <% if (idea.sources && idea.sources.length) { %>
+
+      <section class="idea-sources">
+
+        <h3>Sources &amp; files</h3>
+
+        <ul class="source-list">
+
+          <% idea.sources.forEach(s => { %>
+
+          <li>
+
+            <% if (s.url) { %>
+
+            <a href="<%= s.url %>" target="_blank" rel="noopener"><%= s.label %></a>
+
+            <% } else { %>
+
+            <span><%= s.label %></span>
+
+            <% } %>
+
+          </li>
+
+          <% }) %>
+
+        </ul>
+
+      </section>
+
+      <% } %>
+
+
+
+      <% if (idea.tags && idea.tags.length) { %>
+
+      <div class="tags idea-tags">
+
+        <% idea.tags.forEach(tag => { %>
+
+        <span class="tag"><%= tag %></span>
+
+        <% }) %>
+
+      </div>
+
+      <% } %>
+
+
+
+      <footer class="writing-footer">
+
+        <a href="/writing-ideas" class="back-link">&larr; Back to Writing Ideas</a>
+
+        <% if (idea.category) { %>
+
+        <a href="/writing-ideas?category=<%= encodeURIComponent(idea.category) %>" class="external-link">More in <%= idea.category %> &rarr;</a>
+
+        <% } %>
+
+      </footer>
+
+
+
+      <% if (related && related.length) { %>
+
+      <section class="related-writings">
+
+        <h3>Related ideas</h3>
+
+        <div class="related-grid">
+
+          <% related.forEach(r => { %>
+
+          <a href="/writing-ideas/<%= r.id %>" class="related-card">
+
+            <% if (r.heroImageUrl) { %>
+
+            <div class="related-card-image" style="background-image: url('<%= img(r.heroImageUrl, 'thumb') %>')"></div>
+
+            <% } %>
+
+            <div class="related-card-body">
+
+              <h4><%= r.title %></h4>
+
+              <p><%= r.excerpt.substring(0, 90) %>...</p>
+
+            </div>
+
+          </a>
+
+          <% }) %>
+
+        </div>
+
+      </section>
+
+      <% } %>
+
+    </div>
+
+  </article>
+
+</main>
+
+
+
+<%- include('../partials/footer') %>
+

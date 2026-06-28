@@ -1,0 +1,57 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <section class="page-hero page-hero--compact">
+    <p class="hero-eyebrow">Shelf · Books</p>
+    <h1><%= shelfLabel %></h1>
+    <p><%= shelfDescription %></p>
+    <div class="shelf-quick-links">
+      <a href="/shelf" class="shelf-quick-link">&larr; Back to Shelf</a>
+      <% if (otherShelf) { %>
+      <a href="/books/<%= otherShelf.type %>" class="shelf-quick-link"><%= otherShelf.label %> &rarr;</a>
+      <% } %>
+      <% if (typeof isAdmin !== 'undefined' && isAdmin) { %>
+      <a href="/admin/books?shelfType=<%= shelfType %>" class="shelf-quick-link admin-inline-link">Edit in Admin</a>
+      <% } %>
+    </div>
+  </section>
+
+  <div class="reading-status-tabs">
+    <a href="/books/<%= shelfType %>" class="filter-tab<%= !currentView ? ' active' : '' %>">All</a>
+    <a href="/books/<%= shelfType %>?view=to-read" class="filter-tab<%= currentView === 'to-read' ? ' active' : '' %>">To Read <span class="tab-count"><%= toRead.length %></span></a>
+    <a href="/books/<%= shelfType %>?view=have-read" class="filter-tab<%= currentView === 'have-read' ? ' active' : '' %>">Have Read <span class="tab-count"><%= haveRead.length %></span></a>
+  </div>
+
+  <% if (!currentView || currentView === 'to-read') { %>
+  <section class="reading-shelf-section">
+    <h2 class="reading-shelf-heading">To Read</h2>
+    <% if (!toRead.length) { %>
+    <p class="reading-shelf-empty">Nothing on the queue right now.</p>
+    <% } else { %>
+    <div class="books-grid">
+      <% toRead.forEach(book => { %>
+      <%- include('../partials/book-card', { book }) %>
+      <% }) %>
+    </div>
+    <% } %>
+  </section>
+  <% } %>
+
+  <% if (!currentView || currentView === 'have-read') { %>
+  <section class="reading-shelf-section">
+    <h2 class="reading-shelf-heading">Have Read</h2>
+    <% if (!haveRead.length) { %>
+    <p class="reading-shelf-empty">Nothing finished yet.</p>
+    <% } else { %>
+    <div class="books-grid">
+      <% haveRead.forEach(book => { %>
+      <%- include('../partials/book-card', { book }) %>
+      <% }) %>
+    </div>
+    <% } %>
+  </section>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

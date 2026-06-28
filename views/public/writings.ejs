@@ -11,7 +11,7 @@
     <a href="/writings" class="filter-tab<%= !currentType ? ' active' : '' %>">All</a>
     <a href="/writings?type=essay" class="filter-tab<%= currentType === 'essay' ? ' active' : '' %>">Essays</a>
     <a href="/writings?type=project" class="filter-tab<%= currentType === 'project' ? ' active' : '' %>">Projects</a>
-    <a href="/writings?type=story" class="filter-tab<%= currentType === 'story' ? ' active' : '' %>">Stories</a>
+    <a href="/stories" class="filter-tab">Stories &rarr;</a>
   </div>
 
   <% if (!writings.length) { %>

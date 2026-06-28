@@ -1,0 +1,49 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <section class="page-hero page-hero--compact">
+    <p class="hero-eyebrow">Plan All the Way</p>
+    <h1>Travel</h1>
+    <p>Itineraries, dream destinations, and trip notes — the journeys I'm planning or have taken.</p>
+    <p class="page-meta"><%= trips.length %> public <%= trips.length === 1 ? 'trip' : 'trips' %></p>
+  </section>
+
+  <div class="filter-tabs">
+    <a href="/travel" class="filter-tab<%= !currentStatus ? ' active' : '' %>">All</a>
+    <% statuses.forEach(s => { %>
+    <a href="/travel?status=<%= s %>" class="filter-tab<%= currentStatus === s ? ' active' : '' %>"><%= s %></a>
+    <% }) %>
+  </div>
+
+  <% if (!trips.length) { %>
+  <p class="empty-state">No public trips yet.</p>
+  <% } else { %>
+  <div class="travel-gallery">
+    <% trips.forEach(trip => { %>
+    <article class="travel-card">
+      <a href="/travel/<%= trip.slug %>" class="travel-card-link">
+        <% if (trip.heroImageUrl) { %>
+        <div class="travel-card-image" style="background-image: url('<%= img(trip.heroImageUrl, 'card') %>')">
+          <div class="travel-card-overlay"></div>
+          <span class="travel-card-status"><%= trip.status %></span>
+        </div>
+        <% } %>
+        <div class="travel-card-body">
+          <h2><%= trip.title %></h2>
+          <p class="travel-destination"><%= trip.destination %></p>
+          <% if (trip.notes) { %>
+          <p class="travel-excerpt"><%= trip.notes.substring(0, 120) %><%= trip.notes.length > 120 ? '...' : '' %></p>
+          <% } %>
+          <% if (trip.checklist && trip.checklist.length) { %>
+          <span class="travel-checklist-count"><%= trip.checklist.filter(c => c.done).length %>/<%= trip.checklist.length %> done</span>
+          <% } %>
+        </div>
+      </a>
+    </article>
+    <% }) %>
+  </div>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

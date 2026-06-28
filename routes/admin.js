@@ -7,7 +7,11 @@ const { parseTags } = require('../utils/tags');
 const { generateSlug } = require('../utils/slug');
 const { formatDate } = require('../utils/dates');
 const { renderMarkdown } = require('../utils/markdown');
+const { parseTripFields } = require('../utils/travel');
 const { fetchImage } = require('../services/imagePipeline');
+const contentStore = require('../utils/contentStore');
+const contentSections = require('../config/content-sections');
+const { isConfigured } = require('../firebase-admin');
 
 router.use(requireAuth);
 
@@ -18,7 +22,7 @@ router.get('/', async (req, res) => {
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     const ts = admin.firestore.Timestamp.fromDate(sevenDaysAgo);
 
-    const collections = ['books', 'courses', 'articles_saved', 'writings', 'movies', 'reflections'];
+    const collections = ['books', 'courses', 'articles_saved', 'writings', 'movies', 'reflections', 'trips'];
     const counts = {};
     const recentItems = [];
 
@@ -45,6 +49,7 @@ router.get('/', async (req, res) => {
     const readingSnap = await db.collection('books').where('status', '==', 'reading').get();
     const toReadSnap = await db.collection('articles_saved').where('status', '==', 'want-to-read').get();
     const toWatchSnap = await db.collection('movies').where('status', '==', 'want-to-watch').get();
+    const coursesSnap = await db.collection('courses').where('status', '==', 'want-to-take').get();
 
     res.render('admin/dashboard', {
       title: 'Dashboard',
@@ -55,6 +60,7 @@ router.get('/', async (req, res) => {
         reading: readingSnap.size,
         articlesToRead: toReadSnap.size,
         moviesToWatch: toWatchSnap.size,
+        coursesToTake: coursesSnap.size,
       },
       formatDate,
     });
@@ -72,7 +78,7 @@ router.get('/', async (req, res) => {
 
 // ─── Generic CRUD helpers ────────────────────────────────────────────────────
 function buildCrudRoutes(collection, options = {}) {
-  const { singular, statusField, statusValues, hasSlug } = options;
+  const { singular, statusField, statusValues, hasSlug, parseBody } = options;
 
   // List
   router.get(`/${collection}`, async (req, res) => {
@@ -148,7 +154,8 @@ function buildCrudRoutes(collection, options = {}) {
   // Create
   router.post(`/${collection}`, async (req, res) => {
     try {
-      const data = { ...req.body };
+      let data = { ...req.body };
+      if (parseBody) data = parseBody(data);
       data.tags = parseTags(data.tags);
       data.isPublic = data.isPublic === 'true' || data.isPublic === true;
       data.dateAdded = admin.firestore.Timestamp.now();
@@ -224,7 +231,8 @@ function buildCrudRoutes(collection, options = {}) {
   // Update
   router.post(`/${collection}/:id`, async (req, res) => {
     try {
-      const data = { ...req.body };
+      let data = { ...req.body };
+      if (parseBody) data = parseBody(data);
       data.tags = parseTags(data.tags);
       data.isPublic = data.isPublic === 'true' || data.isPublic === true;
 
@@ -282,13 +290,7 @@ function buildCrudRoutes(collection, options = {}) {
   });
 }
 
-// Register CRUD for all content types
-buildCrudRoutes('books', {
-  singular: 'book',
-  title: 'Books',
-  statusValues: ['want-to-read', 'reading', 'finished'],
-});
-
+// Register CRUD for all content types (books use contentStore routes below)
 buildCrudRoutes('courses', {
   singular: 'course',
   title: 'Courses',
@@ -320,13 +322,253 @@ buildCrudRoutes('reflections', {
   statusValues: [],
 });
 
+buildCrudRoutes('trips', {
+  singular: 'trip',
+  title: 'Travel',
+  statusValues: ['dream', 'planned', 'upcoming', 'completed'],
+  hasSlug: true,
+  parseBody: parseTripFields,
+});
+
+// ─── Books (contentStore — static fallback + Firestore) ───────────────────────
+const bookStatusValues = ['to-read', 'have-read'];
+const shelfTypeValues = ['vocational', 'literary'];
+
+function parseBookBody(body) {
+  const data = { ...body };
+  data.tags = parseTags(data.tags);
+  data.isPublic = data.isPublic === 'true' || data.isPublic === true;
+  if (data.rating) data.rating = parseInt(data.rating, 10) || null;
+  return data;
+}
+
+router.get('/books', async (req, res) => {
+  try {
+    const { status, category, shelfType } = req.query;
+    let items = await contentStore.adminList('books', status ? { status } : {});
+    if (shelfType) items = items.filter(i => i.shelfType === shelfType);
+    if (category) items = items.filter(i => i.category === category);
+
+    const categoriesSet = new Set(items.map(i => i.category).filter(Boolean));
+
+    res.render('admin/books', {
+      title: 'Books',
+      items,
+      categories: [...categoriesSet],
+      statusValues: bookStatusValues,
+      shelfTypeValues,
+      formatDate,
+      currentStatus: status || '',
+      currentCategory: category || '',
+      currentShelfType: shelfType || '',
+    });
+  } catch (err) {
+    console.error('List books error:', err);
+    res.render('admin/books', {
+      title: 'Books',
+      items: [],
+      categories: [],
+      statusValues: bookStatusValues,
+      shelfTypeValues,
+      formatDate,
+      currentStatus: '',
+      currentCategory: '',
+      currentShelfType: '',
+    });
+  }
+});
+
+router.get('/books/new', async (req, res) => {
+  const items = await contentStore.adminList('books');
+  const categoriesSet = new Set(items.map(i => i.category).filter(Boolean));
+  res.render('admin/book-form', {
+    title: 'Add Book',
+    item: null,
+    categories: [...categoriesSet],
+    statusValues: bookStatusValues,
+    shelfTypeValues,
+    defaultShelfType: req.query.shelfType || 'vocational',
+  });
+});
+
+router.post('/books', async (req, res) => {
+  try {
+    const data = parseBookBody(req.body);
+    if (!data.coverUrl && data.title) {
+      try {
+        const image = await fetchImage(data.title, data.author || data.notes || '');
+        if (image) data.coverUrl = image.url;
+      } catch { /* skip */ }
+    }
+    await contentStore.create('books', data);
+    const redirect = data.shelfType ? `/admin/books?shelfType=${data.shelfType}` : '/admin/books';
+    res.redirect(redirect);
+  } catch (err) {
+    console.error('Create book error:', err);
+    res.redirect('/admin/books/new');
+  }
+});
+
+router.get('/books/:id/edit', async (req, res) => {
+  const item = await contentStore.getById('books', req.params.id);
+  if (!item) return res.redirect('/admin/books');
+  const items = await contentStore.adminList('books');
+  const categoriesSet = new Set(items.map(i => i.category).filter(Boolean));
+  res.render('admin/book-form', {
+    title: 'Edit Book',
+    item,
+    categories: [...categoriesSet],
+    statusValues: bookStatusValues,
+    shelfTypeValues,
+  });
+});
+
+router.post('/books/:id', async (req, res) => {
+  try {
+    const data = parseBookBody(req.body);
+    await contentStore.update('books', req.params.id, data);
+    const redirect = data.shelfType ? `/admin/books?shelfType=${data.shelfType}` : '/admin/books';
+    res.redirect(redirect);
+  } catch (err) {
+    console.error('Update book error:', err);
+    res.redirect(`/admin/books/${req.params.id}/edit`);
+  }
+});
+
+router.post('/books/:id/delete', async (req, res) => {
+  try {
+    await contentStore.remove('books', req.params.id);
+    res.redirect('/admin/books');
+  } catch (err) {
+    console.error('Delete book error:', err);
+    res.redirect('/admin/books');
+  }
+});
+
+router.post('/books/:id/toggle-public', async (req, res) => {
+  try {
+    const isPublic = await contentStore.togglePublic('books', req.params.id);
+    res.json({ success: true, isPublic });
+  } catch (err) {
+    console.error('Toggle book error:', err);
+    res.status(500).json({ error: 'Failed to toggle' });
+  }
+});
+
+// ─── Content Hub (all site sections) ───────────────────────────────────────
+router.get('/content', (req, res) => {
+  res.render('admin/content-hub', {
+    title: 'Content Hub',
+    dbConfigured: isConfigured,
+  });
+});
+
+router.post('/content/import-all', async (req, res) => {
+  try {
+    await contentStore.importAllStatic();
+    res.redirect('/admin/content?imported=1');
+  } catch (err) {
+    console.error('Import error:', err);
+    res.redirect('/admin/content?error=import');
+  }
+});
+
+function findSection(collection) {
+  return contentSections.find(s => s.collection === collection);
+}
+
+function parseGenericBody(body, section) {
+  const data = { ...body };
+  if (data.tags) data.tags = parseTags(data.tags);
+  data.isPublic = data.isPublic === 'true' || data.isPublic === true;
+  if (data.year) data.year = parseInt(data.year, 10) || null;
+  if (section.hasSlug && data.title && !data.slug) {
+    data.slug = require('../utils/slug').createSlug(data.title);
+  }
+  return data;
+}
+
+contentSections.forEach(section => {
+  const col = section.collection;
+
+  router.get(`/content/${col}`, async (req, res) => {
+    const status = req.query.status || '';
+    const items = await contentStore.adminList(col, status ? { status } : {});
+    res.render('admin/generic-list', {
+      title: section.title,
+      section,
+      items,
+      formatDate,
+      currentStatus: req.query.status || '',
+    });
+  });
+
+  router.get(`/content/${col}/new`, (req, res) => {
+    res.render('admin/generic-form', {
+      title: `Add ${section.singular}`,
+      section,
+      item: null,
+    });
+  });
+
+  router.post(`/content/${col}`, async (req, res) => {
+    try {
+      const data = parseGenericBody(req.body, section);
+      await contentStore.create(col, data);
+      res.redirect(`/admin/content/${col}`);
+    } catch (err) {
+      console.error(`Create ${col} error:`, err);
+      res.redirect(`/admin/content/${col}/new`);
+    }
+  });
+
+  router.get(`/content/${col}/:id/edit`, async (req, res) => {
+    const item = await contentStore.getById(col, req.params.id);
+    if (!item) return res.redirect(`/admin/content/${col}`);
+    res.render('admin/generic-form', {
+      title: `Edit ${section.singular}`,
+      section,
+      item,
+    });
+  });
+
+  router.post(`/content/${col}/:id`, async (req, res) => {
+    try {
+      const data = parseGenericBody(req.body, section);
+      await contentStore.update(col, req.params.id, data);
+      res.redirect(`/admin/content/${col}`);
+    } catch (err) {
+      console.error(`Update ${col} error:`, err);
+      res.redirect(`/admin/content/${col}/${req.params.id}/edit`);
+    }
+  });
+
+  router.post(`/content/${col}/:id/delete`, async (req, res) => {
+    try {
+      await contentStore.remove(col, req.params.id);
+    } catch (err) {
+      console.error(`Delete ${col} error:`, err);
+    }
+    res.redirect(`/admin/content/${col}`);
+  });
+
+  router.post(`/content/${col}/:id/toggle-public`, async (req, res) => {
+    try {
+      const isPublic = await contentStore.togglePublic(col, req.params.id);
+      res.json({ success: true, isPublic });
+    } catch (err) {
+      res.status(500).json({ error: 'Failed' });
+    }
+  });
+});
+
 // ─── Connections ─────────────────────────────────────────────────────────────
 router.get('/connections', async (req, res) => {
   try {
     const snap = await db.collection('connections').orderBy('dateAdded', 'desc').get();
     const connections = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-    const collections = ['books', 'courses', 'articles_saved', 'writings', 'movies', 'reflections'];
+    const collections = ['books', 'courses', 'articles_saved', 'writings', 'movies', 'reflections', 'trips'];
     const allItems = {};
 
     for (const col of collections) {

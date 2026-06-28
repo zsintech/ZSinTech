@@ -1,0 +1,43 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <section class="page-hero page-hero--compact">
+    <p class="hero-eyebrow">Fiction & Literary</p>
+    <h1>Stories</h1>
+    <p>Creative fiction and literary work — separate from essays and journalism.</p>
+  </section>
+
+  <% if (!stories.length) { %>
+  <p class="empty-state">No stories published yet.</p>
+  <% } else { %>
+  <div class="stories-grid">
+    <% stories.forEach(story => { %>
+    <article class="story-card">
+      <a href="/stories/<%= story.slug %>" class="story-card-link">
+        <% if (story.heroImageUrl) { %>
+        <div class="story-card-image" style="background-image: url('<%= img(story.heroImageUrl, 'card') %>')">
+          <div class="story-card-overlay"></div>
+          <span class="story-card-label">Story</span>
+        </div>
+        <% } %>
+        <div class="story-card-body">
+          <time><%= formatDate(story.dateWritten) %></time>
+          <h2><%= story.title %></h2>
+          <p><%= story.excerpt %></p>
+          <% if (story.tags && story.tags.length) { %>
+          <div class="tags">
+            <% story.tags.slice(0, 3).forEach(tag => { %>
+            <span class="tag"><%= tag %></span>
+            <% }) %>
+          </div>
+          <% } %>
+        </div>
+      </a>
+    </article>
+    <% }) %>
+  </div>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,50 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1>Travel</h1>
+      <a href="/admin/trips/new" class="btn btn-primary">+ Add Trip</a>
+    </div>
+
+    <div class="filters">
+      <select onchange="location.href='/admin/trips?status='+this.value">
+        <option value="">All Status</option>
+        <% statusValues.forEach(s => { %>
+        <option value="<%= s %>" <%= currentStatus === s ? 'selected' : '' %>><%= s %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="travel-admin-grid">
+      <% if (items.length === 0) { %>
+        <p class="empty-state">No trips yet.</p>
+      <% } %>
+      <% items.forEach(item => { %>
+      <div class="item-card travel-admin-card">
+        <div class="item-card-header">
+          <div>
+            <span class="item-type-badge"><%= item.status || 'planned' %></span>
+            <h4><%= item.title %></h4>
+            <p class="muted"><%= item.destination || '' %></p>
+            <p class="muted small"><%= item.isPublic ? '/travel/' + item.slug : 'Private — not on public site' %></p>
+          </div>
+          <button class="toggle-public-btn <%= item.isPublic ? 'is-public' : '' %>"
+                  data-collection="trips" data-id="<%= item.id %>">
+            <%= item.isPublic ? '🌐 Public' : '🔒 Private' %>
+          </button>
+        </div>
+        <div class="item-card-actions">
+          <a href="/admin/trips/<%= item.id %>/edit" class="btn btn-small">Edit</a>
+          <form action="/admin/trips/<%= item.id %>/delete" method="POST" style="display:inline"
+                onsubmit="return confirm('Delete this trip?')">
+            <button type="submit" class="btn btn-small btn-danger">Delete</button>
+          </form>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </main>
+</div>
+<script src="/js/toggle-public.js"></script>
+<%- include('../partials/footer') %>

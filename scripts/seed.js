@@ -3,64 +3,11 @@ require('dotenv').config();
 const { db, isConfigured, admin } = require('../firebase-admin');
 const { fetchImage } = require('../services/imagePipeline');
 const staticWritings = require('../data/writings');
-
-const sampleBooks = [
-  {
-    title: 'Gödel, Escher, Bach',
-    author: 'Douglas Hofstadter',
-    status: 'reading',
-    category: 'philosophy',
-    tags: ['consciousness', 'mathematics', 'AI'],
-    rating: null,
-    notes: 'Exploring strange loops and self-reference across music, art, and mathematics.',
-    isPublic: true,
-  },
-  {
-    title: 'The Structure of Scientific Revolutions',
-    author: 'Thomas Kuhn',
-    status: 'finished',
-    category: 'philosophy of science',
-    tags: ['paradigms', 'historiography'],
-    rating: 5,
-    notes: 'Foundational text for understanding how scientific knowledge evolves.',
-    isPublic: true,
-  },
-  {
-    title: 'Thinking, Fast and Slow',
-    author: 'Daniel Kahneman',
-    status: 'want-to-read',
-    category: 'psychology',
-    tags: ['cognitive science', 'decision making'],
-    rating: null,
-    notes: '',
-    isPublic: true,
-  },
-];
-
-const sampleCourses = [
-  {
-    title: 'Machine Learning',
-    instructor: 'Andrew Ng',
-    platform: 'Coursera',
-    url: 'https://www.coursera.org/learn/machine-learning',
-    status: 'completed',
-    category: 'computer science',
-    tags: ['AI', 'machine learning'],
-    notes: 'Excellent foundational course covering supervised and unsupervised learning.',
-    isPublic: true,
-  },
-  {
-    title: 'Introduction to Philosophy',
-    instructor: null,
-    platform: 'MIT OCW',
-    url: null,
-    status: 'in-progress',
-    category: 'philosophy',
-    tags: ['philosophy', 'ethics'],
-    notes: '',
-    isPublic: true,
-  },
-];
+const staticArticles = require('../data/articles-read');
+const staticTravel = require('../data/travel');
+const staticReflections = require('../data/reflections');
+const staticBooks = require('../data/books');
+const staticCourses = require('../data/courses');
 
 async function seed() {
   if (!isConfigured || !db) {
@@ -107,32 +54,92 @@ async function seed() {
   }
 
   console.log('\nSeeding books...');
-  for (const b of sampleBooks) {
+  for (const b of staticBooks.getAll()) {
+    const id = b.id;
     const data = {
       ...b,
-      dateAdded: admin.firestore.Timestamp.now(),
-      dateFinished: b.status === 'finished' ? admin.firestore.Timestamp.now() : null,
-      coverUrl: null,
+      slug: id,
+      dateAdded: admin.firestore.Timestamp.fromDate(b.dateAdded),
     };
+    delete data.id;
 
-    try {
-      const image = await fetchImage(b.title, b.author);
-      if (image) data.coverUrl = image.url;
-    } catch { /* skip */ }
+    if (!data.coverUrl) {
+      try {
+        const image = await fetchImage(b.title, b.author || '');
+        if (image) data.coverUrl = image.url;
+      } catch { /* skip */ }
+    }
 
-    await db.collection('books').add(data);
-    console.log(`  ✓ ${b.title}`);
+    await db.collection('books').doc(id).set(data, { merge: true });
+    console.log(`  ✓ ${b.title} (${b.shelfType}, ${b.status})`);
   }
 
   console.log('\nSeeding courses...');
-  for (const c of sampleCourses) {
+  for (const c of staticCourses.getAll()) {
+    const id = c.id;
     const data = {
       ...c,
-      dateAdded: admin.firestore.Timestamp.now(),
+      slug: id,
+      dateAdded: admin.firestore.Timestamp.fromDate(c.dateAdded),
       dateCompleted: c.status === 'completed' ? admin.firestore.Timestamp.now() : null,
     };
-    await db.collection('courses').add(data);
+    delete data.id;
+    await db.collection('courses').doc(id).set(data, { merge: true });
     console.log(`  ✓ ${c.title}`);
+  }
+
+  console.log('\nSeeding articles (Articles Read)...');
+  for (const a of staticArticles.getAll()) {
+    const data = {
+      title: a.title,
+      url: a.url,
+      source: a.source,
+      excerpt: a.excerpt,
+      tags: a.tags,
+      status: 'read',
+      isPublic: true,
+      dateAdded: admin.firestore.Timestamp.fromDate(a.dateAdded),
+    };
+    await db.collection('articles_saved').add(data);
+    console.log(`  ✓ ${a.title}`);
+  }
+
+  console.log('\nSeeding trips (Travel)...');
+  for (const t of staticTravel.getAll()) {
+    const data = {
+      title: t.title,
+      slug: t.slug,
+      destination: t.destination || '',
+      status: t.status || 'planned',
+      dateStart: t.dateStart || null,
+      dateEnd: t.dateEnd || null,
+      concept: t.concept || '',
+      budget: t.budget || '',
+      notes: t.notes || '',
+      links: t.links || [],
+      checklist: t.checklist || [],
+      tags: t.tags || [],
+      heroImageUrl: t.heroImageUrl || null,
+      isPublic: t.isPublic === true,
+      dateAdded: admin.firestore.Timestamp.fromDate(t.dateAdded || new Date()),
+    };
+    await db.collection('trips').add(data);
+    console.log(`  ✓ ${t.title} (${data.isPublic ? 'public' : 'private'})`);
+  }
+
+  console.log('\nSeeding reflections...');
+  for (const r of staticReflections.getAll(false)) {
+    const data = {
+      title: r.title || null,
+      body: r.body,
+      mood: r.mood || null,
+      tags: r.tags || [],
+      isPublic: r.isPublic === true,
+      date: admin.firestore.Timestamp.fromDate(r.date || new Date()),
+      dateAdded: admin.firestore.Timestamp.now(),
+    };
+    await db.collection('reflections').add(data);
+    console.log(`  ✓ ${r.title || 'Untitled reflection'}`);
   }
 
   console.log('\nSeed complete!');

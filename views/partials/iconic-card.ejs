@@ -1,0 +1,26 @@
+<article class="iconic-card iconic-card--detailed">
+  <% if (item.coverUrl) { %>
+  <div class="iconic-cover" style="background-image: url('<%= img(item.coverUrl, 'card') %>')"></div>
+  <% } %>
+  <div class="iconic-card-body">
+    <span class="iconic-type"><%= item.type %></span>
+    <h2><%= item.title %></h2>
+    <% if (item.author) { %>
+    <p class="iconic-author">by <%= item.author %></p>
+    <% } %>
+    <p class="iconic-excerpt"><%= item.excerpt %></p>
+    <% if (item.notes) { %>
+    <div class="iconic-notes"><%= item.notes %></div>
+    <% } %>
+    <% if (item.tags && item.tags.length) { %>
+    <div class="tags">
+      <% item.tags.forEach(tag => { %>
+      <span class="tag"><%= tag %></span>
+      <% }) %>
+    </div>
+    <% } %>
+    <% if (item.url) { %>
+    <a href="<%= item.url %>" target="_blank" rel="noopener" class="read-more">View on Goodreads &rarr;</a>
+    <% } %>
+  </div>
+</article>

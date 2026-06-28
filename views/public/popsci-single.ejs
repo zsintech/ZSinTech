@@ -1,0 +1,34 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <article class="popsci-single">
+    <div class="popsci-single-hero" style="background-image: url('<%= img(reel.heroImageUrl, 'hero') %>')">
+      <div class="popsci-single-overlay"></div>
+      <div class="popsci-single-content">
+        <span class="popsci-topic"><%= reel.topic %></span>
+        <h1><%= reel.title %></h1>
+      </div>
+    </div>
+
+    <div class="popsci-single-container prose">
+      <p class="popsci-lead"><%= reel.excerpt %></p>
+      <p class="popsci-qr-note"><%= reel.sourceNote %></p>
+
+      <div class="popsci-actions">
+        <a href="<%= reel.instagramUrl %>" target="_blank" rel="noopener" class="btn btn-primary">Watch on Instagram &rarr;</a>
+        <a href="/popsci" class="btn btn-outline">All PopSci reels</a>
+      </div>
+
+      <% if (reel.tags && reel.tags.length) { %>
+      <div class="tags">
+        <% reel.tags.forEach(tag => { %>
+        <span class="tag"><%= tag %></span>
+        <% }) %>
+      </div>
+      <% } %>
+    </div>
+  </article>
+</main>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,68 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <section class="page-hero page-hero--compact">
+    <p class="hero-eyebrow">Shelf</p>
+    <h1>Courses I Want to Take</h1>
+    <p>Learning queue — platforms, instructors, and why each course matters to something I'm writing.</p>
+    <div class="shelf-quick-links">
+      <a href="/shelf" class="shelf-quick-link">&larr; Back to Shelf</a>
+      <% if (typeof isAdmin !== 'undefined' && isAdmin) { %>
+      <a href="/admin/courses" class="shelf-quick-link admin-inline-link">Edit in Admin</a>
+      <% } %>
+    </div>
+  </section>
+
+  <div class="filter-tabs">
+    <a href="/courses" class="filter-tab<%= !currentStatus ? ' active' : '' %>">All</a>
+    <% statuses.forEach(s => { %>
+    <a href="/courses?status=<%= s %>" class="filter-tab<%= currentStatus === s ? ' active' : '' %>"><%= s.replace(/-/g, ' ') %></a>
+    <% }) %>
+  </div>
+
+  <div class="courses-board">
+    <% statuses.forEach(status => {
+      const group = grouped[status] || [];
+      if (currentStatus && currentStatus !== status) return;
+    %>
+    <section class="courses-column">
+      <h2 class="courses-column-title"><%= status.replace(/-/g, ' ') %> <span class="courses-count"><%= group.length %></span></h2>
+      <% if (!group.length) { %>
+      <p class="courses-empty">Nothing here yet.</p>
+      <% } %>
+      <% group.forEach(course => { %>
+      <article class="course-card">
+        <div class="course-card-header">
+          <span class="course-status course-status--<%= course.status %>"><%= course.status.replace(/-/g, ' ') %></span>
+          <% if (course.category) { %><span class="course-category"><%= course.category %></span><% } %>
+        </div>
+        <h3>
+          <% if (course.url) { %>
+          <a href="<%= course.url %>" target="_blank" rel="noopener"><%= course.title %></a>
+          <% } else { %>
+          <%= course.title %>
+          <% } %>
+        </h3>
+        <% if (course.instructor || course.platform) { %>
+        <p class="course-meta">
+          <% if (course.platform) { %><%= course.platform %><% } %>
+          <% if (course.instructor) { %> · <%= course.instructor %><% } %>
+        </p>
+        <% } %>
+        <% if (course.notes) { %>
+        <p class="course-notes"><%= course.notes %></p>
+        <% } %>
+        <% if (course.tags && course.tags.length) { %>
+        <div class="tags">
+          <% course.tags.forEach(tag => { %><span class="tag"><%= tag %></span><% }) %>
+        </div>
+        <% } %>
+      </article>
+      <% }) %>
+    </section>
+    <% }) %>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

@@ -1,14 +1,46 @@
-<header class="site-header">
-  <nav class="nav-public">
-    <a href="/" class="nav-logo">ZsinTech</a>
-    <div class="nav-links">
-      <a href="/writings" class="<%= currentPath.startsWith('/writings') ? 'active' : '' %>">Writings</a>
-      <a href="/shelf" class="<%= currentPath === '/shelf' ? 'active' : '' %>">Shelf</a>
-      <a href="/reflections" class="<%= currentPath === '/reflections' ? 'active' : '' %>">Reflections</a>
-      <a href="/about" class="<%= currentPath === '/about' ? 'active' : '' %>">About</a>
-    </div>
-    <button class="nav-toggle" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
-</header>
+<header class="site-header">
+
+  <%- include('admin-toolbar') %>
+
+  <nav class="nav-public">
+
+    <a href="/" class="nav-logo">ZsinTech</a>
+
+    <div class="nav-links">
+
+      <a href="/writings" class="<%= currentPath.startsWith('/writings') ? 'active' : '' %>">Writings</a>
+
+      <a href="/journalism" class="<%= currentPath.startsWith('/journalism') ? 'active' : '' %>">Journalism</a>
+
+      <a href="/stories" class="<%= currentPath.startsWith('/stories') ? 'active' : '' %>">Stories</a>
+
+      <a href="/popsci" class="<%= currentPath.startsWith('/popsci') ? 'active' : '' %>">PopSci</a>
+
+      <a href="/articles-read" class="<%= currentPath === '/articles-read' ? 'active' : '' %>">Articles</a>
+
+      <a href="/research-papers" class="<%= currentPath === '/research-papers' ? 'active' : '' %>">Papers</a>
+
+      <a href="/writing-ideas" class="<%= currentPath.startsWith('/writing-ideas') ? 'active' : '' %>">Ideas</a>
+
+      <a href="/solo-date" class="<%= currentPath === '/solo-date' ? 'active' : '' %>">Solo Date</a>
+
+      <a href="/travel" class="<%= currentPath.startsWith('/travel') ? 'active' : '' %>">Travel</a>
+
+      <a href="/shelf" class="<%= currentPath === '/shelf' || currentPath.startsWith('/books/') || currentPath === '/iconic-bitch' || currentPath === '/courses' || currentPath === '/articles-read' || currentPath === '/research-papers' ? 'active' : '' %>">Shelf</a>
+
+      <a href="/reflections" class="<%= currentPath === '/reflections' ? 'active' : '' %>">Reflections</a>
+
+      <a href="/about" class="<%= currentPath === '/about' ? 'active' : '' %>">About</a>
+
+    </div>
+
+    <button class="nav-toggle" aria-label="Toggle menu">
+
+      <span></span><span></span><span></span>
+
+    </button>
+
+  </nav>
+
+</header>
+

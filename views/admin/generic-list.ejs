@@ -1,0 +1,68 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1><%= section.title %></h1>
+      <a href="/admin/content/<%= section.collection %>/new" class="btn btn-primary">+ Add <%= section.singular %></a>
+    </div>
+
+    <% if (section.statusValues && section.statusValues.length) { %>
+    <div class="filters">
+      <select onchange="location.href='/admin/content/<%= section.collection %>?status='+this.value">
+        <option value="">All Status</option>
+        <% section.statusValues.forEach(s => { %>
+        <option value="<%= s %>" <%= currentStatus === s ? 'selected' : '' %>><%= s %></option>
+        <% }) %>
+      </select>
+    </div>
+    <% } %>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Public</th>
+            <th>Updated</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (!items.length) { %>
+          <tr><td colspan="5" class="empty-state">No items yet. Add one or import from static files on the <a href="/admin/content">Content Hub</a>.</td></tr>
+          <% } %>
+          <% items.forEach(item => { %>
+          <tr>
+            <td>
+              <strong><%= item.title %></strong>
+              <% if (item.category) { %><br><span class="muted"><%= item.category %></span><% } %>
+            </td>
+            <td><%= item.status || '—' %></td>
+            <td>
+              <button class="toggle-public-btn <%= item.isPublic ? 'is-public' : '' %>"
+                      data-collection="<%= section.collection %>" data-id="<%= item.id %>">
+                <%= item.isPublic ? '🌐' : '🔒' %>
+              </button>
+            </td>
+            <td><%= item.dateAdded ? formatDate(item.dateAdded) : '—' %></td>
+            <td class="table-actions">
+              <% if (section.publicPath) { %>
+              <a href="<%= section.publicPath %>/<%= item.slug || item.id %>" class="btn btn-small" target="_blank">View</a>
+              <% } %>
+              <a href="/admin/content/<%= section.collection %>/<%= item.id %>/edit" class="btn btn-small">Edit</a>
+              <form action="/admin/content/<%= section.collection %>/<%= item.id %>/delete" method="POST" style="display:inline"
+                    onsubmit="return confirm('Delete this item?')">
+                <button type="submit" class="btn btn-small btn-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+<script src="/js/toggle-public.js"></script>
+<%- include('../partials/footer') %>

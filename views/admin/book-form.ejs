@@ -4,7 +4,7 @@
   <main class="admin-main">
     <div class="admin-header">
       <h1><%= item ? 'Edit' : 'Add' %> Book</h1>
-      <a href="/admin/books" class="btn btn-outline">&larr; Back</a>
+      <a href="/admin/books<%= item && item.shelfType ? '?shelfType=' + item.shelfType : (typeof defaultShelfType !== 'undefined' && defaultShelfType ? '?shelfType=' + defaultShelfType : '') %>" class="btn btn-outline">&larr; Back</a>
     </div>
 
     <form action="<%= item ? '/admin/books/' + item.id : '/admin/books' %>" method="POST" class="content-form">
@@ -20,23 +20,34 @@
 
       <div class="form-row">
         <div class="form-group">
-          <label for="status">Status</label>
-          <select id="status" name="status">
-            <option value="want-to-read" <%= item && item.status === 'want-to-read' ? 'selected' : '' %>>Want to Read</option>
-            <option value="reading" <%= item && item.status === 'reading' ? 'selected' : '' %>>Reading</option>
-            <option value="finished" <%= item && item.status === 'finished' ? 'selected' : '' %>>Finished</option>
+          <label for="shelfType">Shelf *</label>
+          <select id="shelfType" name="shelfType" required>
+            <% shelfTypeValues.forEach(st => { %>
+            <option value="<%= st %>"
+              <%= (item && item.shelfType === st) || (!item && typeof defaultShelfType !== 'undefined' && defaultShelfType === st) ? 'selected' : '' %>>
+              <%= st.charAt(0).toUpperCase() + st.slice(1) %>
+            </option>
+            <% }) %>
           </select>
         </div>
         <div class="form-group">
-          <label for="category">Category</label>
-          <input type="text" id="category" name="category" value="<%= item ? item.category || '' : '' %>"
-                 list="categories-list" placeholder="e.g. neuroscience, philosophy">
-          <datalist id="categories-list">
-            <% if (typeof categories !== 'undefined') { categories.forEach(c => { %>
-            <option value="<%= c %>">
-            <% }) } %>
-          </datalist>
+          <label for="status">Status</label>
+          <select id="status" name="status">
+            <option value="to-read" <%= item && (item.status === 'to-read' || item.status === 'want-to-read' || item.status === 'reading') ? 'selected' : (!item ? 'selected' : '') %>>To Read</option>
+            <option value="have-read" <%= item && (item.status === 'have-read' || item.status === 'finished' || item.status === 'read') ? 'selected' : '' %>>Have Read</option>
+          </select>
         </div>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <input type="text" id="category" name="category" value="<%= item ? item.category || '' : '' %>"
+               list="categories-list" placeholder="e.g. Medicine, Fiction">
+        <datalist id="categories-list">
+          <% if (typeof categories !== 'undefined') { categories.forEach(c => { %>
+          <option value="<%= c %>">
+          <% }) } %>
+        </datalist>
       </div>
 
       <div class="form-row">
@@ -63,7 +74,7 @@
       <div class="form-group">
         <label class="checkbox-label">
           <input type="hidden" name="isPublic" value="false">
-          <input type="checkbox" name="isPublic" value="true" <%= item && item.isPublic ? 'checked' : '' %>>
+          <input type="checkbox" name="isPublic" value="true" <%= !item || item.isPublic !== false ? 'checked' : '' %>>
           Make public
         </label>
       </div>
@@ -71,21 +82,6 @@
       <div class="form-actions">
         <button type="submit" class="btn btn-primary">Save Book</button>
       </div>
-
-      <% if (typeof connections !== 'undefined' && connections && connections.length > 0) { %>
-      <section class="connections-section">
-        <h3>Connections</h3>
-        <div class="connections-list">
-          <% connections.forEach(c => { %>
-          <div class="connection-item">
-            <span><%= c.fromTitle %></span>
-            <span class="connection-label"><%= c.label %></span>
-            <span><%= c.toTitle %></span>
-          </div>
-          <% }) %>
-        </div>
-      </section>
-      <% } %>
     </form>
   </main>
 </div>

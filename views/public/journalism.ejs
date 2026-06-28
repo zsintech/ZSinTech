@@ -1,0 +1,38 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <section class="page-hero page-hero--compact">
+    <p class="hero-eyebrow"><a href="https://voice.auis.edu.krd/" target="_blank" rel="noopener">The AUIS Voice</a></p>
+    <h1>Journalism</h1>
+    <p>Articles by Zheen Salih Abdullah — Iraq's first independent English student newspaper, published at AUIS.</p>
+    <p class="page-meta"><%= articles.length %> published <%= articles.length === 1 ? 'piece' : 'pieces' %></p>
+  </section>
+
+  <% if (!articles.length) { %>
+  <p class="empty-state">No journalism published yet.</p>
+  <% } else { %>
+  <div class="journalism-grid">
+    <% articles.forEach(article => { %>
+    <article class="journalism-card">
+      <a href="/journalism/<%= article.slug %>" class="journalism-card-link">
+        <% if (article.heroImageUrl) { %>
+        <div class="journalism-card-image" style="background-image: url('<%= img(article.heroImageUrl, 'card') %>')">
+          <div class="journalism-card-overlay"></div>
+          <% if (article.issue) { %><span class="journalism-issue">Issue <%= article.issue %></span><% } %>
+        </div>
+        <% } %>
+        <div class="journalism-card-body">
+          <time class="journalism-date"><%= formatDate(article.datePublished) %></time>
+          <h2><%= article.title %></h2>
+          <p class="journalism-byline">By <%= article.author %></p>
+          <p class="journalism-excerpt"><%= article.excerpt %></p>
+        </div>
+      </a>
+    </article>
+    <% }) %>
+  </div>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

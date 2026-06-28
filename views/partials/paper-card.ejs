@@ -1,0 +1,27 @@
+<article class="paper-card paper-card--detailed">
+  <% if (paper.heroImageUrl) { %>
+  <div class="paper-card-image" style="background-image: url('<%= img(paper.heroImageUrl, 'thumb') %>')"></div>
+  <% } %>
+  <div class="paper-card-inner">
+    <div class="paper-card-meta">
+      <span class="paper-type"><%= paper.type %></span>
+      <% if (paper.year) { %><span class="paper-year"><%= paper.year %></span><% } %>
+    </div>
+    <h2><%= paper.title %></h2>
+    <p class="paper-authors"><%= paper.authors %> · <em><%= paper.journal %></em></p>
+    <p class="paper-excerpt"><%= paper.excerpt %></p>
+    <% if (paper.notes) { %>
+    <div class="paper-notes"><strong>Why I saved this:</strong> <%= paper.notes %></div>
+    <% } %>
+    <% if (paper.tags && paper.tags.length) { %>
+    <div class="tags">
+      <% paper.tags.forEach(tag => { %>
+      <span class="tag"><%= tag %></span>
+      <% }) %>
+    </div>
+    <% } %>
+    <% if (paper.url) { %>
+    <a href="<%= paper.url %>" target="_blank" rel="noopener" class="read-more">Read paper &rarr;</a>
+    <% } %>
+  </div>
+</article>

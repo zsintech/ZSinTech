@@ -176,16 +176,18 @@ Not that it did us any good in the long run.`,
 
 Making science fun, accessible, and endlessly fascinating for everyone. PopSci AI transforms dense research papers and open-source content into short, captivating reels on topics ranging from Whale Falls to Quantum Computing.
 
+Developed as a returning scholar at the [Blue Marble Space Institute of Science](https://www.bmsis.org/), PopSci AI is a platform for accessible, ethical science storytelling — bridging the gap between paywalled journals and the audiences who need to understand what science actually says.
+
 ### Mission
 
-Science communication has a reach problem. Groundbreaking research gets buried in journals behind paywalls and jargon. PopSci AI bridges that gap by transforming complex scientific discoveries into engaging, visually rich short-form content.
+Science communication has a reach problem. Groundbreaking research gets buried in journals behind paywalls and jargon. PopSci AI bridges that gap by transforming complex scientific discoveries into engaging, visually rich short-form content — each reel links via QR to a full written article.
 
 ### Approach
 
 - **Source**: Identify trending or underappreciated research papers and scientific phenomena
 - **Simplify**: Distill core concepts without sacrificing accuracy
 - **Visualize**: Create compelling visual narratives using AI-assisted tools
-- **Distribute**: Share across social platforms where audiences already spend time
+- **Distribute**: Share across [@zsintech on Instagram](https://www.instagram.com/zsintech/) where audiences already spend time
 
 ### Topics Covered
 
@@ -199,9 +201,39 @@ Science communication has a reach problem. Groundbreaking research gets buried i
 ### Impact
 
 Building scientific literacy one reel at a time. Every piece of content is designed to spark curiosity and lead viewers down their own rabbit holes of discovery.`,
-    tags: ['science communication', 'AI', 'content creation'],
+    tags: ['science communication', 'AI', 'content creation', 'Instagram'],
     heroImageUrl: 'https://images.pexels.com/photos/8382618/pexels-photo-8382618.jpeg?auto=compress&cs=tinysrgb&w=1920',
     dateWritten: new Date('2024-01-15'),
+    isPublic: true,
+  },
+  {
+    id: 'blue-marble-space',
+    title: 'Blue Marble Space Institute of Science',
+    slug: 'blue-marble-space',
+    type: 'project',
+    excerpt: 'Returning scholar at BMSIS — interdisciplinary research in science communication, responsible AI, and public engagement.',
+    body: `## Blue Marble Space Institute of Science
+
+Returning scholar contributing to interdisciplinary research in science communication, responsible AI, and public engagement at the [Blue Marble Space Institute of Science](https://www.bmsis.org/).
+
+### Role
+
+As a returning scholar, I develop **PopSci AI** — a platform for accessible, ethical science storytelling — while contributing to BMSIS's mission of enabling scientists and educators to push the frontiers of knowledge and deliver transformative training.
+
+### Key Areas
+
+- **Science communication & public education** — making research legible beyond the academy
+- **AI ethics & responsible innovation** — ensuring technology serves human understanding
+- **Citizen science & open knowledge** — democratizing access to scientific discovery
+
+### About BMSIS
+
+Blue Marble Space is a global community and nonprofit research institute that envisions a world united by its common identity as ambassadors of Earth. Their mission is to enable scientists and educators to push the frontiers of knowledge, communicate with global audiences, and mentor the next generation to be stewards of Earth.
+
+Based in Seattle with operations across 25 countries, BMSIS fosters curiosity and creativity in research at the intersection of science, policy, and sustainability.`,
+    tags: ['science communication', 'AI ethics', 'citizen science', 'BMSIS'],
+    heroImageUrl: 'https://images.pexels.com/photos/87651/earth-blue-planet-globe-planet-87651.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    dateWritten: new Date('2025-01-15'),
     isPublic: true,
   },
 ];
@@ -218,4 +250,24 @@ function getEssays() {
   return getAll().filter(w => w.type === 'essay');
 }
 
-module.exports = { writings, getAll, getBySlug, getEssays };
+function getStories() {
+  return getAll().filter(w => w.type === 'story');
+}
+
+function getProjects() {
+  return getAll().filter(w => w.type === 'project');
+}
+
+function getWritingsExcludingStories() {
+  return getAll().filter(w => w.type !== 'story');
+}
+
+module.exports = {
+  writings,
+  getAll,
+  getBySlug,
+  getEssays,
+  getStories,
+  getProjects,
+  getWritingsExcludingStories,
+};

@@ -1,0 +1,30 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <section class="page-hero page-hero--compact">
+    <p class="hero-eyebrow">Science Communication</p>
+    <h1>PopSci AI</h1>
+    <p>Short-form science reels from <a href="https://www.instagram.com/zsintech/" target="_blank" rel="noopener">@zsintech</a> — scan the QR in each reel for the full article.</p>
+    <a href="/writings/popsci-ai" class="btn btn-outline popsci-project-link">About the project &rarr;</a>
+  </section>
+
+  <div class="popsci-grid">
+    <% reels.forEach(reel => { %>
+    <article class="popsci-card">
+      <a href="/popsci/<%= reel.slug %>" class="popsci-card-link">
+        <div class="popsci-card-image" style="background-image: url('<%= img(reel.heroImageUrl, 'card') %>')">
+          <div class="popsci-card-overlay"></div>
+          <span class="popsci-topic"><%= reel.topic %></span>
+        </div>
+        <div class="popsci-card-body">
+          <h2><%= reel.title %></h2>
+          <p><%= reel.excerpt %></p>
+        </div>
+      </a>
+    </article>
+    <% }) %>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,18 @@
+<article class="book-card">
+  <% if (book.coverUrl) { %>
+  <div class="book-card-cover" style="background-image: url('<%= typeof img !== 'undefined' ? img(book.coverUrl, 'card') : book.coverUrl %>')"></div>
+  <% } %>
+  <div class="book-card-body">
+    <span class="book-card-status"><%= book.status === 'have-read' ? 'Have read' : 'To read' %></span>
+    <h3><%= book.title %></h3>
+    <% if (book.author) { %><p class="book-card-author"><%= book.author %></p><% } %>
+    <% if (book.category) { %><p class="book-card-category"><%= book.category %></p><% } %>
+    <% if (book.notes) { %><p class="book-card-notes"><%= book.notes %></p><% } %>
+    <% if (book.rating) { %><span class="rating">★ <%= book.rating %>/5</span><% } %>
+    <% if (book.tags && book.tags.length) { %>
+    <div class="tags">
+      <% book.tags.slice(0, 4).forEach(tag => { %><span class="tag"><%= tag %></span><% }) %>
+    </div>
+    <% } %>
+  </div>
+</article>

@@ -1,0 +1,57 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <section class="page-hero page-hero--compact page-hero--accent">
+    <p class="hero-eyebrow">Curated Reads</p>
+    <h1>Iconic Bitch</h1>
+    <p>Books and media that shaped how I think — from my <a href="https://www.notion.so/Iconic-Bitch-30f2eae24c0449f895e8f8e1730572dc" target="_blank" rel="noopener">Notion shelf</a> for science, skepticism, and cosmic absurdity.</p>
+    <% if (typeof isAdmin !== 'undefined' && isAdmin) { %>
+    <a href="/admin/content/iconic_bitch" class="admin-inline-link">Edit in Admin</a>
+    <% } %>
+  </section>
+
+  <div class="reading-status-tabs">
+    <a href="/iconic-bitch" class="filter-tab<%= !currentView ? ' active' : '' %>">All</a>
+    <a href="/iconic-bitch?view=to-read" class="filter-tab<%= currentView === 'to-read' ? ' active' : '' %>">To Read <span class="tab-count"><%= toRead.length %></span></a>
+    <a href="/iconic-bitch?view=have-read" class="filter-tab<%= currentView === 'have-read' ? ' active' : '' %>">Have Read <span class="tab-count"><%= haveRead.length %></span></a>
+  </div>
+
+  <% if (!currentView) { %>
+  <% if (toRead.length) { %>
+  <section class="reading-shelf-section">
+    <h2 class="reading-shelf-heading">To Read</h2>
+    <div class="iconic-grid iconic-grid--detailed">
+      <% toRead.forEach(item => { %>
+      <%- include('../partials/iconic-card', { item }) %>
+      <% }) %>
+    </div>
+  </section>
+  <% } %>
+  <% if (haveRead.length) { %>
+  <section class="reading-shelf-section">
+    <h2 class="reading-shelf-heading">Have Read</h2>
+    <div class="iconic-grid iconic-grid--detailed">
+      <% haveRead.forEach(item => { %>
+      <%- include('../partials/iconic-card', { item }) %>
+      <% }) %>
+    </div>
+  </section>
+  <% } %>
+  <% } else { %>
+  <div class="iconic-grid iconic-grid--detailed">
+    <% items.forEach(item => { %>
+    <%- include('../partials/iconic-card', { item }) %>
+    <% }) %>
+  </div>
+  <% if (!items.length) { %>
+  <p class="reading-shelf-empty">Nothing here yet.</p>
+  <% } %>
+  <% } %>
+
+  <div class="iconic-footer-note">
+    <p>This list lives on my <a href="/shelf">Shelf</a> alongside vocational &amp; literary books, courses, and everything else I'm consuming.</p>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

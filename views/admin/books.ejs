@@ -4,11 +4,21 @@
   <main class="admin-main">
     <div class="admin-header">
       <h1>Books</h1>
-      <a href="/admin/books/new" class="btn btn-primary">+ Add Book</a>
+      <div class="admin-header-actions">
+        <a href="/books/vocational" class="btn btn-outline" target="_blank">View Vocational</a>
+        <a href="/books/literary" class="btn btn-outline" target="_blank">View Literary</a>
+        <a href="/admin/books/new" class="btn btn-primary">+ Add Book</a>
+      </div>
     </div>
 
     <div class="filters">
-      <select onchange="location.href='/admin/books?status='+this.value">
+      <select onchange="location.href='/admin/books?shelfType='+this.value+'<%= currentStatus ? '&status=' + currentStatus : '' %>'">
+        <option value="">All Shelves</option>
+        <% shelfTypeValues.forEach(st => { %>
+        <option value="<%= st %>" <%= currentShelfType === st ? 'selected' : '' %>><%= st %></option>
+        <% }) %>
+      </select>
+      <select onchange="location.href='/admin/books?status='+this.value+'<%= currentShelfType ? '&shelfType=' + currentShelfType : '' %>'">
         <option value="">All Status</option>
         <% statusValues.forEach(s => { %>
         <option value="<%= s %>" <%= currentStatus === s ? 'selected' : '' %>><%= s %></option>
@@ -22,9 +32,12 @@
       </select>
     </div>
 
-    <div class="kanban-board">
-      <% const groups = { 'want-to-read': [], 'reading': [], 'finished': [] }; %>
-      <% items.forEach(item => { if (groups[item.status]) groups[item.status].push(item); }) %>
+    <div class="kanban-board kanban-board--two">
+      <% const groups = { 'to-read': [], 'have-read': [] }; %>
+      <% items.forEach(item => {
+        if (item.status === 'have-read' || item.status === 'finished' || item.status === 'read') groups['have-read'].push(item);
+        else groups['to-read'].push(item);
+      }) %>
 
       <% Object.entries(groups).forEach(([status, groupItems]) => { %>
       <div class="kanban-column">
@@ -39,6 +52,7 @@
             </button>
           </div>
           <p class="muted"><%= item.author || '' %></p>
+          <% if (item.shelfType) { %><span class="tag tag--shelf"><%= item.shelfType %></span><% } %>
           <% if (item.category) { %><span class="tag"><%= item.category %></span><% } %>
           <% if (item.rating) { %><span class="rating">★ <%= item.rating %>/5</span><% } %>
           <div class="item-card-actions">

@@ -1,0 +1,110 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <article class="travel-single">
+    <% if (trip.heroImageUrl) { %>
+    <div class="travel-hero" style="background-image: url('<%= img(trip.heroImageUrl, 'hero') %>')">
+      <div class="travel-hero-overlay"></div>
+      <div class="travel-hero-content">
+        <span class="travel-type-badge"><%= trip.status %></span>
+        <h1><%= trip.title %></h1>
+        <p class="travel-hero-dest"><%= trip.destination %></p>
+      </div>
+    </div>
+    <% } else { %>
+    <header class="travel-header-plain">
+      <span class="travel-type-badge"><%= trip.status %></span>
+      <h1><%= trip.title %></h1>
+      <p class="travel-hero-dest"><%= trip.destination %></p>
+    </header>
+    <% } %>
+
+    <div class="travel-container">
+      <div class="travel-meta-grid">
+        <% if (trip.dateStart || trip.dateEnd) { %>
+        <div class="travel-meta-item">
+          <span class="travel-meta-label">Dates</span>
+          <span><%= trip.dateStart || 'TBD' %><% if (trip.dateEnd) { %> — <%= trip.dateEnd %><% } %></span>
+        </div>
+        <% } %>
+        <% if (trip.budget) { %>
+        <div class="travel-meta-item">
+          <span class="travel-meta-label">Budget</span>
+          <span><%= trip.budget %></span>
+        </div>
+        <% } %>
+        <% if (trip.concept) { %>
+        <div class="travel-meta-item">
+          <span class="travel-meta-label">Concept</span>
+          <span><%= trip.concept %></span>
+        </div>
+        <% } %>
+      </div>
+
+      <% if (trip.notes) { %>
+      <div class="travel-notes prose">
+        <p><%= trip.notes %></p>
+      </div>
+      <% } %>
+
+      <% if (trip.checklist && trip.checklist.length) { %>
+      <section class="travel-checklist-section">
+        <h3>Itinerary</h3>
+        <ul class="travel-checklist">
+          <% trip.checklist.forEach(item => { %>
+          <li class="travel-checklist-item <%= item.done ? 'done' : '' %>">
+            <span class="check-icon"><%= item.done ? '✓' : '○' %></span>
+            <%= item.text %>
+          </li>
+          <% }) %>
+        </ul>
+      </section>
+      <% } %>
+
+      <% if (trip.links && trip.links.length) { %>
+      <section class="travel-links-section">
+        <h3>Links & Resources</h3>
+        <ul class="travel-links">
+          <% trip.links.forEach(link => { %>
+          <li><a href="<%= link.url %>" target="_blank" rel="noopener"><%= link.title || link.url %></a></li>
+          <% }) %>
+        </ul>
+      </section>
+      <% } %>
+
+      <% if (trip.tags && trip.tags.length) { %>
+      <div class="tags travel-tags">
+        <% trip.tags.forEach(tag => { %>
+        <span class="tag"><%= tag %></span>
+        <% }) %>
+      </div>
+      <% } %>
+
+      <footer class="writing-footer">
+        <a href="/travel" class="back-link">&larr; Back to Travel</a>
+      </footer>
+
+      <% if (related && related.length) { %>
+      <section class="related-writings">
+        <h3>More trips</h3>
+        <div class="related-grid">
+          <% related.forEach(r => { %>
+          <a href="/travel/<%= r.slug %>" class="related-card">
+            <% if (r.heroImageUrl) { %>
+            <div class="related-card-image" style="background-image: url('<%= img(r.heroImageUrl, 'thumb') %>')"></div>
+            <% } %>
+            <div class="related-card-body">
+              <h4><%= r.title %></h4>
+              <p><%= r.destination %></p>
+            </div>
+          </a>
+          <% }) %>
+        </div>
+      </section>
+      <% } %>
+    </div>
+  </article>
+</main>
+
+<%- include('../partials/footer') %>

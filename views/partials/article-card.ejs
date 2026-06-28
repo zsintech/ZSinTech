@@ -1,0 +1,26 @@
+<article class="article-card article-card--detailed">
+  <% if (article.heroImageUrl) { %>
+  <div class="article-card-image" style="background-image: url('<%= img(article.heroImageUrl, 'card') %>')"></div>
+  <% } %>
+  <div class="article-card-inner">
+    <span class="article-source"><%= article.source || 'Article' %></span>
+    <h2><%= article.title %></h2>
+    <p class="article-excerpt"><%= article.excerpt %></p>
+    <% if (article.notes) { %>
+    <div class="article-notes">
+      <strong>My notes:</strong>
+      <p><%= article.notes %></p>
+    </div>
+    <% } %>
+    <% if (article.tags && article.tags.length) { %>
+    <div class="tags">
+      <% article.tags.slice(0, 4).forEach(tag => { %>
+      <span class="tag"><%= tag %></span>
+      <% }) %>
+    </div>
+    <% } %>
+    <% if (article.url) { %>
+    <a href="<%= article.url %>" target="_blank" rel="noopener" class="read-more">Read original &rarr;</a>
+    <% } %>
+  </div>
+</article>

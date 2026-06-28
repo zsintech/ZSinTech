@@ -57,19 +57,157 @@
     </div>
   </section>
 
-  <% if (project) { %>
-  <section class="project-banner">
-    <div class="project-banner-inner" style="background-image: url('<%= img(project.heroImageUrl, 'hero') %>')">
-      <div class="project-banner-overlay"></div>
-      <div class="project-banner-content">
-        <span class="project-label">Current Project</span>
-        <h2><%= project.title %></h2>
-        <p><%= project.excerpt %></p>
-        <a href="/writings/<%= project.slug %>" class="btn btn-light">View Project &rarr;</a>
-      </div>
+  <% if (projects && projects.length) { %>
+  <section class="projects-grid-section">
+    <div class="section-header">
+      <h2>Projects</h2>
+      <a href="/writings?type=project" class="section-link">View all &rarr;</a>
+    </div>
+    <div class="projects-grid">
+      <% projects.forEach(p => { %>
+      <article class="project-card">
+        <a href="/writings/<%= p.slug %>" class="project-card-link">
+          <div class="project-card-image" style="background-image: url('<%= img(p.heroImageUrl, 'card') %>')">
+            <div class="project-card-overlay"></div>
+          </div>
+          <div class="project-card-body">
+            <span class="project-card-label">Project</span>
+            <h3><%= p.title %></h3>
+            <p><%= p.excerpt %></p>
+          </div>
+        </a>
+      </article>
+      <% }) %>
     </div>
   </section>
   <% } %>
+
+  <% if (journalism && journalism.length) { %>
+  <section class="journalism-home-section">
+    <div class="section-header">
+      <h2>Journalism — <a href="https://voice.auis.edu.krd/" target="_blank" rel="noopener" class="section-link-inline">The AUIS Voice</a></h2>
+      <a href="/journalism" class="section-link">All articles &rarr;</a>
+    </div>
+    <div class="journalism-home-grid">
+      <% journalism.slice(0, 3).forEach(article => { %>
+      <article class="journalism-home-card">
+        <a href="/journalism/<%= article.slug %>">
+          <% if (article.heroImageUrl) { %>
+          <div class="journalism-home-image" style="background-image: url('<%= img(article.heroImageUrl, 'thumb') %>')"></div>
+          <% } %>
+          <div class="journalism-home-body">
+            <time><%= formatDate(article.datePublished) %></time>
+            <h3><%= article.title %></h3>
+            <p><%= article.excerpt.substring(0, 100) %>...</p>
+          </div>
+        </a>
+      </article>
+      <% }) %>
+    </div>
+  </section>
+  <% } %>
+
+  <% if (stories && stories.length) { %>
+  <section class="story-spotlight">
+    <% const story = stories[0]; %>
+    <div class="section-header">
+      <h2>Fiction</h2>
+      <a href="/stories" class="section-link">All stories &rarr;</a>
+    </div>
+    <a href="/stories/<%= story.slug %>" class="story-spotlight-link">
+      <div class="story-spotlight-inner" style="background-image: url('<%= img(story.heroImageUrl, 'hero') %>')">
+        <div class="story-spotlight-overlay"></div>
+        <div class="story-spotlight-content">
+          <span class="story-spotlight-label">Story · AUIS Literary Journal</span>
+          <h2><%= story.title %></h2>
+          <p><%= story.excerpt %></p>
+          <span class="read-more">Read story &rarr;</span>
+        </div>
+      </div>
+    </a>
+  </section>
+  <% } %>
+
+  <% if (popsciReels && popsciReels.length) { %>
+  <section class="popsci-home-section">
+    <div class="section-header">
+      <h2>PopSci AI</h2>
+      <a href="/popsci" class="section-link">All reels &rarr;</a>
+    </div>
+    <div class="popsci-home-scroll">
+      <% popsciReels.slice(0, 4).forEach(reel => { %>
+      <a href="/popsci/<%= reel.slug %>" class="popsci-home-card">
+        <div class="popsci-home-thumb" style="background-image: url('<%= img(reel.heroImageUrl, 'thumb') %>')"></div>
+        <span><%= reel.title %></span>
+      </a>
+      <% }) %>
+    </div>
+  </section>
+  <% } %>
+
+  <% if (latestReflection) { %>
+  <section class="reflection-teaser">
+    <div class="section-header">
+      <h2>Latest Reflection</h2>
+      <a href="/reflections" class="section-link">All reflections &rarr;</a>
+    </div>
+    <div class="reflection-teaser-body">
+      <% if (latestReflection.title) { %><h3><%= latestReflection.title %></h3><% } %>
+      <p><%= latestReflection.body.substring(0, 280) %>...</p>
+      <a href="/reflections" class="read-more">Read reflection &rarr;</a>
+    </div>
+  </section>
+  <% } %>
+
+  <section class="reading-spaces">
+    <div class="section-header">
+      <h2>Reading & Research</h2>
+    </div>
+    <div class="reading-spaces-grid">
+      <div class="reading-space-card">
+        <a href="/articles-read">
+          <span class="reading-space-label">Reading Log</span>
+          <h3>Articles Read</h3>
+          <p>Journalism, essays, and long reads — 26 articles and counting.</p>
+        </a>
+      </div>
+      <div class="reading-space-card">
+        <a href="/writing-ideas">
+          <span class="reading-space-label">Idea Garden</span>
+          <h3>Writing Ideas</h3>
+          <p>Research clusters and essay seeds waiting to become full pieces.</p>
+        </a>
+      </div>
+      <div class="reading-space-card">
+        <a href="/iconic-bitch">
+          <span class="reading-space-label">Curated Shelf</span>
+          <h3>Iconic Bitch</h3>
+          <p>Books that shaped how I think about science and absurdity.</p>
+        </a>
+      </div>
+      <div class="reading-space-card">
+        <a href="/research-papers">
+          <span class="reading-space-label">Academic</span>
+          <h3>Research Papers</h3>
+          <p>Peer-reviewed studies and references behind my research.</p>
+        </a>
+      </div>
+      <div class="reading-space-card">
+        <a href="/solo-date">
+          <span class="reading-space-label">Self & Care</span>
+          <h3>Solo Date</h3>
+          <p>Adventures taken alone — museums, walks, and quiet joy.</p>
+        </a>
+      </div>
+      <div class="reading-space-card">
+        <a href="/travel">
+          <span class="reading-space-label">Plan All the Way</span>
+          <h3>Travel</h3>
+          <p>Itineraries, dream destinations, and trip notes from Notion.</p>
+        </a>
+      </div>
+    </div>
+  </section>
 </main>
 
 <%- include('../partials/footer') %>

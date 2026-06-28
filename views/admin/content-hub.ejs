@@ -1,0 +1,117 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1>Content Hub</h1>
+      <p class="page-desc">Manage everything on the site — edit, publish, or import from static files.</p>
+    </div>
+
+    <% if (!dbConfigured) { %>
+    <div class="admin-alert">
+      Firebase is not configured. Public pages use static data files. Add Firebase credentials to <code>.env</code> to enable live editing.
+    </div>
+    <% } else { %>
+    <form action="/admin/content/import-all" method="POST" class="import-bar" onsubmit="return confirm('Import all static files into Firestore? Existing docs will be merged.')">
+      <p>First time setup: push static content into Firestore so you can edit it here.</p>
+      <button type="submit" class="btn btn-primary">Import Static Content → Firestore</button>
+    </form>
+    <% } %>
+
+    <div class="content-hub-grid">
+      <section class="hub-group">
+        <h2>Shelf &amp; Learning</h2>
+        <div class="hub-cards">
+          <a href="/admin/courses" class="hub-card">
+            <span class="hub-icon">🎓</span>
+            <h3>Courses</h3>
+            <p>Want to take, in progress, completed</p>
+            <span class="hub-link">/courses →</span>
+          </a>
+          <a href="/admin/books" class="hub-card">
+            <span class="hub-icon">📚</span>
+            <h3>Books</h3>
+            <p>Vocational &amp; literary — to read / have read</p>
+            <span class="hub-link">/books/vocational →</span>
+          </a>
+          <a href="/admin/movies" class="hub-card">
+            <span class="hub-icon">🎬</span>
+            <h3>Movies</h3>
+            <p>Watch list</p>
+          </a>
+          <a href="/admin/content/articles_read" class="hub-card">
+            <span class="hub-icon">📰</span>
+            <h3>Articles Read</h3>
+            <p>Essays &amp; journalism saved</p>
+            <span class="hub-link">/articles-read →</span>
+          </a>
+          <a href="/admin/content/research_papers" class="hub-card">
+            <span class="hub-icon">📄</span>
+            <h3>Research Papers</h3>
+            <span class="hub-link">/research-papers →</span>
+          </a>
+          <a href="/admin/content/iconic_bitch" class="hub-card">
+            <span class="hub-icon">📕</span>
+            <h3>Iconic Bitch</h3>
+            <span class="hub-link">/iconic-bitch →</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="hub-group">
+        <h2>Writing &amp; Ideas</h2>
+        <div class="hub-cards">
+          <a href="/admin/writings" class="hub-card">
+            <span class="hub-icon">✍️</span>
+            <h3>Writings</h3>
+            <p>Essays, projects, stories</p>
+            <span class="hub-link">/writings →</span>
+          </a>
+          <a href="/admin/content/writing_ideas" class="hub-card">
+            <span class="hub-icon">💡</span>
+            <h3>Writing Ideas</h3>
+            <p>Research backlog &amp; essay seeds</p>
+            <span class="hub-link">/writing-ideas →</span>
+          </a>
+          <a href="/admin/content/journalism" class="hub-card">
+            <span class="hub-icon">🗞️</span>
+            <h3>Journalism</h3>
+            <span class="hub-link">/journalism →</span>
+          </a>
+          <a href="/admin/reflections" class="hub-card">
+            <span class="hub-icon">💭</span>
+            <h3>Reflections</h3>
+            <span class="hub-link">/reflections →</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="hub-group">
+        <h2>Life &amp; Media</h2>
+        <div class="hub-cards">
+          <a href="/admin/trips" class="hub-card">
+            <span class="hub-icon">✈️</span>
+            <h3>Travel</h3>
+            <span class="hub-link">/travel →</span>
+          </a>
+          <a href="/admin/content/solo_dates" class="hub-card">
+            <span class="hub-icon">🌸</span>
+            <h3>Solo Date</h3>
+            <span class="hub-link">/solo-date →</span>
+          </a>
+          <a href="/admin/content/popsci_reels" class="hub-card">
+            <span class="hub-icon">🧪</span>
+            <h3>PopSci Reels</h3>
+            <span class="hub-link">/popsci →</span>
+          </a>
+          <a href="/admin/connections" class="hub-card">
+            <span class="hub-icon">🔗</span>
+            <h3>Connections</h3>
+            <p>Link related items</p>
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+<%- include('../partials/footer') %>

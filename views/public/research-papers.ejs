@@ -1,0 +1,68 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <section class="page-hero page-hero--compact">
+    <p class="hero-eyebrow">Academic Shelf</p>
+    <h1>Research Papers</h1>
+    <p>Peer-reviewed studies, clinical reviews, and reference material from my <a href="https://www.notion.so/Research-Papers-2043e559e5c14edd86d0eff678392054" target="_blank" rel="noopener">Notion research shelf</a> — tied to writing ideas and essays.</p>
+    <% if (typeof isAdmin !== 'undefined' && isAdmin) { %>
+    <a href="/admin/content/research_papers" class="admin-inline-link">Edit in Admin</a>
+    <% } %>
+  </section>
+
+  <div class="reading-status-tabs">
+    <a href="/research-papers<%= currentType ? '?type=' + currentType : '' %><%= currentTag ? (currentType ? '&' : '?') + 'tag=' + encodeURIComponent(currentTag) : '' %>" class="filter-tab<%= !currentView ? ' active' : '' %>">All</a>
+    <a href="/research-papers?view=to-read<%= currentType ? '&type=' + currentType : '' %><%= currentTag ? '&tag=' + encodeURIComponent(currentTag) : '' %>" class="filter-tab<%= currentView === 'to-read' ? ' active' : '' %>">To Read <span class="tab-count"><%= toRead.length %></span></a>
+    <a href="/research-papers?view=have-read<%= currentType ? '&type=' + currentType : '' %><%= currentTag ? '&tag=' + encodeURIComponent(currentTag) : '' %>" class="filter-tab<%= currentView === 'have-read' ? ' active' : '' %>">Have Read <span class="tab-count"><%= haveRead.length %></span></a>
+  </div>
+
+  <div class="filter-tabs filter-tabs--secondary">
+    <a href="/research-papers<%= currentView ? '?view=' + currentView : '' %>" class="filter-tab filter-tab--small<%= !currentType ? ' active' : '' %>">All types</a>
+    <% types.forEach(t => { %>
+    <a href="/research-papers?type=<%= t %><%= currentView ? '&view=' + currentView : '' %><%= currentTag ? '&tag=' + encodeURIComponent(currentTag) : '' %>" class="filter-tab filter-tab--small<%= currentType === t ? ' active' : '' %>"><%= t %></a>
+    <% }) %>
+  </div>
+
+  <% if (allTags && allTags.length) { %>
+  <div class="filter-tabs filter-tabs--secondary">
+    <% allTags.slice(0, 10).forEach(tag => { %>
+    <a href="/research-papers?tag=<%= encodeURIComponent(tag) %><%= currentType ? '&type=' + currentType : '' %><%= currentView ? '&view=' + currentView : '' %>" class="filter-tab filter-tab--small<%= currentTag === tag ? ' active' : '' %>"><%= tag %></a>
+    <% }) %>
+  </div>
+  <% } %>
+
+  <% if (!currentView) { %>
+  <% if (toRead.length) { %>
+  <section class="reading-shelf-section">
+    <h2 class="reading-shelf-heading">To Read</h2>
+    <div class="papers-list papers-list--detailed">
+      <% toRead.forEach(paper => { %>
+      <%- include('../partials/paper-card', { paper }) %>
+      <% }) %>
+    </div>
+  </section>
+  <% } %>
+  <% if (haveRead.length) { %>
+  <section class="reading-shelf-section">
+    <h2 class="reading-shelf-heading">Have Read</h2>
+    <div class="papers-list papers-list--detailed">
+      <% haveRead.forEach(paper => { %>
+      <%- include('../partials/paper-card', { paper }) %>
+      <% }) %>
+    </div>
+  </section>
+  <% } %>
+  <% } else { %>
+  <div class="papers-list papers-list--detailed">
+    <% papers.forEach(paper => { %>
+    <%- include('../partials/paper-card', { paper }) %>
+    <% }) %>
+  </div>
+  <% if (!papers.length) { %>
+  <p class="reading-shelf-empty">Nothing here yet.</p>
+  <% } %>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

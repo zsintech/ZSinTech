@@ -1,0 +1,10 @@
+<% if (typeof isAdmin !== 'undefined' && isAdmin) { %>
+<div class="admin-toolbar">
+  <span class="admin-toolbar-label">Admin</span>
+  <a href="/admin/content" class="admin-toolbar-link">Content Hub</a>
+  <% if (typeof adminEditPath !== 'undefined' && adminEditPath) { %>
+  <a href="<%= adminEditPath %>" class="admin-toolbar-link admin-toolbar-link--primary">Edit this page</a>
+  <% } %>
+  <a href="/" class="admin-toolbar-link">View site</a>
+</div>
+<% } %>

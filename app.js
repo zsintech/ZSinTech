@@ -8,6 +8,8 @@ const { pexelsUrl } = require('./utils/images');
 const publicRoutes = require('./routes/public');
 const adminRoutes = require('./routes/admin');
 
+const { optionalAuth } = require('./middleware/optionalAuth');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -19,6 +21,7 @@ app.use((req, res, next) => {
   res.locals.img = pexelsUrl;
   next();
 });
+app.use(optionalAuth);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -4,6 +4,7 @@
   <main class="admin-main">
     <div class="admin-header">
       <h1>Dashboard</h1>
+      <a href="/admin/content" class="btn btn-primary">Content Hub</a>
     </div>
 
     <div class="stats-grid">
@@ -22,6 +23,10 @@
       <div class="stat-card">
         <span class="stat-number"><%= stats.moviesToWatch %></span>
         <span class="stat-label">Movies to Watch</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number"><%= stats.coursesToTake || 0 %></span>
+        <span class="stat-label">Courses to Take</span>
       </div>
     </div>
 

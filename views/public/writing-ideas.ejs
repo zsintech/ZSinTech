@@ -1,0 +1,61 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <section class="page-hero page-hero--compact">
+    <p class="hero-eyebrow">Research Backlog</p>
+    <h1>Writing Ideas</h1>
+    <p>Essay seeds, research clusters, and half-formed thoughts — the idea garden where future writings grow.</p>
+  </section>
+
+  <div class="filter-tabs">
+    <a href="/writing-ideas" class="filter-tab<%= !currentCategory ? ' active' : '' %>">All</a>
+    <% categories.forEach(cat => { %>
+    <a href="/writing-ideas?category=<%= encodeURIComponent(cat) %>" class="filter-tab<%= currentCategory === cat ? ' active' : '' %>"><%= cat %></a>
+    <% }) %>
+  </div>
+
+  <% Object.keys(grouped).sort().forEach(category => { %>
+  <section class="ideas-section">
+    <h2 class="ideas-category-title"><%= category %></h2>
+    <div class="ideas-grid">
+      <% grouped[category].forEach(idea => { %>
+      <article class="idea-card">
+        <a href="/writing-ideas/<%= idea.id %>" class="idea-card-link">
+          <% if (idea.heroImageUrl) { %>
+          <div class="idea-card-image" style="background-image: url('<%= img(idea.heroImageUrl, 'card') %>')"></div>
+          <% } %>
+          <div class="idea-card-body">
+            <div class="idea-card-header">
+              <span class="idea-status idea-status--<%= idea.status %>"><%= idea.status %></span>
+              <% if (idea.dateAdded) { %>
+              <time class="idea-date"><%= formatDate(idea.dateAdded) %></time>
+              <% } %>
+            </div>
+            <h3><%= idea.title %></h3>
+            <p><%= idea.excerpt %></p>
+            <% const resourceCount = (idea.articleCount || 0) + (idea.conceptCount || 0); %>
+            <% if (resourceCount) { %>
+            <p class="idea-link-count">
+              <% if (idea.articleCount) { %><%= idea.articleCount %> article<%= idea.articleCount === 1 ? '' : 's' %><% } %>
+              <% if (idea.articleCount && idea.conceptCount) { %> · <% } %>
+              <% if (idea.conceptCount) { %><%= idea.conceptCount %> concept<%= idea.conceptCount === 1 ? '' : 's' %><% } %>
+            </p>
+            <% } %>
+            <% if (idea.tags && idea.tags.length) { %>
+            <div class="tags">
+              <% idea.tags.slice(0, 4).forEach(tag => { %>
+              <span class="tag"><%= tag %></span>
+              <% }) %>
+            </div>
+            <% } %>
+          </div>
+        </a>
+      </article>
+      <% }) %>
+    </div>
+  </section>
+  <% }) %>
+</main>
+
+<%- include('../partials/footer') %>
