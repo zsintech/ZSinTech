@@ -1,7 +1,5 @@
-<article class="book-card">
-  <div class="book-card-cover media-cover <%= book.coverUrl ? '' : 'media-cover--placeholder' %>"
-       <% if (book.coverUrl) { %>style="background-image: url('<%= typeof img !== 'undefined' ? img(book.coverUrl, 'card') : book.coverUrl %>')"<% } %>>
-  </div>
+<article class="book-card card-lift">
+  <%- include('media-cover', { url: book.coverUrl, size: 'card', className: 'book-card-cover media-cover', variant: 'book' }) %>
   <div class="book-card-body">
     <span class="book-card-status"><%= book.status === 'have-read' ? 'Have read' : 'To read' %></span>
     <% if (book.category) { %><span class="book-card-category-tag"><%= book.category %></span><% } %>

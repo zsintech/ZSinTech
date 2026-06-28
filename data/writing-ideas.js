@@ -772,7 +772,7 @@ const ideas = [
     "language",
     "Middle East"
   ],
-    heroImageUrl: "",
+    heroImageUrl: 'https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg',
     isPublic: true,
     dateAdded: new Date('2023-10-01')
   },
@@ -800,7 +800,7 @@ const ideas = [
     "rhetoric",
     "digital"
   ],
-    heroImageUrl: "",
+    heroImageUrl: 'https://images.pexels.com/photos/3862139/pexels-photo-3862139.jpeg',
     isPublic: true,
     dateAdded: new Date('2023-09-25')
   },
@@ -835,7 +835,7 @@ const ideas = [
     "literature",
     "comparative"
   ],
-    heroImageUrl: "",
+    heroImageUrl: 'https://images.pexels.com/photos/256514/pexels-photo-256514.jpeg',
     isPublic: true,
     dateAdded: new Date('2023-09-15')
   },
@@ -853,7 +853,7 @@ const ideas = [
     "genetics",
     "citizen science"
   ],
-    heroImageUrl: "",
+    heroImageUrl: 'https://images.pexels.com/photos/159711/books-book-pages-read-literature-159711.jpeg',
     isPublic: true,
     dateAdded: new Date('2023-09-01')
   },
@@ -871,7 +871,7 @@ const ideas = [
     "evolution",
     "ethics"
   ],
-    heroImageUrl: "",
+    heroImageUrl: 'https://images.pexels.com/photos/577210/pexels-photo-577210.jpeg',
     isPublic: true,
     dateAdded: new Date('2023-08-15')
   },
@@ -899,7 +899,7 @@ const ideas = [
     "ecology",
     "fungi"
   ],
-    heroImageUrl: "",
+    heroImageUrl: 'https://images.pexels.com/photos/159832/book-reading-glasses-159832.jpeg',
     isPublic: true,
     dateAdded: new Date('2023-08-10')
   },
@@ -936,7 +936,7 @@ const ideas = [
     "economics",
     "corporations"
   ],
-    heroImageUrl: "",
+    heroImageUrl: 'https://images.pexels.com/photos/256455/pexels-photo-256455.jpeg',
     isPublic: true,
     dateAdded: new Date('2023-07-25')
   },
@@ -972,7 +972,7 @@ const ideas = [
     "biography",
     "medieval"
   ],
-    heroImageUrl: "",
+    heroImageUrl: 'https://images.pexels.com/photos/159751/book-address-book-learning-learning-159751.jpeg',
     isPublic: true,
     dateAdded: new Date('2023-07-01')
   },
@@ -991,7 +991,7 @@ const ideas = [
     "technology",
     "platforms"
   ],
-    heroImageUrl: "",
+    heroImageUrl: 'https://images.pexels.com/photos/159866/books-book-pages-read-literature-159866.jpeg',
     isPublic: true,
     dateAdded: new Date('2023-06-20')
   },
@@ -1010,7 +1010,7 @@ const ideas = [
     "ecology",
     "microbiology"
   ],
-    heroImageUrl: "",
+    heroImageUrl: 'https://images.pexels.com/photos/356065/pexels-photo-356065.jpeg',
     isPublic: true,
     dateAdded: new Date('2023-06-10')
   },
@@ -1029,7 +1029,7 @@ const ideas = [
     "Hajj",
     "medicine"
   ],
-    heroImageUrl: "",
+    heroImageUrl: 'https://images.pexels.com/photos/159711/books-book-pages-read-literature-159711.jpeg',
     isPublic: true,
     dateAdded: new Date('2023-06-01')
   },
@@ -1048,7 +1048,7 @@ const ideas = [
     "public health",
     "genetics"
   ],
-    heroImageUrl: "",
+    heroImageUrl: 'https://images.pexels.com/photos/256514/pexels-photo-256514.jpeg',
     isPublic: true,
     dateAdded: new Date('2023-05-20')
   },

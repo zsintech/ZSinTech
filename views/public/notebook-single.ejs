@@ -1,0 +1,30 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <%- include('../partials/admin-toolbar') %>
+  <section class="page-header page-header--compact">
+    <p class="breadcrumb"><a href="/notes">Study Notes</a></p>
+    <h1><%= notebook.title %></h1>
+    <% if (notebook.subject) { %><p class="page-desc"><%= notebook.subject %></p><% } %>
+    <% if (notebook.description) { %><p class="page-desc"><%= notebook.description %></p><% } %>
+  </section>
+
+  <% if (notes.length === 0) { %>
+    <p class="empty-state">No published notes in this notebook yet.</p>
+  <% } else { %>
+    <div class="public-note-list">
+      <% notes.forEach(note => { %>
+      <a href="/notes/<%= notebook.slug || notebook.id %>/<%= note.slug || note.id %>" class="public-note-card">
+        <article class="public-note-paper">
+          <h2><%= note.title %></h2>
+          <p><%= (note.body || '').replace(/\n/g, ' ').substring(0, 160) %><%= (note.body || '').length > 160 ? '…' : '' %></p>
+          <time><%= formatDate(note.dateUpdated || note.dateAdded) %></time>
+        </article>
+      </a>
+      <% }) %>
+    </div>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

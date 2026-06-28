@@ -1,66 +1,75 @@
-<aside class="admin-sidebar">
-  <div class="sidebar-header">
-    <a href="/admin" class="sidebar-logo">ZsinTech</a>
-    <span class="sidebar-badge">Admin</span>
-  </div>
-  <nav class="sidebar-nav">
-    <a href="/admin" class="sidebar-link<%= title === 'Dashboard' ? ' active' : '' %>">
-      <span class="sidebar-icon">◉</span> Dashboard
-    </a>
-    <a href="/admin/content" class="sidebar-link<%= title === 'Content Hub' ? ' active' : '' %>">
-      <span class="sidebar-icon">🗂️</span> Content Hub
-    </a>
-
-    <p class="sidebar-section-label">Shelf</p>
-    <a href="/admin/courses" class="sidebar-link<%= title === 'Courses' ? ' active' : '' %>">
-      <span class="sidebar-icon">🎓</span> Courses
-    </a>
-    <a href="/admin/books" class="sidebar-link<%= title === 'Books' ? ' active' : '' %>">
-      <span class="sidebar-icon">📚</span> Books
-    </a>
-    <a href="/admin/movies" class="sidebar-link<%= title === 'Movies' ? ' active' : '' %>">
-      <span class="sidebar-icon">🎬</span> Movies
-    </a>
-    <a href="/admin/content/articles_read" class="sidebar-link<%= title === 'Articles Read' ? ' active' : '' %>">
-      <span class="sidebar-icon">📰</span> Articles Read
-    </a>
-    <a href="/admin/content/research_papers" class="sidebar-link<%= title === 'Research Papers' ? ' active' : '' %>">
-      <span class="sidebar-icon">📄</span> Research Papers
-    </a>
-    <a href="/admin/content/iconic_bitch" class="sidebar-link<%= title === 'Iconic Bitch' ? ' active' : '' %>">
-      <span class="sidebar-icon">📕</span> Iconic Bitch
-    </a>
-
-    <p class="sidebar-section-label">Writing</p>
-    <a href="/admin/writings" class="sidebar-link<%= title === 'Writings' ? ' active' : '' %>">
-      <span class="sidebar-icon">✍️</span> Writings
-    </a>
-    <a href="/admin/content/writing_ideas" class="sidebar-link<%= title === 'Writing Ideas' ? ' active' : '' %>">
-      <span class="sidebar-icon">💡</span> Writing Ideas
-    </a>
-    <a href="/admin/content/journalism" class="sidebar-link<%= title === 'Journalism' ? ' active' : '' %>">
-      <span class="sidebar-icon">🗞️</span> Journalism
-    </a>
-    <a href="/admin/reflections" class="sidebar-link<%= title === 'Reflections' ? ' active' : '' %>">
-      <span class="sidebar-icon">💭</span> Reflections
-    </a>
-
-    <p class="sidebar-section-label">Life</p>
-    <a href="/admin/trips" class="sidebar-link<%= title === 'Travel' ? ' active' : '' %>">
-      <span class="sidebar-icon">✈️</span> Travel
-    </a>
-    <a href="/admin/content/solo_dates" class="sidebar-link<%= title === 'Solo Date' ? ' active' : '' %>">
-      <span class="sidebar-icon">🌸</span> Solo Date
-    </a>
-    <a href="/admin/content/popsci_reels" class="sidebar-link<%= title === 'PopSci Reels' ? ' active' : '' %>">
-      <span class="sidebar-icon">🧪</span> PopSci
-    </a>
-    <a href="/admin/connections" class="sidebar-link<%= title === 'Connections' ? ' active' : '' %>">
-      <span class="sidebar-icon">🔗</span> Connections
-    </a>
-  </nav>
-  <div class="sidebar-footer">
-    <a href="/" class="sidebar-link">← View Site</a>
-    <a href="/logout" class="sidebar-link logout-link">Logout</a>
-  </div>
-</aside>
+<button type="button" class="admin-mobile-toggle" aria-label="Open menu" aria-expanded="false">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+</button>
+<div class="admin-sidebar-overlay" aria-hidden="true"></div>
+<aside class="admin-sidebar">
+  <div class="sidebar-header">
+    <a href="/admin" class="sidebar-logo">Z<span class="logo-accent">S</span>inTech</a>
+    <span class="sidebar-badge">Admin</span>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="/admin" class="sidebar-link<%= title === 'Dashboard' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">◉</span> Dashboard
+    </a>
+    <a href="/admin/content" class="sidebar-link<%= title === 'Content Hub' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">⊞</span> Content Hub
+    </a>
+
+    <p class="sidebar-section-label">Study</p>
+    <a href="/admin/notebooks" class="sidebar-link<%= title === 'Notebooks' || (typeof notebook !== 'undefined' && notebook) || title === 'New Notebook' || title === 'Edit Notebook' || title === 'New Note' || title === 'Edit Note' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">📝</span> Notebooks
+    </a>
+
+    <p class="sidebar-section-label">Shelf</p>
+    <a href="/admin/courses" class="sidebar-link<%= title === 'Courses' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">🎓</span> Courses
+    </a>
+    <a href="/admin/books" class="sidebar-link<%= title === 'Books' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">📚</span> Books
+    </a>
+    <a href="/admin/movies" class="sidebar-link<%= title === 'Movies' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">🎬</span> Movies
+    </a>
+    <a href="/admin/content/articles_read" class="sidebar-link<%= title === 'Articles Read' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">📰</span> Articles Read
+    </a>
+    <a href="/admin/content/research_papers" class="sidebar-link<%= title === 'Research Papers' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">📄</span> Research Papers
+    </a>
+    <a href="/admin/content/iconic_bitch" class="sidebar-link<%= title === 'Iconic Bitch' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">📕</span> Iconic Bitch
+    </a>
+
+    <p class="sidebar-section-label">Writing</p>
+    <a href="/admin/writings" class="sidebar-link<%= title === 'Writings' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">✍️</span> Writings
+    </a>
+    <a href="/admin/content/writing_ideas" class="sidebar-link<%= title === 'Writing Ideas' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">💡</span> Writing Ideas
+    </a>
+    <a href="/admin/content/journalism" class="sidebar-link<%= title === 'Journalism' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">🗞️</span> Journalism
+    </a>
+    <a href="/admin/reflections" class="sidebar-link<%= title === 'Reflections' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">💭</span> Reflections
+    </a>
+
+    <p class="sidebar-section-label">Life</p>
+    <a href="/admin/trips" class="sidebar-link<%= title === 'Travel' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">✈️</span> Travel
+    </a>
+    <a href="/admin/content/solo_dates" class="sidebar-link<%= title === 'Solo Date' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">🌸</span> Solo Date
+    </a>
+    <a href="/admin/content/popsci_reels" class="sidebar-link<%= title === 'PopSci Reels' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">🧪</span> PopSci
+    </a>
+    <a href="/admin/connections" class="sidebar-link<%= title === 'Connections' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">🔗</span> Connections
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="/" class="sidebar-link sidebar-link--muted">← View Site</a>
+    <a href="/logout" class="sidebar-link logout-link">Logout</a>
+  </div>
+</aside>

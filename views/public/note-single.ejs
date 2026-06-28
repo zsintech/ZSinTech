@@ -1,0 +1,32 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main public-main--reading">
+  <%- include('../partials/admin-toolbar') %>
+  <article class="note-reading">
+    <header class="note-reading-header">
+      <p class="breadcrumb">
+        <a href="/notes">Study Notes</a>
+        <span>/</span>
+        <a href="/notes/<%= notebook.slug || notebook.id %>"><%= notebook.title %></a>
+      </p>
+      <h1><%= note.title %></h1>
+      <time class="note-reading-date"><%= formatDate(note.dateUpdated || note.dateAdded) %></time>
+    </header>
+    <div class="note-reading-body prose">
+      <%- note.bodyHtml %>
+    </div>
+    <% if (allNotes.length > 1) { %>
+    <nav class="note-reading-nav">
+      <h3>More in this notebook</h3>
+      <ul>
+        <% allNotes.filter(n => n.id !== note.id).slice(0, 5).forEach(n => { %>
+        <li><a href="/notes/<%= notebook.slug || notebook.id %>/<%= n.slug || n.id %>"><%= n.title %></a></li>
+        <% }) %>
+      </ul>
+    </nav>
+    <% } %>
+  </article>
+</main>
+
+<%- include('../partials/footer') %>

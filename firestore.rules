@@ -28,5 +28,11 @@ service cloud.firestore {
     match /trips/{doc} {
       allow read: if resource.data.isPublic == true;
     }
+    match /notebooks/{doc} {
+      allow read: if resource.data.isPublic == true;
+    }
+    match /notebook_notes/{doc} {
+      allow read: if resource.data.isPublic == true;
+    }
   }
 }

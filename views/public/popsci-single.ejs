@@ -3,7 +3,8 @@
 
 <main class="public-main">
   <article class="popsci-single">
-    <div class="popsci-single-hero" style="background-image: url('<%= img(reel.heroImageUrl, 'hero') %>')">
+    <div class="popsci-single-hero-wrap">
+      <%- include('../partials/media-cover', { url: reel.heroImageUrl, size: 'hero', className: 'popsci-single-hero media-cover', variant: 'popsci' }) %>
       <div class="popsci-single-overlay"></div>
       <div class="popsci-single-content">
         <span class="popsci-topic"><%= reel.topic %></span>

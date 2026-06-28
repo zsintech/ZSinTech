@@ -54,9 +54,7 @@
       <div class="shelf-items">
         <% bookGroups[month].forEach(book => { %>
         <div class="shelf-card">
-          <% if (book.coverUrl) { %>
-          <img src="<%= book.coverUrl %>" alt="<%= book.title %>" class="shelf-cover">
-          <% } %>
+          <%- include('../partials/media-cover', { url: book.coverUrl, size: 'thumb', className: 'shelf-cover media-cover', variant: 'book' }) %>
           <div class="shelf-card-info">
             <h4><%= book.title %></h4>
             <p class="muted"><%= book.author %></p>

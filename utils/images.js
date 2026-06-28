@@ -15,6 +15,10 @@ function pexelsUrl(url, size = 'hero') {
     return `${base}?auto=compress&cs=tinysrgb&w=${w}&fit=crop`;
   }
 
+  if (url.includes('i.ibb.co') || url.includes('ibb.co')) {
+    return url;
+  }
+
   if (url.includes('w=')) return url.replace(/w=\d+/, `w=${w}`);
   const sep = url.includes('?') ? '&' : '?';
   return `${url}${sep}w=${w}`;

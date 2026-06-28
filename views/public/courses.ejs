@@ -2,15 +2,13 @@
 <%- include('../partials/nav-public') %>
 
 <main class="public-main">
-  <section class="page-hero page-hero--compact">
+  <%- include('../partials/admin-toolbar') %>
+  <section class="page-hero page-hero--mesh page-hero--compact">
     <p class="hero-eyebrow">Shelf</p>
     <h1>Courses I Want to Take</h1>
     <p>Learning queue — platforms, instructors, and why each course matters to something I'm writing.</p>
     <div class="shelf-quick-links">
       <a href="/shelf" class="shelf-quick-link">&larr; Back to Shelf</a>
-      <% if (typeof isAdmin !== 'undefined' && isAdmin) { %>
-      <a href="/admin/courses" class="shelf-quick-link admin-inline-link">Edit in Admin</a>
-      <% } %>
     </div>
   </section>
 
@@ -20,6 +18,10 @@
     <a href="/courses?status=<%= s %>" class="filter-tab<%= currentStatus === s ? ' active' : '' %>"><%= s.replace(/-/g, ' ') %></a>
     <% }) %>
   </div>
+
+  <% if (!courses.length) { %>
+  <p class="empty-state">No public courses yet.</p>
+  <% } %>
 
   <div class="courses-board">
     <% statuses.forEach(status => {
@@ -32,7 +34,7 @@
       <p class="courses-empty">Nothing here yet.</p>
       <% } %>
       <% group.forEach(course => { %>
-      <article class="course-card">
+      <article class="course-card card-lift">
         <div class="course-card-header">
           <span class="course-status course-status--<%= course.status %>"><%= course.status.replace(/-/g, ' ') %></span>
           <% if (course.category) { %><span class="course-category"><%= course.category %></span><% } %>

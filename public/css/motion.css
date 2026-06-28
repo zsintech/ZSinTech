@@ -1,0 +1,112 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   ZsinTech — Motion & fluid UI layer (public + admin)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes fade-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes ken-burns {
+  from { background-size: 105%; }
+  to { background-size: 115%; }
+}
+
+@keyframes mesh-drift {
+  0%, 100% { opacity: 0.55; transform: scale(1) translate(0, 0); }
+  50% { opacity: 0.75; transform: scale(1.04) translate(1%, -1%); }
+}
+
+/* Page enter */
+.public-main > section,
+.admin-main > section,
+.admin-main > .notebook-grid,
+.admin-main > .note-list,
+.admin-main > .dashboard-quick-links,
+.admin-main > .stats-grid {
+  animation: fade-rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.public-main > section:nth-child(2) { animation-delay: 0.05s; }
+.public-main > section:nth-child(3) { animation-delay: 0.1s; }
+.public-main > section:nth-child(4) { animation-delay: 0.14s; }
+.public-main > section:nth-child(5) { animation-delay: 0.18s; }
+
+/* Stagger cards */
+.essay-card,
+.masonry-card,
+.project-card,
+.journalism-home-card,
+.journalism-card,
+.popsci-card,
+.popsci-home-card,
+.travel-card,
+.solo-card,
+.book-card,
+.idea-card,
+.reading-space-card,
+.public-notebook-card,
+.notebook-card,
+.hub-card,
+.quick-link-card,
+.stat-card {
+  animation: fade-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.essay-card:nth-child(1), .masonry-card:nth-child(1), .project-card:nth-child(1),
+.journalism-home-card:nth-child(1), .popsci-card:nth-child(1), .notebook-card:nth-child(1) { animation-delay: 0.04s; }
+.essay-card:nth-child(2), .masonry-card:nth-child(2), .project-card:nth-child(2),
+.journalism-home-card:nth-child(2), .popsci-card:nth-child(2), .notebook-card:nth-child(2) { animation-delay: 0.08s; }
+.essay-card:nth-child(3), .masonry-card:nth-child(3), .project-card:nth-child(3),
+.journalism-home-card:nth-child(3), .popsci-card:nth-child(3), .notebook-card:nth-child(3) { animation-delay: 0.12s; }
+.essay-card:nth-child(4), .masonry-card:nth-child(4), .project-card:nth-child(4),
+.popsci-card:nth-child(4), .notebook-card:nth-child(4) { animation-delay: 0.16s; }
+
+/* Hover micro-interactions */
+@media (hover: hover) {
+  .essay-card-link:hover .essay-card-image,
+  .masonry-card-link:hover .masonry-card-image,
+  .project-card-link:hover .project-card-image,
+  .journalism-home-card:hover .journalism-home-image,
+  .journalism-card-link:hover .journalism-card-image,
+  .popsci-card-link:hover .popsci-card-image,
+  .popsci-home-card:hover .popsci-home-thumb,
+  .travel-card-link:hover .travel-card-image,
+  .solo-card:hover .solo-card-image,
+  .featured-hero-link:hover .featured-hero-image,
+  .story-spotlight-link:hover .story-spotlight-inner {
+    animation: ken-burns 8s ease-out forwards;
+  }
+
+  .reading-space-card:hover,
+  .public-notebook-card:hover,
+  .notebook-card:hover,
+  .hub-card:hover,
+  .stat-card--link:hover {
+    transform: translateY(-4px);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

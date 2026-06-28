@@ -2,7 +2,7 @@
 <%- include('../partials/nav-public') %>
 
 <main class="public-main">
-  <section class="page-hero page-hero--compact">
+  <section class="page-hero page-hero--mesh page-hero--compact">
     <p class="hero-eyebrow">Research Backlog</p>
     <h1>Writing Ideas</h1>
     <p>Essay seeds, research clusters, and half-formed thoughts — the idea garden where future writings grow.</p>
@@ -20,13 +20,9 @@
     <h2 class="ideas-category-title"><%= category %></h2>
     <div class="ideas-grid">
       <% grouped[category].forEach(idea => { %>
-      <article class="idea-card">
+      <article class="idea-card card-lift">
         <a href="/writing-ideas/<%= idea.id %>" class="idea-card-link">
-          <% if (idea.heroImageUrl) { %>
-          <div class="idea-card-image media-cover" style="background-image: url('<%= img(idea.heroImageUrl, 'card') %>')"></div>
-          <% } else { %>
-          <div class="idea-card-image media-cover media-cover--placeholder"></div>
-          <% } %>
+          <%- include('../partials/media-cover', { url: idea.heroImageUrl, size: 'card', className: 'idea-card-image media-cover', variant: 'idea' }) %>
           <div class="idea-card-body">
             <div class="idea-card-header">
               <span class="idea-status idea-status--<%= idea.status %>"><%= idea.status %></span>

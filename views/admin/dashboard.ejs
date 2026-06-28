@@ -3,38 +3,66 @@
   <%- include('../partials/nav-admin') %>
   <main class="admin-main">
     <div class="admin-header">
-      <h1>Dashboard</h1>
-      <a href="/admin/content" class="btn btn-primary">Content Hub</a>
+      <div class="admin-header-text">
+        <h1>Dashboard</h1>
+        <p class="page-desc">Welcome back — your workspace for everything ZsinTech.</p>
+      </div>
+      <div class="admin-header-actions">
+        <a href="/admin/notebooks/new" class="btn btn-primary"><span class="btn-icon">+</span> New Note</a>
+        <a href="/admin/content" class="btn btn-ghost">Content Hub</a>
+      </div>
     </div>
 
     <div class="stats-grid">
-      <div class="stat-card">
+      <a href="/admin/notebooks" class="stat-card stat-card--link">
+        <span class="stat-number"><%= stats.notebooks || 0 %></span>
+        <span class="stat-label">Notebooks</span>
+      </a>
+      <a href="/admin/books" class="stat-card stat-card--link">
         <span class="stat-number"><%= stats.totalBooks %></span>
-        <span class="stat-label">Total Books</span>
-      </div>
-      <div class="stat-card">
+        <span class="stat-label">Books</span>
+      </a>
+      <a href="/admin/books?status=reading" class="stat-card stat-card--link">
         <span class="stat-number"><%= stats.reading %></span>
-        <span class="stat-label">Currently Reading</span>
-      </div>
-      <div class="stat-card">
+        <span class="stat-label">Reading</span>
+      </a>
+      <a href="/admin/content/articles_read?status=want-to-read" class="stat-card stat-card--link">
         <span class="stat-number"><%= stats.articlesToRead %></span>
         <span class="stat-label">Articles to Read</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-number"><%= stats.moviesToWatch %></span>
-        <span class="stat-label">Movies to Watch</span>
-      </div>
-      <div class="stat-card">
+      </a>
+      <a href="/admin/courses?status=want-to-take" class="stat-card stat-card--link">
         <span class="stat-number"><%= stats.coursesToTake || 0 %></span>
-        <span class="stat-label">Courses to Take</span>
-      </div>
+        <span class="stat-label">Courses</span>
+      </a>
+    </div>
+
+    <div class="dashboard-quick-links">
+      <a href="/admin/notebooks" class="quick-link-card quick-link-card--featured">
+        <span class="quick-link-icon">📝</span>
+        <div>
+          <strong>Notebooks</strong>
+          <span>Study notes &amp; course journals</span>
+        </div>
+      </a>
+      <a href="/admin/writings" class="quick-link-card">
+        <span class="quick-link-icon">✍️</span>
+        <div><strong>Writings</strong><span>Essays &amp; projects</span></div>
+      </a>
+      <a href="/admin/courses" class="quick-link-card">
+        <span class="quick-link-icon">🎓</span>
+        <div><strong>Courses</strong><span>Learning shelf</span></div>
+      </a>
+      <a href="/admin/trips" class="quick-link-card">
+        <span class="quick-link-icon">✈️</span>
+        <div><strong>Travel</strong><span>Trips &amp; plans</span></div>
+      </a>
     </div>
 
     <div class="dashboard-grid">
       <section class="dashboard-section">
-        <h2>Recent Additions</h2>
+        <h2>Recent Activity</h2>
         <% if (recentItems.length === 0) { %>
-          <p class="empty-state">No recent items</p>
+          <p class="empty-state">No recent items — start by creating a notebook or adding content.</p>
         <% } %>
         <div class="recent-list">
           <% recentItems.forEach(item => { %>
@@ -52,7 +80,7 @@
         <form action="/admin/quick-add" method="POST" class="quick-add-form">
           <div class="form-group">
             <select name="collection" required>
-              <option value="">Choose type...</option>
+              <option value="">Choose type…</option>
               <option value="books">Book</option>
               <option value="courses">Course</option>
               <option value="articles_saved">Article</option>
@@ -67,7 +95,7 @@
           <div class="form-group">
             <textarea name="body" placeholder="Notes or body (optional)" rows="3"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">Add</button>
+          <button type="submit" class="btn btn-primary btn-block">Add Item</button>
         </form>
       </section>
     </div>

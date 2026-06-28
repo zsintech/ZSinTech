@@ -6,10 +6,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('.toggle-public-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
-      const { collection, id } = btn.dataset;
-      const base = contentCollections.has(collection)
-        ? `/admin/content/${collection}/${id}/toggle-public`
-        : `/admin/${collection}/${id}/toggle-public`;
+      const { collection, id, notebookId } = btn.dataset;
+      if (!id) return;
+
+      let base;
+      if (collection === 'notebook_notes') {
+        base = `/admin/notebooks/${notebookId}/notes/${id}/toggle-public`;
+      } else if (collection === 'notebooks') {
+        base = `/admin/notebooks/${id}/toggle-public`;
+      } else if (contentCollections.has(collection)) {
+        base = `/admin/content/${collection}/${id}/toggle-public`;
+      } else {
+        base = `/admin/${collection}/${id}/toggle-public`;
+      }
+
       try {
         const res = await fetch(base, {
           method: 'POST',

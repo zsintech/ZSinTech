@@ -2,7 +2,7 @@
 <%- include('../partials/nav-public') %>
 
 <main class="public-main">
-  <section class="hero hero--image" <% if (heroImage) { %>style="background-image: url('<%= img(heroImage, 'hero') %>')"<% } %>>
+  <section class="hero hero--image<%= heroImage ? '' : ' hero--mesh' %>" <% if (heroImage) { %>style="background-image: url('<%= img(heroImage, 'hero') %>')"<% } %>>
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <p class="hero-eyebrow">Science Communicator & Creator</p>
@@ -17,8 +17,8 @@
 
   <% if (featured) { %>
   <section class="featured-hero">
-    <a href="/writings/<%= featured.slug %>" class="featured-hero-link">
-      <div class="featured-hero-image" style="background-image: url('<%= img(featured.heroImageUrl, 'card') %>')"></div>
+    <a href="/writings/<%= featured.slug %>" class="featured-hero-link card-lift">
+      <%- include('../partials/media-cover', { url: featured.heroImageUrl, size: 'card', className: 'featured-hero-image media-cover', variant: 'science' }) %>
       <div class="featured-hero-content">
         <span class="featured-hero-type"><%= featured.type %></span>
         <h2><%= featured.title %></h2>
@@ -36,13 +36,12 @@
     </div>
     <div class="essays-grid">
       <% essays.forEach((essay, i) => { %>
-      <article class="essay-card <%= i === 0 ? 'essay-card--wide' : '' %>">
+      <article class="essay-card <%= i === 0 ? 'essay-card--wide' : '' %> card-lift">
         <a href="/writings/<%= essay.slug %>" class="essay-card-link">
-          <% if (essay.heroImageUrl) { %>
-          <div class="essay-card-image" style="background-image: url('<%= img(essay.heroImageUrl, 'card') %>')">
+          <div class="essay-card-image-wrap">
+            <%- include('../partials/media-cover', { url: essay.heroImageUrl, size: 'card', className: 'essay-card-image media-cover', variant: 'science' }) %>
             <div class="essay-card-overlay"></div>
           </div>
-          <% } %>
           <div class="essay-card-body">
             <div class="essay-card-meta">
               <span class="essay-card-type"><%= essay.type %></span>
@@ -65,9 +64,10 @@
     </div>
     <div class="projects-grid">
       <% projects.forEach(p => { %>
-      <article class="project-card">
+      <article class="project-card card-lift">
         <a href="/writings/<%= p.slug %>" class="project-card-link">
-          <div class="project-card-image" style="background-image: url('<%= img(p.heroImageUrl, 'card') %>')">
+          <div class="project-card-image-wrap">
+            <%- include('../partials/media-cover', { url: p.heroImageUrl, size: 'card', className: 'project-card-image media-cover', variant: 'science' }) %>
             <div class="project-card-overlay"></div>
           </div>
           <div class="project-card-body">
@@ -90,11 +90,9 @@
     </div>
     <div class="journalism-home-grid">
       <% journalism.slice(0, 3).forEach(article => { %>
-      <article class="journalism-home-card">
+      <article class="journalism-home-card card-lift">
         <a href="/journalism/<%= article.slug %>">
-          <% if (article.heroImageUrl) { %>
-          <div class="journalism-home-image" style="background-image: url('<%= img(article.heroImageUrl, 'thumb') %>')"></div>
-          <% } %>
+          <%- include('../partials/media-cover', { url: article.heroImageUrl, size: 'thumb', className: 'journalism-home-image media-cover', variant: 'journal' }) %>
           <div class="journalism-home-body">
             <time><%= formatDate(article.datePublished) %></time>
             <h3><%= article.title %></h3>
@@ -114,8 +112,9 @@
       <h2>Fiction</h2>
       <a href="/stories" class="section-link">All stories &rarr;</a>
     </div>
-    <a href="/stories/<%= story.slug %>" class="story-spotlight-link">
-      <div class="story-spotlight-inner" style="background-image: url('<%= img(story.heroImageUrl, 'hero') %>')">
+    <a href="/stories/<%= story.slug %>" class="story-spotlight-link card-lift">
+      <div class="story-spotlight-inner-wrap">
+        <%- include('../partials/media-cover', { url: story.heroImageUrl, size: 'hero', className: 'story-spotlight-inner media-cover', variant: 'story' }) %>
         <div class="story-spotlight-overlay"></div>
         <div class="story-spotlight-content">
           <span class="story-spotlight-label">Story · AUIS Literary Journal</span>
@@ -136,8 +135,8 @@
     </div>
     <div class="popsci-home-scroll">
       <% popsciReels.slice(0, 4).forEach(reel => { %>
-      <a href="/popsci/<%= reel.slug %>" class="popsci-home-card">
-        <div class="popsci-home-thumb" style="background-image: url('<%= img(reel.heroImageUrl, 'thumb') %>')"></div>
+      <a href="/popsci/<%= reel.slug %>" class="popsci-home-card card-lift">
+        <%- include('../partials/media-cover', { url: reel.heroImageUrl, size: 'thumb', className: 'popsci-home-thumb media-cover', variant: 'popsci' }) %>
         <span><%= reel.title %></span>
       </a>
       <% }) %>
@@ -146,7 +145,7 @@
   <% } %>
 
   <% if (latestReflection) { %>
-  <section class="reflection-teaser">
+  <section class="reflection-teaser card-lift">
     <div class="section-header">
       <h2>Latest Reflection</h2>
       <a href="/reflections" class="section-link">All reflections &rarr;</a>
@@ -200,11 +199,7 @@
       <div class="shelf-home-items shelf-home-items--books">
         <% vocationalBooks.forEach(book => { %>
         <a href="/books/vocational" class="shelf-home-book">
-          <% if (book.coverUrl) { %>
-          <div class="shelf-home-book-cover media-cover" style="background-image: url('<%= img(book.coverUrl, 'thumb') %>')"></div>
-          <% } else { %>
-          <div class="shelf-home-book-cover media-cover media-cover--placeholder"></div>
-          <% } %>
+          <%- include('../partials/media-cover', { url: book.coverUrl, size: 'thumb', className: 'shelf-home-book-cover media-cover', variant: 'book' }) %>
           <div>
             <strong><%= book.title %></strong>
             <% if (book.category) { %><span class="shelf-home-book-cat"><%= book.category %></span><% } %>
@@ -213,11 +208,7 @@
         <% }) %>
         <% if (literaryBooks && literaryBooks.length) { literaryBooks.forEach(book => { %>
         <a href="/books/literary" class="shelf-home-book">
-          <% if (book.coverUrl) { %>
-          <div class="shelf-home-book-cover media-cover" style="background-image: url('<%= img(book.coverUrl, 'thumb') %>')"></div>
-          <% } else { %>
-          <div class="shelf-home-book-cover media-cover media-cover--placeholder"></div>
-          <% } %>
+          <%- include('../partials/media-cover', { url: book.coverUrl, size: 'thumb', className: 'shelf-home-book-cover media-cover', variant: 'book' }) %>
           <div>
             <strong><%= book.title %></strong>
             <% if (book.category) { %><span class="shelf-home-book-cat"><%= book.category %></span><% } %>
@@ -235,46 +226,53 @@
       <h2>Reading & Research</h2>
     </div>
     <div class="reading-spaces-grid">
-      <div class="reading-space-card">
+      <div class="reading-space-card card-lift">
         <a href="/articles-read">
           <span class="reading-space-label">Reading Log</span>
           <h3>Articles Read</h3>
           <p>Journalism, essays, and long reads — with personal notes on each.</p>
         </a>
       </div>
-      <div class="reading-space-card">
+      <div class="reading-space-card card-lift">
         <a href="/writing-ideas">
           <span class="reading-space-label">Idea Garden</span>
           <h3>Writing Ideas</h3>
           <p>Research clusters and essay seeds waiting to become full pieces.</p>
         </a>
       </div>
-      <div class="reading-space-card">
+      <div class="reading-space-card card-lift">
         <a href="/iconic-bitch">
           <span class="reading-space-label">Curated Shelf</span>
           <h3>Iconic Bitch</h3>
           <p>Books that shaped how I think about science and absurdity.</p>
         </a>
       </div>
-      <div class="reading-space-card">
+      <div class="reading-space-card card-lift">
         <a href="/research-papers">
           <span class="reading-space-label">Academic</span>
           <h3>Research Papers</h3>
           <p>Peer-reviewed studies and references behind my research.</p>
         </a>
       </div>
-      <div class="reading-space-card">
+      <div class="reading-space-card card-lift">
         <a href="/solo-date">
           <span class="reading-space-label">Self & Care</span>
           <h3>Solo Date</h3>
           <p>Adventures taken alone — museums, walks, and quiet joy.</p>
         </a>
       </div>
-      <div class="reading-space-card">
+      <div class="reading-space-card card-lift">
         <a href="/travel">
           <span class="reading-space-label">Plan All the Way</span>
           <h3>Travel</h3>
           <p>Itineraries, dream destinations, and trip notes from Notion.</p>
+        </a>
+      </div>
+      <div class="reading-space-card card-lift">
+        <a href="/notes">
+          <span class="reading-space-label">Study</span>
+          <h3>Notes</h3>
+          <p>Published notebooks and course notes from my studies.</p>
         </a>
       </div>
     </div>

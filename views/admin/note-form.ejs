@@ -1,0 +1,69 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout admin-layout--editor">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main admin-main--editor">
+    <div class="admin-header admin-header--compact">
+      <div class="admin-header-text">
+        <p class="admin-breadcrumb">
+          <a href="/admin/notebooks">Notebooks</a>
+          <span>/</span>
+          <a href="/admin/notebooks/<%= notebook.id %>"><%= notebook.title %></a>
+        </p>
+      </div>
+      <div class="admin-header-actions">
+        <% if (typeof saved !== 'undefined' && saved) { %>
+          <span class="save-indicator">Saved ✓</span>
+        <% } %>
+        <button type="button"
+          class="toggle-public-btn<%= note && note.isPublic ? ' is-public' : '' %>"
+          data-collection="notebook_notes"
+          data-notebook-id="<%= notebook.id %>"
+          data-id="<%= note ? note.id : '' %>"
+          <%= note ? '' : 'disabled' %>>
+          <%= note && note.isPublic ? '🌐 Public' : '🔒 Private' %>
+        </button>
+        <a href="/admin/notebooks/<%= notebook.id %>" class="btn btn-ghost">← Notes</a>
+      </div>
+    </div>
+
+    <form action="<%= note ? '/admin/notebooks/' + notebook.id + '/notes/' + note.id : '/admin/notebooks/' + notebook.id + '/notes' %>"
+          method="POST" class="digital-paper-form" id="note-form">
+      <div class="digital-paper">
+        <input type="text" name="title" class="digital-paper-title" required
+               placeholder="Note title"
+               value="<%= note ? note.title : '' %>">
+        <textarea name="body" class="digital-paper-body" rows="24"
+                  placeholder="Start writing…
+
+Use plain text or markdown — headings, lists, and **bold** all work."><%= note ? (note.body || '') : '' %></textarea>
+      </div>
+      <div class="digital-paper-toolbar">
+        <label class="checkbox-label">
+          <input type="checkbox" name="isPublic" value="true"
+                 <%= note && note.isPublic ? 'checked' : '' %>>
+          Publish this note
+        </label>
+        <div class="digital-paper-toolbar-actions">
+          <button type="submit" class="btn btn-primary" form="note-form">Save</button>
+          <% if (note) { %>
+          <button type="submit" form="delete-note-form" class="btn btn-danger btn-small"
+                  onclick="return confirm('Delete this note?')">Delete</button>
+          <% } %>
+        </div>
+      </div>
+    </form>
+    <% if (note) { %>
+    <form action="/admin/notebooks/<%= notebook.id %>/notes/<%= note.id %>/delete" method="POST"
+          id="delete-note-form" class="visually-hidden"></form>
+    <% } %>
+  </main>
+</div>
+<script>
+  // Auto-save indicator on submit
+  document.getElementById('note-form')?.addEventListener('submit', () => {
+    const btn = document.querySelector('.digital-paper-toolbar .btn-primary');
+    if (btn) btn.textContent = 'Saving…';
+  });
+  <% if (typeof query !== 'undefined' && query.saved) { /* server-side via redirect */ } %>
+</script>
+<%- include('../partials/footer') %>

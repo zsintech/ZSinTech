@@ -2,7 +2,7 @@
 <%- include('../partials/nav-public') %>
 
 <main class="public-main">
-  <section class="page-hero page-hero--compact">
+  <section class="page-hero page-hero--mesh page-hero--compact">
     <p class="hero-eyebrow">Plan All the Way</p>
     <h1>Travel</h1>
     <p>Itineraries, dream destinations, and trip notes — the journeys I'm planning or have taken.</p>
@@ -21,14 +21,13 @@
   <% } else { %>
   <div class="travel-gallery">
     <% trips.forEach(trip => { %>
-    <article class="travel-card">
+    <article class="travel-card card-lift">
       <a href="/travel/<%= trip.slug %>" class="travel-card-link">
-        <% if (trip.heroImageUrl) { %>
-        <div class="travel-card-image" style="background-image: url('<%= img(trip.heroImageUrl, 'card') %>')">
+        <div class="travel-card-image-wrap">
+          <%- include('../partials/media-cover', { url: trip.heroImageUrl, size: 'card', className: 'travel-card-image media-cover', variant: 'travel' }) %>
           <div class="travel-card-overlay"></div>
           <span class="travel-card-status"><%= trip.status %></span>
         </div>
-        <% } %>
         <div class="travel-card-body">
           <h2><%= trip.title %></h2>
           <p class="travel-destination"><%= trip.destination %></p>

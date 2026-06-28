@@ -1,5 +1,6 @@
 const { db, isConfigured, admin } = require('../firebase-admin');
 const { createSlug } = require('./slug');
+const { parseIsPublic } = require('./parsePublic');
 
 const STATIC_LOADERS = {
   books: () => require('../data/books').getAll(),
@@ -14,6 +15,7 @@ const STATIC_LOADERS = {
   travel: () => require('../data/travel').getAll(),
   reflections: () => require('../data/reflections').getAll(),
   writings: () => require('../data/writings').getAll(),
+  notebooks: () => require('../data/notebooks').getAll(),
 };
 
 function normalizeItem(item) {
@@ -22,6 +24,7 @@ function normalizeItem(item) {
   if (copy.date?.toDate) copy.date = copy.date.toDate();
   if (copy.dateWritten?.toDate) copy.dateWritten = copy.dateWritten.toDate();
   if (copy.datePublished?.toDate) copy.datePublished = copy.datePublished.toDate();
+  if (copy.dateUpdated?.toDate) copy.dateUpdated = copy.dateUpdated.toDate();
   return copy;
 }
 
@@ -42,32 +45,58 @@ function getStaticList(collection, filters = {}) {
   return applyFilters(loader(), filters);
 }
 
+function mergeById(staticItems, storedItems) {
+  const map = new Map();
+  staticItems.forEach(item => map.set(item.id, item));
+  storedItems.forEach(item => map.set(item.id, item));
+  return [...map.values()].sort((a, b) => {
+    const aTime = a.dateAdded ? new Date(a.dateAdded).getTime() : 0;
+    const bTime = b.dateAdded ? new Date(b.dateAdded).getTime() : 0;
+    return bTime - aTime;
+  });
+}
+
 async function listFromFirestore(collection, filters = {}) {
   if (!isConfigured || !db) return null;
-  try {
+
+  const runQuery = async (useFilters) => {
     let query = db.collection(collection);
-    if (filters.publicOnly) query = query.where('isPublic', '==', true);
-    if (filters.status) query = query.where('status', '==', filters.status);
-    if (filters.category) query = query.where('category', '==', filters.category);
-    if (filters.type) query = query.where('type', '==', filters.type);
+    if (useFilters && filters.publicOnly) query = query.where('isPublic', '==', true);
+    if (useFilters && filters.status) query = query.where('status', '==', filters.status);
+    if (useFilters && filters.category) query = query.where('category', '==', filters.category);
+    if (useFilters && filters.type) query = query.where('type', '==', filters.type);
 
     const orderField = filters.orderBy || 'dateAdded';
     query = query.orderBy(orderField, 'desc');
 
     const snap = await query.get();
-    if (snap.empty) return null;
     let items = snap.docs.map(d => normalizeItem({ id: d.id, ...d.data() }));
     if (filters.tag) items = items.filter(i => i.tags && i.tags.includes(filters.tag));
     return items;
+  };
+
+  try {
+    return await runQuery(true);
   } catch {
-    return null;
+    try {
+      const snap = await db.collection(collection).get();
+      if (snap.empty) return [];
+      let items = snap.docs.map(d => normalizeItem({ id: d.id, ...d.data() }));
+      return applyFilters(items, filters);
+    } catch {
+      return null;
+    }
   }
 }
 
 async function list(collection, filters = {}) {
   const stored = await listFromFirestore(collection, filters);
-  if (stored && stored.length) return stored;
-  return getStaticList(collection, filters);
+  const staticItems = getStaticList(collection, filters);
+
+  if (stored === null) return staticItems;
+  if (!stored.length) return staticItems.length ? staticItems : stored;
+
+  return mergeById(staticItems, stored);
 }
 
 async function getById(collection, id) {
@@ -111,7 +140,7 @@ async function create(collection, data) {
   const payload = {
     ...data,
     slug: data.slug || id,
-    isPublic: data.isPublic === true || data.isPublic === 'true',
+    isPublic: parseIsPublic(data.isPublic),
     dateAdded: admin.firestore.Timestamp.now(),
   };
   delete payload.id;
@@ -123,7 +152,7 @@ async function update(collection, id, data) {
   if (!isConfigured || !db) throw new Error('Database not configured');
   const payload = { ...data };
   delete payload.id;
-  payload.isPublic = payload.isPublic === true || payload.isPublic === 'true';
+  payload.isPublic = parseIsPublic(payload.isPublic);
   await db.collection(collection).doc(id).update(payload);
 }
 

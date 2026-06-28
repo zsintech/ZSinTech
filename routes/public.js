@@ -32,6 +32,10 @@ const {
   getBookShelfTypes,
   groupBooksByReadingStatus,
   splitByReadingStatus,
+  getNotebooks,
+  getNotebook,
+  getNotebookNotes,
+  getNote,
 } = require('../utils/library');
 
 router.get('/', async (req, res) => {
@@ -400,6 +404,55 @@ router.get('/travel/:slug', async (req, res) => {
 
 router.get('/about', (req, res) => {
   res.render('public/about', { title: 'About' });
+});
+
+router.get('/notes', async (req, res) => {
+  const notebooks = await getNotebooks();
+  const visible = [];
+  for (const nb of notebooks) {
+    if (!nb.isPublic) continue;
+    const notes = await getNotebookNotes(nb.id, true);
+    if (notes.length > 0) visible.push({ ...nb, noteCount: notes.length });
+  }
+  res.render('public/notes', {
+    title: 'Study Notes',
+    notebooks: visible,
+    formatDate,
+    adminEditPath: res.locals.isAdmin ? '/admin/notebooks' : null,
+  });
+});
+
+router.get('/notes/:slug', async (req, res) => {
+  const notebook = await getNotebook(req.params.slug);
+  if (!notebook || !notebook.isPublic) return res.status(404).redirect('/notes');
+  const notes = await getNotebookNotes(notebook.id, true);
+  res.render('public/notebook-single', {
+    title: notebook.title,
+    notebook,
+    notes,
+    formatDate,
+    adminEditPath: res.locals.isAdmin ? `/admin/notebooks/${notebook.id}` : null,
+  });
+});
+
+router.get('/notes/:slug/:noteSlug', async (req, res) => {
+  const notebook = await getNotebook(req.params.slug);
+  if (!notebook || !notebook.isPublic) return res.status(404).redirect('/notes');
+  const note = await getNote(req.params.noteSlug);
+  if (!note || note.notebookId !== notebook.id || !note.isPublic) {
+    return res.status(404).redirect(`/notes/${notebook.slug || notebook.id}`);
+  }
+  const { renderMarkdown } = require('../utils/markdown');
+  note.bodyHtml = renderMarkdown(note.body || '');
+  const allNotes = await getNotebookNotes(notebook.id, true);
+  res.render('public/note-single', {
+    title: note.title,
+    notebook,
+    note,
+    allNotes,
+    formatDate,
+    adminEditPath: res.locals.isAdmin ? `/admin/notebooks/${notebook.id}/notes/${note.id}/edit` : null,
+  });
 });
 
 module.exports = router;

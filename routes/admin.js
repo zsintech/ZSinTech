@@ -9,6 +9,7 @@ const { formatDate } = require('../utils/dates');
 const { renderMarkdown } = require('../utils/markdown');
 const { parseTripFields } = require('../utils/travel');
 const { fetchImage } = require('../services/imagePipeline');
+const { parseIsPublic } = require('../utils/parsePublic');
 const contentStore = require('../utils/contentStore');
 const contentSections = require('../config/content-sections');
 const { isConfigured } = require('../firebase-admin');
@@ -22,7 +23,7 @@ router.get('/', async (req, res) => {
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     const ts = admin.firestore.Timestamp.fromDate(sevenDaysAgo);
 
-    const collections = ['books', 'courses', 'articles_saved', 'writings', 'movies', 'reflections', 'trips'];
+    const collections = ['books', 'courses', 'articles_saved', 'writings', 'movies', 'reflections', 'trips', 'notebooks'];
     const counts = {};
     const recentItems = [];
 
@@ -50,6 +51,13 @@ router.get('/', async (req, res) => {
     const toReadSnap = await db.collection('articles_saved').where('status', '==', 'want-to-read').get();
     const toWatchSnap = await db.collection('movies').where('status', '==', 'want-to-watch').get();
     const coursesSnap = await db.collection('courses').where('status', '==', 'want-to-take').get();
+    let notebookCount = counts.notebooks || 0;
+    if (!notebookCount) {
+      try {
+        const nbStore = require('../utils/notebooks');
+        notebookCount = (await nbStore.adminListNotebooks()).length;
+      } catch { notebookCount = 0; }
+    }
 
     res.render('admin/dashboard', {
       title: 'Dashboard',
@@ -61,6 +69,7 @@ router.get('/', async (req, res) => {
         articlesToRead: toReadSnap.size,
         moviesToWatch: toWatchSnap.size,
         coursesToTake: coursesSnap.size,
+        notebooks: notebookCount,
       },
       formatDate,
     });
@@ -70,7 +79,7 @@ router.get('/', async (req, res) => {
       title: 'Dashboard',
       counts: {},
       recentItems: [],
-      stats: { totalBooks: 0, reading: 0, articlesToRead: 0, moviesToWatch: 0 },
+      stats: { totalBooks: 0, reading: 0, articlesToRead: 0, moviesToWatch: 0, coursesToTake: 0, notebooks: 0 },
       formatDate,
     });
   }
@@ -157,7 +166,7 @@ function buildCrudRoutes(collection, options = {}) {
       let data = { ...req.body };
       if (parseBody) data = parseBody(data);
       data.tags = parseTags(data.tags);
-      data.isPublic = data.isPublic === 'true' || data.isPublic === true;
+      data.isPublic = parseIsPublic(data.isPublic);
       data.dateAdded = admin.firestore.Timestamp.now();
 
       if (data.rating) data.rating = parseInt(data.rating) || null;
@@ -234,7 +243,7 @@ function buildCrudRoutes(collection, options = {}) {
       let data = { ...req.body };
       if (parseBody) data = parseBody(data);
       data.tags = parseTags(data.tags);
-      data.isPublic = data.isPublic === 'true' || data.isPublic === true;
+      data.isPublic = parseIsPublic(data.isPublic);
 
       if (data.rating) data.rating = parseInt(data.rating) || null;
       if (data.year) data.year = parseInt(data.year) || null;
@@ -337,7 +346,7 @@ const shelfTypeValues = ['vocational', 'literary'];
 function parseBookBody(body) {
   const data = { ...body };
   data.tags = parseTags(data.tags);
-  data.isPublic = data.isPublic === 'true' || data.isPublic === true;
+  data.isPublic = parseIsPublic(data.isPublic);
   if (data.rating) data.rating = parseInt(data.rating, 10) || null;
   return data;
 }
@@ -466,6 +475,8 @@ router.get('/content', (req, res) => {
 router.post('/content/import-all', async (req, res) => {
   try {
     await contentStore.importAllStatic();
+    const notebookStore = require('../utils/notebooks');
+    await notebookStore.importStatic();
     res.redirect('/admin/content?imported=1');
   } catch (err) {
     console.error('Import error:', err);
@@ -480,7 +491,7 @@ function findSection(collection) {
 function parseGenericBody(body, section) {
   const data = { ...body };
   if (data.tags) data.tags = parseTags(data.tags);
-  data.isPublic = data.isPublic === 'true' || data.isPublic === true;
+  data.isPublic = parseIsPublic(data.isPublic);
   if (data.year) data.year = parseInt(data.year, 10) || null;
   if (section.hasSlug && data.title && !data.slug) {
     data.slug = require('../utils/slug').createSlug(data.title);
@@ -653,6 +664,145 @@ router.post('/quick-add', async (req, res) => {
   } catch (err) {
     console.error('Quick add error:', err);
     res.redirect('/admin');
+  }
+});
+
+// ─── Notebooks & Study Notes ─────────────────────────────────────────────────
+const notebookStore = require('../utils/notebooks');
+
+router.get('/notebooks', async (req, res) => {
+  try {
+    const notebooks = await notebookStore.adminListNotebooks();
+    const noteCounts = {};
+    for (const nb of notebooks) {
+      const notes = await notebookStore.listNotes(nb.id);
+      noteCounts[nb.id] = notes.length;
+    }
+    res.render('admin/notebooks', {
+      title: 'Notebooks',
+      notebooks,
+      noteCounts,
+      formatDate,
+    });
+  } catch (err) {
+    console.error('List notebooks error:', err);
+    res.render('admin/notebooks', { title: 'Notebooks', notebooks: [], noteCounts: {}, formatDate });
+  }
+});
+
+router.get('/notebooks/new', (req, res) => {
+  res.render('admin/notebook-form', { title: 'New Notebook', notebook: null });
+});
+
+router.post('/notebooks', async (req, res) => {
+  try {
+    const id = await notebookStore.createNotebook(req.body);
+    res.redirect(`/admin/notebooks/${id}`);
+  } catch (err) {
+    console.error('Create notebook error:', err);
+    res.redirect('/admin/notebooks/new');
+  }
+});
+
+router.get('/notebooks/:id', async (req, res) => {
+  try {
+    const notebook = await notebookStore.getNotebook(req.params.id);
+    if (!notebook) return res.redirect('/admin/notebooks');
+    const notes = await notebookStore.listNotes(notebook.id);
+    res.render('admin/notebook-detail', {
+      title: notebook.title,
+      notebook,
+      notes,
+      formatDate,
+    });
+  } catch (err) {
+    console.error('Notebook detail error:', err);
+    res.redirect('/admin/notebooks');
+  }
+});
+
+router.get('/notebooks/:id/edit', async (req, res) => {
+  const notebook = await notebookStore.getNotebook(req.params.id);
+  if (!notebook) return res.redirect('/admin/notebooks');
+  res.render('admin/notebook-form', { title: 'Edit Notebook', notebook });
+});
+
+router.post('/notebooks/:id', async (req, res) => {
+  try {
+    await notebookStore.updateNotebook(req.params.id, req.body);
+    res.redirect(`/admin/notebooks/${req.params.id}`);
+  } catch (err) {
+    console.error('Update notebook error:', err);
+    res.redirect(`/admin/notebooks/${req.params.id}/edit`);
+  }
+});
+
+router.post('/notebooks/:id/delete', async (req, res) => {
+  try {
+    await notebookStore.deleteNotebook(req.params.id);
+  } catch (err) {
+    console.error('Delete notebook error:', err);
+  }
+  res.redirect('/admin/notebooks');
+});
+
+router.post('/notebooks/:id/toggle-public', async (req, res) => {
+  try {
+    const isPublic = await notebookStore.toggleNotebookPublic(req.params.id);
+    res.json({ success: true, isPublic });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed' });
+  }
+});
+
+router.get('/notebooks/:notebookId/notes/new', async (req, res) => {
+  const notebook = await notebookStore.getNotebook(req.params.notebookId);
+  if (!notebook) return res.redirect('/admin/notebooks');
+  res.render('admin/note-form', { title: 'New Note', notebook, note: null });
+});
+
+router.get('/notebooks/:notebookId/notes/:noteId/edit', async (req, res) => {
+  const notebook = await notebookStore.getNotebook(req.params.notebookId);
+  const note = await notebookStore.getNote(req.params.noteId);
+  if (!notebook || !note) return res.redirect(`/admin/notebooks/${req.params.notebookId}`);
+    res.render('admin/note-form', { title: 'Edit Note', notebook, note, saved: req.query.saved === '1' });
+});
+
+router.post('/notebooks/:notebookId/notes', async (req, res) => {
+  try {
+    const id = await notebookStore.createNote(req.params.notebookId, req.body);
+    res.redirect(`/admin/notebooks/${req.params.notebookId}/notes/${id}/edit`);
+  } catch (err) {
+    console.error('Create note error:', err);
+    res.redirect(`/admin/notebooks/${req.params.notebookId}/notes/new`);
+  }
+});
+
+router.post('/notebooks/:notebookId/notes/:noteId', async (req, res) => {
+  try {
+    await notebookStore.updateNote(req.params.noteId, req.body);
+    res.redirect(`/admin/notebooks/${req.params.notebookId}/notes/${req.params.noteId}/edit?saved=1`);
+  } catch (err) {
+    console.error('Update note error:', err);
+    res.redirect(`/admin/notebooks/${req.params.notebookId}/notes/${req.params.noteId}/edit`);
+  }
+});
+
+router.post('/notebooks/:notebookId/notes/:noteId/delete', async (req, res) => {
+  try {
+    await notebookStore.deleteNote(req.params.noteId);
+  } catch (err) {
+    console.error('Delete note error:', err);
+  }
+  res.redirect(`/admin/notebooks/${req.params.notebookId}`);
+});
+
+router.post('/notebooks/:notebookId/notes/:noteId/toggle-public', async (req, res) => {
+  try {
+    const isPublic = await notebookStore.toggleNotePublic(req.params.noteId);
+    res.json({ success: true, isPublic });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed' });
   }
 });
 

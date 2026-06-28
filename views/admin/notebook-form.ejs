@@ -1,0 +1,56 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main">
+    <div class="admin-header">
+      <div class="admin-header-text">
+        <p class="admin-breadcrumb"><a href="/admin/notebooks">Notebooks</a></p>
+        <h1><%= notebook ? 'Edit Notebook' : 'New Notebook' %></h1>
+      </div>
+      <% if (notebook) { %>
+      <a href="/admin/notebooks/<%= notebook.id %>" class="btn btn-ghost">← Back</a>
+      <% } else { %>
+      <a href="/admin/notebooks" class="btn btn-ghost">← Back</a>
+      <% } %>
+    </div>
+
+    <form action="<%= notebook ? '/admin/notebooks/' + notebook.id : '/admin/notebooks' %>"
+          method="POST" class="content-form admin-panel">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required
+               placeholder="e.g. Machine Learning — Spring 2025"
+               value="<%= notebook ? notebook.title : '' %>">
+      </div>
+      <div class="form-group">
+        <label for="subject">Subject / Course</label>
+        <input type="text" id="subject" name="subject"
+               placeholder="e.g. CS 229, Biology, Arabic Literature"
+               value="<%= notebook ? (notebook.subject || '') : '' %>">
+      </div>
+      <div class="form-group">
+        <label for="description">Description <span class="label-optional">optional</span></label>
+        <textarea id="description" name="description" rows="2"
+                  placeholder="What is this notebook for?"><%= notebook ? (notebook.description || '') : '' %></textarea>
+      </div>
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" name="isPublic" value="true"
+                 <%= notebook && notebook.isPublic ? 'checked' : '' %>>
+          Publish notebook (public notes will appear on the site)
+        </label>
+        <p class="form-hint">Individual notes also have their own publish toggle.</p>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary"><%= notebook ? 'Save Changes' : 'Create Notebook' %></button>
+      </div>
+    </form>
+    <% if (notebook) { %>
+    <form action="/admin/notebooks/<%= notebook.id %>/delete" method="POST" class="delete-form"
+          onsubmit="return confirm('Delete this notebook and all its notes?')">
+      <button type="submit" class="btn btn-danger">Delete Notebook</button>
+    </form>
+    <% } %>
+  </main>
+</div>
+<%- include('../partials/footer') %>

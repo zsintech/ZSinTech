@@ -25,8 +25,7 @@ const staticCourses = require('../data/courses');
 const staticBooks = require('../data/books');
 
 const { splitByReadingStatus } = require('./readingStatus');
-
-
+const notebookStore = require('./notebooks');
 
 async function getArticlesRead(filters = {}) {
 
@@ -239,11 +238,7 @@ function groupBooksByReadingStatus(books) {
 }
 
 async function getCourses(filters = {}) {
-
-  const items = await contentStore.list('courses', { ...filters, publicOnly: true });
-
-  return items.length ? items : staticCourses.getAll({ ...filters, publicOnly: true });
-
+  return contentStore.list('courses', { ...filters, publicOnly: true });
 }
 
 
@@ -325,6 +320,11 @@ module.exports = {
   groupCoursesByStatus,
 
   splitByReadingStatus,
+
+  getNotebooks: (filters = {}) => notebookStore.listNotebooks({ ...filters, publicOnly: true }),
+  getNotebook: (id) => notebookStore.getNotebook(id),
+  getNotebookNotes: (notebookId, publicOnly = true) => notebookStore.listNotes(notebookId, { publicOnly }),
+  getNote: (id) => notebookStore.getNote(id),
 
 };
 

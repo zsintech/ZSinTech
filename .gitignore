@@ -7,3 +7,8 @@ Thumbs.db
 # Firebase service account keys — never commit
 *-firebase-adminsdk-*.json
 firebase-adminsdk*.json
+.render-env-sync.json
+.pk-escaped.txt
+scripts/notion-*.txt
+scripts/notion-*.json
+scripts/user-query-full.txt

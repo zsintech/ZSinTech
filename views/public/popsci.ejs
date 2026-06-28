@@ -2,7 +2,7 @@
 <%- include('../partials/nav-public') %>
 
 <main class="public-main">
-  <section class="page-hero page-hero--compact">
+  <section class="page-hero page-hero--mesh page-hero--compact">
     <p class="hero-eyebrow">Science Communication</p>
     <h1>PopSci AI</h1>
     <p>Short-form science reels from <a href="https://www.instagram.com/zsintech/" target="_blank" rel="noopener">@zsintech</a> — scan the QR in each reel for the full article.</p>
@@ -11,9 +11,10 @@
 
   <div class="popsci-grid">
     <% reels.forEach(reel => { %>
-    <article class="popsci-card">
+    <article class="popsci-card card-lift">
       <a href="/popsci/<%= reel.slug %>" class="popsci-card-link">
-        <div class="popsci-card-image" style="background-image: url('<%= img(reel.heroImageUrl, 'card') %>')">
+        <div class="popsci-card-image-wrap">
+          <%- include('../partials/media-cover', { url: reel.heroImageUrl, size: 'card', className: 'popsci-card-image media-cover', variant: 'popsci' }) %>
           <div class="popsci-card-overlay"></div>
           <span class="popsci-topic"><%= reel.topic %></span>
         </div>

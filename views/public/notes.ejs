@@ -1,0 +1,29 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <%- include('../partials/admin-toolbar') %>
+  <section class="page-header page-header--mesh">
+    <h1>Study Notes</h1>
+    <p class="page-desc">Published notebooks and learning notes from my studies</p>
+  </section>
+
+  <% if (notebooks.length === 0) { %>
+    <p class="empty-state">No public notebooks yet.</p>
+  <% } else { %>
+    <div class="public-notebook-grid">
+      <% notebooks.forEach(nb => { %>
+      <a href="/notes/<%= nb.slug || nb.id %>" class="public-notebook-card card-lift">
+        <div class="public-notebook-paper">
+          <% if (nb.subject) { %><span class="public-notebook-subject"><%= nb.subject %></span><% } %>
+          <h2><%= nb.title %></h2>
+          <% if (nb.description) { %><p><%= nb.description %></p><% } %>
+          <span class="public-notebook-meta"><%= nb.noteCount %> note<%= nb.noteCount === 1 ? '' : 's' %></span>
+        </div>
+      </a>
+      <% }) %>
+    </div>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

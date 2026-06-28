@@ -1,0 +1,59 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main">
+    <div class="admin-header">
+      <div class="admin-header-text">
+        <p class="admin-breadcrumb"><a href="/admin/notebooks">Notebooks</a></p>
+        <h1><%= notebook.title %></h1>
+        <% if (notebook.subject) { %><p class="page-desc"><%= notebook.subject %></p><% } %>
+      </div>
+      <div class="admin-header-actions">
+        <button type="button"
+          class="toggle-public-btn<%= notebook.isPublic ? ' is-public' : '' %>"
+          data-collection="notebooks"
+          data-id="<%= notebook.id %>">
+          <%= notebook.isPublic ? '🌐 Public' : '🔒 Private' %>
+        </button>
+        <a href="/admin/notebooks/<%= notebook.id %>/notes/new" class="btn btn-primary">
+          <span class="btn-icon">+</span> New Note
+        </a>
+        <a href="/admin/notebooks/<%= notebook.id %>/edit" class="btn btn-ghost">Settings</a>
+      </div>
+    </div>
+
+    <% if (notes.length === 0) { %>
+      <div class="admin-empty-hero admin-empty-hero--compact">
+        <h2>No notes yet</h2>
+        <p>Click below to add your first note to this notebook.</p>
+        <a href="/admin/notebooks/<%= notebook.id %>/notes/new" class="btn btn-primary">Write a Note</a>
+      </div>
+    <% } else { %>
+      <div class="note-list">
+        <% notes.forEach(note => { %>
+        <article class="note-list-item">
+          <a href="/admin/notebooks/<%= notebook.id %>/notes/<%= note.id %>/edit" class="note-list-link">
+            <div class="note-list-paper">
+              <h3><%= note.title %></h3>
+              <p class="note-preview"><%= (note.body || '').replace(/\n/g, ' ').substring(0, 120) %><%= (note.body || '').length > 120 ? '…' : '' %></p>
+              <span class="note-list-meta">Updated <%= formatDate(note.dateUpdated || note.dateAdded) %></span>
+            </div>
+          </a>
+          <div class="note-list-actions">
+            <button type="button"
+              class="toggle-public-btn<%= note.isPublic ? ' is-public' : '' %>"
+              data-collection="notebook_notes"
+              data-notebook-id="<%= notebook.id %>"
+              data-id="<%= note.id %>"
+              title="<%= note.isPublic ? 'Public' : 'Private' %>">
+              <%= note.isPublic ? '🌐' : '🔒' %>
+            </button>
+            <a href="/admin/notebooks/<%= notebook.id %>/notes/<%= note.id %>/edit" class="btn btn-small btn-ghost">Edit</a>
+          </div>
+        </article>
+        <% }) %>
+      </div>
+    <% } %>
+  </main>
+</div>
+<%- include('../partials/footer') %>

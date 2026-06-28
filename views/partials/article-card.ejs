@@ -1,9 +1,5 @@
-<article class="article-card article-card--detailed">
-  <% if (article.heroImageUrl) { %>
-  <div class="article-card-image media-cover" style="background-image: url('<%= img(article.heroImageUrl, 'card') %>')"></div>
-  <% } else { %>
-  <div class="article-card-image media-cover media-cover--placeholder"></div>
-  <% } %>
+<article class="article-card article-card--detailed card-lift">
+  <%- include('media-cover', { url: article.heroImageUrl, size: 'card', className: 'article-card-image media-cover', variant: 'journal' }) %>
   <div class="article-card-inner">
     <span class="article-source"><%= article.source || 'Article' %></span>
     <h2><%= article.title %></h2>

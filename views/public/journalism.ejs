@@ -2,7 +2,7 @@
 <%- include('../partials/nav-public') %>
 
 <main class="public-main">
-  <section class="page-hero page-hero--compact">
+  <section class="page-hero page-hero--mesh page-hero--compact">
     <p class="hero-eyebrow"><a href="https://voice.auis.edu.krd/" target="_blank" rel="noopener">The AUIS Voice</a></p>
     <h1>Journalism</h1>
     <p>Articles by Zheen Salih Abdullah — Iraq's first independent English student newspaper, published at AUIS.</p>
@@ -14,14 +14,13 @@
   <% } else { %>
   <div class="journalism-grid">
     <% articles.forEach(article => { %>
-    <article class="journalism-card">
+    <article class="journalism-card card-lift">
       <a href="/journalism/<%= article.slug %>" class="journalism-card-link">
-        <% if (article.heroImageUrl) { %>
-        <div class="journalism-card-image" style="background-image: url('<%= img(article.heroImageUrl, 'card') %>')">
+        <div class="journalism-card-image-wrap">
+          <%- include('../partials/media-cover', { url: article.heroImageUrl, size: 'card', className: 'journalism-card-image media-cover', variant: 'journal' }) %>
           <div class="journalism-card-overlay"></div>
           <% if (article.issue) { %><span class="journalism-issue">Issue <%= article.issue %></span><% } %>
         </div>
-        <% } %>
         <div class="journalism-card-body">
           <time class="journalism-date"><%= formatDate(article.datePublished) %></time>
           <h2><%= article.title %></h2>

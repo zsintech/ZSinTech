@@ -1,0 +1,11 @@
+<%#
+  url       — image URL (optional)
+  size      — thumb | card | hero (default card)
+  className — extra CSS classes on the cover element
+  variant   — science | journal | travel | book | idea | popsci | story (placeholder tint)
+%>
+<% const coverSize = typeof size !== 'undefined' ? size : 'card'; %>
+<% const coverClass = (typeof className !== 'undefined' ? className : 'media-cover') + (url ? '' : ' media-cover--placeholder') + (variant ? ' media-cover--' + variant : ''); %>
+<div class="<%= coverClass %>"<% if (url) { %> style="background-image: url('<%= img(url, coverSize) %>')"<% } %>>
+  <% if (!url) { %><span class="media-cover-glyph" aria-hidden="true"></span><% } %>
+</div>

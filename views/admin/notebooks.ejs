@@ -1,0 +1,59 @@
+<%- include('../partials/head', { title, isAdmin: true }) %>
+<div class="admin-layout">
+  <%- include('../partials/nav-admin') %>
+  <main class="admin-main">
+    <div class="admin-header">
+      <div class="admin-header-text">
+        <h1>Notebooks</h1>
+        <p class="page-desc">Digital study notes — create notebooks for courses and topics, write on clean paper, publish when ready.</p>
+      </div>
+      <a href="/admin/notebooks/new" class="btn btn-primary">
+        <span class="btn-icon">+</span> New Notebook
+      </a>
+    </div>
+
+    <% if (notebooks.length === 0) { %>
+      <div class="admin-empty-hero">
+        <div class="admin-empty-icon">📝</div>
+        <h2>Start your first notebook</h2>
+        <p>Create a notebook for each course or topic you're studying. Add notes inside — publish individual notes or whole notebooks when you're ready to share.</p>
+        <a href="/admin/notebooks/new" class="btn btn-primary">Create Notebook</a>
+      </div>
+    <% } else { %>
+      <div class="notebook-grid">
+        <% notebooks.forEach(nb => { %>
+        <article class="notebook-card">
+          <div class="notebook-card-inner">
+            <div class="notebook-card-top">
+              <% if (nb.subject) { %><span class="notebook-subject"><%= nb.subject %></span><% } %>
+              <button type="button"
+                class="toggle-public-btn<%= nb.isPublic ? ' is-public' : '' %>"
+                data-collection="notebooks"
+                data-id="<%= nb.id %>"
+                title="<%= nb.isPublic ? 'Public' : 'Private' %>">
+                <%= nb.isPublic ? '🌐' : '🔒' %>
+              </button>
+            </div>
+            <a href="/admin/notebooks/<%= nb.id %>" class="notebook-card-link">
+              <h3><%= nb.title %></h3>
+              <% if (nb.description) { %><p><%= nb.description %></p><% } %>
+              <span class="notebook-meta">
+                <%= noteCounts[nb.id] || 0 %> note<%= (noteCounts[nb.id] || 0) === 1 ? '' : 's' %>
+                · Updated <%= formatDate(nb.dateUpdated || nb.dateAdded) %>
+              </span>
+            </a>
+            <div class="notebook-card-actions">
+              <a href="/admin/notebooks/<%= nb.id %>" class="btn btn-small btn-primary">Open</a>
+              <a href="/admin/notebooks/<%= nb.id %>/edit" class="btn btn-small btn-ghost">Edit</a>
+              <% if (nb.isPublic) { %>
+              <a href="/notes/<%= nb.slug || nb.id %>" class="btn btn-small btn-outline" target="_blank">View public</a>
+              <% } %>
+            </div>
+          </div>
+        </article>
+        <% }) %>
+      </div>
+    <% } %>
+  </main>
+</div>
+<%- include('../partials/footer') %>
