@@ -2,9 +2,11 @@
 <%- include('../partials/nav-public') %>
 
 <main class="public-main">
-  <section class="page-hero page-hero--mesh page-hero--compact">
-    <h1><%= typeof pageHeading !== 'undefined' ? pageHeading : 'Writings' %></h1>
-    <p><%= typeof pageDesc !== 'undefined' ? pageDesc : 'Essays, projects, research, and stories on science, philosophy, and the human condition.' %></p>
+  <section class="page-hero page-hero--with-image">
+    <div class="page-hero-content">
+      <h1><%= typeof pageHeading !== 'undefined' ? pageHeading : 'Writings' %></h1>
+      <p><%= typeof pageDesc !== 'undefined' ? pageDesc : 'Essays, projects, research, and stories on science, philosophy, and the human condition.' %></p>
+    </div>
   </section>
 
   <div class="filter-tabs">
@@ -15,11 +17,11 @@
   </div>
 
   <% if (!writings.length) { %>
-  <p class="empty-state">No writings yet — check back soon.</p>
+  <p style="text-align: center; padding: 4rem 2rem; color: var(--ink-muted);">No writings yet — check back soon.</p>
   <% } else { %>
   <div class="writings-masonry">
     <% writings.forEach((writing, i) => { %>
-    <article class="masonry-card <%= i % 3 === 0 ? 'masonry-card--tall' : '' %> card-lift">
+    <article class="masonry-card <%= i % 5 === 0 ? 'masonry-card--featured' : '' %> card-lift">
       <a href="/writings/<%= writing.slug %>" class="masonry-card-link">
         <div class="masonry-card-image-wrap">
           <%- include('../partials/media-cover', { url: writing.heroImageUrl, size: 'card', className: 'masonry-card-image media-cover', variant: writing.type === 'story' ? 'story' : 'science' }) %>
@@ -30,13 +32,6 @@
           <time class="masonry-date"><%= formatDate(writing.dateWritten) %></time>
           <h2><%= writing.title %></h2>
           <p><%= writing.excerpt %></p>
-          <% if (writing.tags && writing.tags.length) { %>
-          <div class="tags">
-            <% writing.tags.slice(0, 3).forEach(tag => { %>
-            <span class="tag"><%= tag %></span>
-            <% }) %>
-          </div>
-          <% } %>
         </div>
       </a>
     </article>

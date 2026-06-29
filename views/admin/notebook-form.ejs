@@ -30,8 +30,56 @@
       </div>
       <div class="form-group">
         <label for="description">Description <span class="label-optional">optional</span></label>
-        <textarea id="description" name="description" rows="2"
-                  placeholder="What is this notebook for?"><%= notebook ? (notebook.description || '') : '' %></textarea>
+        <textarea id="description" name="description" rows="3"
+                  placeholder="What is this notebook for? What course or project does it belong to?"><%= notebook ? (notebook.description || '') : '' %></textarea>
+      </div>
+      <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label for="emoji">Emoji Icon</label>
+          <input type="text" id="emoji" name="emoji"
+                 placeholder="📝 🧠 🔬 📊 💻 🧪"
+                 value="<%= notebook ? (notebook.emoji || '') : '' %>">
+          <p class="form-hint">Pick an emoji that represents this notebook</p>
+        </div>
+        <div class="form-group">
+          <label for="color">Color</label>
+          <select id="color" name="color">
+            <option value="" <%= !notebook || !notebook.color ? 'selected' : '' %>>Default</option>
+            <option value="blue" <%= notebook && notebook.color === 'blue' ? 'selected' : '' %>>Blue</option>
+            <option value="green" <%= notebook && notebook.color === 'green' ? 'selected' : '' %>>Green</option>
+            <option value="purple" <%= notebook && notebook.color === 'purple' ? 'selected' : '' %>>Purple</option>
+            <option value="orange" <%= notebook && notebook.color === 'orange' ? 'selected' : '' %>>Orange</option>
+            <option value="red" <%= notebook && notebook.color === 'red' ? 'selected' : '' %>>Red</option>
+            <option value="teal" <%= notebook && notebook.color === 'teal' ? 'selected' : '' %>>Teal</option>
+            <option value="pink" <%= notebook && notebook.color === 'pink' ? 'selected' : '' %>>Pink</option>
+          </select>
+          <p class="form-hint">Accent color for this notebook</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="category">Category</label>
+        <input type="text" id="category" name="category"
+               placeholder="e.g. Computer Science, Philosophy, Medicine, Writing"
+               value="<%= notebook ? (notebook.category || '') : '' %>">
+      </div>
+      <div class="form-group">
+        <label for="semester">Semester / Period</label>
+        <input type="text" id="semester" name="semester"
+               placeholder="e.g. Spring 2025, Summer 2024"
+               value="<%= notebook ? (notebook.semester || '') : '' %>">
+      </div>
+      <div class="form-group">
+        <label for="coverUrl">Cover Image URL <span class="label-optional">optional</span></label>
+        <input type="url" id="coverUrl" name="coverUrl"
+               placeholder="https://images.pexels.com/..."
+               value="<%= notebook ? (notebook.coverUrl || '') : '' %>">
+        <p class="form-hint">Used as notebook thumbnail on the public site</p>
+      </div>
+      <div class="form-group">
+        <label for="tags">Tags <span class="label-optional">comma-separated</span></label>
+        <input type="text" id="tags" name="tags"
+               placeholder="e.g. machine-learning, linear-algebra, python"
+               value="<%= notebook && notebook.tags ? notebook.tags.join(', ') : '' %>">
       </div>
       <div class="form-group">
         <label class="checkbox-label">

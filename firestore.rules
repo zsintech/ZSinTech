@@ -34,5 +34,8 @@ service cloud.firestore {
     match /notebook_notes/{doc} {
       allow read: if resource.data.isPublic == true;
     }
+    match /activities/{doc} {
+      allow read: if resource.data.isPublic == true;
+    }
   }
 }

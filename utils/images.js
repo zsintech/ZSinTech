@@ -15,8 +15,21 @@ function pexelsUrl(url, size = 'hero') {
     return `${base}?auto=compress&cs=tinysrgb&w=${w}&fit=crop`;
   }
 
-  if (url.includes('i.ibb.co') || url.includes('ibb.co')) {
-    return url;
+  if (
+    url.includes('media.licdn.com') ||
+    url.includes('static.licdn.com') ||
+    url.includes('voice.auis.edu.krd') ||
+    url.includes('auisvoice') ||
+    url.includes('storiesofkhasa.xyz') ||
+    url.includes('pbs.twimg.com') ||
+    url.includes('i.ibb.co') ||
+    url.includes('upload.wikimedia.org')
+  ) {
+    return url.split('?')[0];
+  }
+
+  if (/\.(png|jpe?g|webp|gif|svg)(\?|$)/i.test(url)) {
+    return url.split('?')[0];
   }
 
   if (url.includes('w=')) return url.replace(/w=\d+/, `w=${w}`);

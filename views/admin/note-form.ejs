@@ -37,6 +37,37 @@
 
 Use plain text or markdown — headings, lists, and **bold** all work."><%= note ? (note.body || '') : '' %></textarea>
       </div>
+
+      <details class="note-extras" style="margin-top: 1rem; padding: 1rem; border: 1px solid var(--border, #e5e7eb); border-radius: 12px; background: var(--surface, #fff);">
+        <summary style="cursor: pointer; font-weight: 600; font-size: 0.85rem; color: var(--ink-muted, #6B7280);">More options</summary>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+          <div class="form-group">
+            <label for="note-tags">Tags</label>
+            <input type="text" id="note-tags" name="tags" placeholder="comma-separated"
+                   value="<%= note && note.tags ? note.tags.join(', ') : '' %>">
+          </div>
+          <div class="form-group">
+            <label for="note-category">Category</label>
+            <input type="text" id="note-category" name="category" placeholder="e.g. lecture, lab, review"
+                   value="<%= note ? (note.category || '') : '' %>">
+          </div>
+          <div class="form-group">
+            <label for="note-coverUrl">Cover Image URL</label>
+            <input type="url" id="note-coverUrl" name="coverUrl" placeholder="https://..."
+                   value="<%= note ? (note.coverUrl || '') : '' %>">
+          </div>
+          <div class="form-group">
+            <label for="note-sourceUrl">Source / Reference URL</label>
+            <input type="url" id="note-sourceUrl" name="sourceUrl" placeholder="https://..."
+                   value="<%= note ? (note.sourceUrl || '') : '' %>">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label for="note-excerpt">Excerpt / Summary</label>
+            <textarea id="note-excerpt" name="excerpt" rows="2" placeholder="Brief summary of this note"><%= note ? (note.excerpt || '') : '' %></textarea>
+          </div>
+        </div>
+      </details>
+
       <div class="digital-paper-toolbar">
         <label class="checkbox-label">
           <input type="checkbox" name="isPublic" value="true"

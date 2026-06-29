@@ -16,6 +16,7 @@ const STATIC_LOADERS = {
   reflections: () => require('../data/reflections').getAll(),
   writings: () => require('../data/writings').getAll(),
   notebooks: () => require('../data/notebooks').getAll(),
+  activities: () => require('../data/activities').getAll(),
 };
 
 function normalizeItem(item) {
@@ -34,6 +35,7 @@ function applyFilters(items, filters = {}) {
   if (filters.status) result = result.filter(i => i.status === filters.status);
   if (filters.category) result = result.filter(i => i.category === filters.category);
   if (filters.type) result = result.filter(i => i.type === filters.type);
+  if (filters.kind) result = result.filter(i => i.kind === filters.kind);
   if (filters.tag) result = result.filter(i => i.tags && i.tags.includes(filters.tag));
   if (filters.shelfType) result = result.filter(i => i.shelfType === filters.shelfType);
   return result;
@@ -181,6 +183,12 @@ async function importStaticCollection(collection) {
       payload.dateAdded = admin.firestore.Timestamp.fromDate(payload.dateAdded);
     } else if (!payload.dateAdded) {
       payload.dateAdded = admin.firestore.Timestamp.now();
+    }
+    if (payload.datePublished instanceof Date) {
+      payload.datePublished = admin.firestore.Timestamp.fromDate(payload.datePublished);
+    }
+    if (payload.dateWritten instanceof Date) {
+      payload.dateWritten = admin.firestore.Timestamp.fromDate(payload.dateWritten);
     }
     delete payload.id;
     await db.collection(collection).doc(id).set(payload, { merge: true });

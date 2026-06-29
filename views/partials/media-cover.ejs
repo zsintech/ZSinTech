@@ -6,6 +6,10 @@
 %>
 <% const coverSize = typeof size !== 'undefined' ? size : 'card'; %>
 <% const coverClass = (typeof className !== 'undefined' ? className : 'media-cover') + (url ? '' : ' media-cover--placeholder') + (variant ? ' media-cover--' + variant : ''); %>
-<div class="<%= coverClass %>"<% if (url) { %> style="background-image: url('<%= img(url, coverSize) %>')"<% } %>>
-  <% if (!url) { %><span class="media-cover-glyph" aria-hidden="true"></span><% } %>
+<% if (url) { %>
+<img class="<%= coverClass %>" src="<%= img(url, coverSize) %>" alt="" loading="lazy" decoding="async" onerror="this.classList.add('media-cover--broken');this.removeAttribute('src');" />
+<% } else { %>
+<div class="<%= coverClass %>">
+  <span class="media-cover-glyph" aria-hidden="true"></span>
 </div>
+<% } %>

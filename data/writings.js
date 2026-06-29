@@ -167,6 +167,107 @@ Not that it did us any good in the long run.`,
     isPublic: true,
   },
   {
+    id: 'stories-of-khasa',
+    title: 'Stories of Khasa',
+    slug: 'stories-of-khasa',
+    type: 'project',
+    excerpt: 'Digital archive for stories, memories, photographs, and oral histories connected to the Khasa River and Kirkuk communities.',
+    body: `## Stories of Khasa
+
+My first deployed website post-undergrad — born from National Geographic & Nature Conservancy fieldwork on the Khasa River basin.
+
+**Live site:** [storiesofkhasa.xyz](https://storiesofkhasa.xyz) · **Instagram:** [@storiesofkhasa](https://www.instagram.com/storiesofkhasa/)
+
+### What it is
+
+A digital archive preserving narratives, family stories, local history, and identity tied to the Khasa River in Kirkuk. English version live; Kurdish and Arabic in development.
+
+### Get involved
+
+If you have stories, photographs, documents, recordings, or know people whose memories should be documented — historians, educators, archivists, journalists, photographers, and community members with ties to Kirkuk — reach out via the site.`,
+    ogImageUrl: 'https://images.pexels.com/photos/38210595/pexels-photo-38210595.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    imageSource: 'external',
+    tags: ['digital heritage', 'oral history', 'Kirkuk', 'web development'],
+    heroImageUrl: 'https://images.pexels.com/photos/38210595/pexels-photo-38210595.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    projectUrl: 'https://storiesofkhasa.xyz',
+    dateWritten: new Date('2025-06-15'),
+    isPublic: true,
+  },
+  {
+    id: 'khasa-river-research',
+    title: 'Khasa River Environmental Research',
+    slug: 'khasa-river-research',
+    type: 'project',
+    excerpt: 'National Geographic Society & Nature Conservancy externship — fieldwork, GIS mapping, and local narratives on the Khasa River basin in Kirkuk.',
+    body: `## Khasa River Research
+
+Three months of fieldwork through the National Geographic Society & The Nature Conservancy Externship — investigating environmental realities shaping Kirkuk's Khasa River.
+
+**Deliverable:** [ArcGIS StoryMap](https://arcg.is/1Car1n1)
+
+What began as a question about a disappearing river became an exploration of miscommunication between scientists, engineers, policymakers, and communities who depend on the water. This work seeded Stories of Khasa.`,
+    ogImageUrl: 'https://images.pexels.com/photos/38210591/pexels-photo-38210591.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    imageSource: 'external',
+    tags: ['environment', 'GIS', 'Kirkuk', 'National Geographic'],
+    heroImageUrl: 'https://images.pexels.com/photos/38210591/pexels-photo-38210591.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    projectUrl: 'https://arcg.is/1Car1n1',
+    dateWritten: new Date('2024-11-01'),
+    isPublic: true,
+  },
+  {
+    id: 'readbyte',
+    title: 'ReadByte',
+    slug: 'readbyte',
+    type: 'project',
+    excerpt: 'Science communication platform — API integrations and creative problem-solving to make complex content easier to understand.',
+    body: `## ReadByte
+
+Capstone-era platform demonstrated at AUIS STEM showcase — weaving API integrations and creative problem-solving to make complex content easier to understand.
+
+Built with Shad Swara Saeed, shaped by science communication work at BMSIS with Dr. Alexander Kaurov.`,
+    tags: ['capstone', 'science communication', 'API', 'BMSIS'],
+    heroImageUrl: 'https://images.pexels.com/photos/32780193/pexels-photo-32780193.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    dateWritten: new Date('2024-03-01'),
+    isPublic: true,
+  },
+  {
+    id: 'ases-earthquake-system',
+    title: 'Early Earthquake Warning System',
+    slug: 'ases-earthquake-system',
+    type: 'project',
+    excerpt: 'ASES 2025 prototype — MPU6050 sensors, Arduino + ESP32, and cloud push alerts to detect P-waves seconds before shaking.',
+    body: `## Early Earthquake Warning System
+
+Built during the AUIS Applied Science and Engineering Summer Program (ASES) 2025.
+
+- MPU6050 motion sensors to detect P-waves
+- Arduino + ESP32 for real-time data transmission
+- LCD alerts, buzzer sirens, and LED indicators
+- Cloud-connected push notifications via mobile apps
+
+Engineering isn't just code and wires — it's building solutions that can protect lives.`,
+    tags: ['engineering', 'ASES', 'hardware', 'IoT'],
+    heroImageUrl: 'https://images.pexels.com/photos/15861615/pexels-photo-15861615.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    dateWritten: new Date('2024-05-01'),
+    isPublic: true,
+  },
+  {
+    id: 'auis-wikimedians',
+    title: 'AUIS Wikimedians Club',
+    slug: 'auis-wikimedians',
+    type: 'project',
+    excerpt: 'Student club connecting AUIS with Wikipedia, Wikidata, and Wikimedia Commons — representing Kurdish and Iraqi perspectives in open knowledge.',
+    body: `## AUIS Wikimedians Club
+
+Kickoff collaboration with Wikimedia Foundation and Wikimedia Iraq — helping students learn to contribute to Wikipedia, Wikidata, and Wikimedia Commons.
+
+From hesitant first edits to careful citations and late-night fact checking — open knowledge as practice, not just ethos.`,
+    tags: ['Wikipedia', 'open knowledge', 'AUIS'],
+    heroImageUrl: 'https://images.pexels.com/photos/16587313/pexels-photo-16587313.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    dateWritten: new Date('2024-09-01'),
+    isPublic: true,
+  },
+  {
     id: 'popsci-ai',
     title: 'PopSci AI',
     slug: 'popsci-ai',
@@ -341,8 +442,10 @@ These journalism essays also live under [/journalism](/journalism): *The Diagnos
 Independent student journalism at AUIS is how I learned to translate research into prose people actually want to read — the same muscle I now use for PopSci AI and essay writing.
 
 Listed among my professional projects on [LinkedIn](https://www.linkedin.com/in/zheen-salih-abdullah-b88854264).`,
+    ogImageUrl: 'https://i.ibb.co/TB2W9X9Q/3e7a8d082406.webp',
+    imageSource: 'external',
     tags: ['journalism', 'AUIS', 'science communication', 'writing'],
-    heroImageUrl: 'https://images.pexels.com/photos/15047111/pexels-photo-15047111.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    heroImageUrl: 'https://i.ibb.co/TB2W9X9Q/3e7a8d082406.webp',
     dateWritten: new Date('2024-03-01'),
     projectUrl: 'https://voice.auis.edu.krd/',
     isPublic: true,
@@ -368,8 +471,10 @@ Listed among my professional projects on [LinkedIn](https://www.linkedin.com/in/
 Meet people where they already scroll. Build scientific literacy without dumbing science down — wonder beats jargon.
 
 Explore reel write-ups on [/popsci](/popsci) or follow live on Instagram.`,
+    ogImageUrl: 'https://scontent.cdninstagram.com/v/t51.82787-19/706676860_18077178074645961_4056300157723781850_n.jpg?stp=dst-jpg_s100x100_tt6&_nc_cat=110&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy42NjUuQzMifQ%3D%3D&_nc_ohc=bvo2UDf8TusQ7kNvwF-NEjq&_nc_oc=Adr3sac4vqlrm2p--ZuihZEwK3jGg8cmkXWxW1dnON8PpRGQWOpTUR3_ukGj-tF4Af4&_nc_zt=24&_nc_ht=scontent.cdninstagram.com&_nc_gid=50mmKCoJbBaU_nrFnlABXg&_nc_ss=7ca8c&oh=00_Af-iqOwCwe-YkqEkCywAy9Orp8OF2NM1AbaJMBgZL00cBQ&oe=6A479310',
+    imageSource: 'external',
     tags: ['Instagram', 'science communication', 'content creation', 'brand'],
-    heroImageUrl: 'https://images.pexels.com/photos/326503/pexels-photo-326503.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    heroImageUrl: 'https://scontent.cdninstagram.com/v/t51.82787-19/706676860_18077178074645961_4056300157723781850_n.jpg?stp=dst-jpg_s100x100_tt6&_nc_cat=110&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy42NjUuQzMifQ%3D%3D&_nc_ohc=bvo2UDf8TusQ7kNvwF-NEjq&_nc_oc=Adr3sac4vqlrm2p--ZuihZEwK3jGg8cmkXWxW1dnON8PpRGQWOpTUR3_ukGj-tF4Af4&_nc_zt=24&_nc_ht=scontent.cdninstagram.com&_nc_gid=50mmKCoJbBaU_nrFnlABXg&_nc_ss=7ca8c&oh=00_Af-iqOwCwe-YkqEkCywAy9Orp8OF2NM1AbaJMBgZL00cBQ&oe=6A479310',
     dateWritten: new Date('2024-02-01'),
     projectUrl: 'https://www.instagram.com/zsintech/',
     isPublic: true,
@@ -395,8 +500,10 @@ Open-source web companion to [PopSci AI](/writings/popsci-ai) — the site behin
 Instagram is for discovery; the web is for depth. Each reel points somewhere durable — a place to read, cite, and share without algorithmic decay.
 
 Part of my science-communication toolchain alongside BMSIS scholarship and The AUIS Voice.`,
+    ogImageUrl: 'https://opengraph.githubassets.com/0bb0d02e69ed92796fda3b045961d59e875a2f117f9c8760fb2828ce39a3f576/zsintech/popsci.ai',
+    imageSource: 'external',
     tags: ['web', 'PopSci AI', 'open source', 'GitHub'],
-    heroImageUrl: 'https://images.pexels.com/photos/8382618/pexels-photo-8382618.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    heroImageUrl: 'https://opengraph.githubassets.com/0bb0d02e69ed92796fda3b045961d59e875a2f117f9c8760fb2828ce39a3f576/zsintech/popsci.ai',
     dateWritten: new Date('2024-06-01'),
     projectUrl: 'https://github.com/zsintech/popsci.ai',
     isPublic: true,

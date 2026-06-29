@@ -2,21 +2,24 @@
 <%- include('../partials/nav-public') %>
 
 <main class="public-main">
-  <section class="page-header">
-    <h1>Shelf</h1>
-    <p class="page-desc">Books, courses, articles, and movies — a curated collection</p>
-    <div class="shelf-quick-links">
-      <a href="/books/vocational" class="shelf-quick-link">Vocational Books &rarr;</a>
-      <a href="/books/literary" class="shelf-quick-link">Literary Books &rarr;</a>
-      <a href="/courses" class="shelf-quick-link">Courses to Take &rarr;</a>
-      <a href="/articles-read" class="shelf-quick-link">Articles Read &rarr;</a>
-      <a href="/research-papers" class="shelf-quick-link">Research Papers &rarr;</a>
-      <a href="/writing-ideas" class="shelf-quick-link">Writing Ideas &rarr;</a>
-      <a href="/iconic-bitch" class="shelf-quick-link">Iconic Bitch &rarr;</a>
-      <a href="/solo-date" class="shelf-quick-link">Solo Date &rarr;</a>
-      <a href="/travel" class="shelf-quick-link">Travel &rarr;</a>
+  <section class="page-hero page-hero--with-image">
+    <div class="page-hero-content">
+      <h1>Shelf</h1>
+      <p>Books, courses, articles, and movies — a curated collection of everything I'm learning from.</p>
     </div>
   </section>
+
+  <div class="shelf-quick-links" style="max-width: var(--max-width, 1200px); margin: 0 auto; padding: 0 2rem 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+    <a href="/books/vocational" class="shelf-quick-link">Vocational Books &rarr;</a>
+    <a href="/books/literary" class="shelf-quick-link">Literary Books &rarr;</a>
+    <a href="/courses" class="shelf-quick-link">Courses &rarr;</a>
+    <a href="/articles-read" class="shelf-quick-link">Articles Read &rarr;</a>
+    <a href="/research-papers" class="shelf-quick-link">Research Papers &rarr;</a>
+    <a href="/writing-ideas" class="shelf-quick-link">Writing Ideas &rarr;</a>
+    <a href="/iconic-bitch" class="shelf-quick-link">Iconic Bitch &rarr;</a>
+    <a href="/solo-date" class="shelf-quick-link">Solo Date &rarr;</a>
+    <a href="/travel" class="shelf-quick-link">Travel &rarr;</a>
+  </div>
 
   <% if (iconicBitch && iconicBitch.length) { %>
   <section class="shelf-section shelf-section--featured">
@@ -26,13 +29,14 @@
     </div>
     <div class="shelf-items">
       <% iconicBitch.forEach(item => { %>
-      <div class="shelf-card shelf-card--featured">
+      <a href="<%= item.url || '/iconic-bitch' %>" class="shelf-card shelf-card--featured shelf-card--link" <%= item.url ? 'target="_blank" rel="noopener"' : '' %>>
+        <img class="shelf-card-icon" src="https://www.google.com/s2/favicons?domain=<%= item.url ? new URL(item.url).hostname : 'google.com' %>&sz=32" alt="" width="20" height="20" loading="lazy">
         <div class="shelf-card-info">
-          <h4><a href="<%= item.url %>" target="_blank" rel="noopener"><%= item.title %></a></h4>
+          <h4><%= item.title %></h4>
           <p class="muted"><%= item.author %></p>
           <p class="shelf-card-excerpt"><%= item.excerpt %></p>
         </div>
-      </div>
+      </a>
       <% }) %>
     </div>
   </section>
@@ -79,13 +83,14 @@
     </div>
     <div class="shelf-items">
       <% courses.forEach(course => { %>
-      <div class="shelf-card">
+      <a href="<%= course.url || '/courses' %>" class="shelf-card shelf-card--link" <%= course.url ? 'target="_blank" rel="noopener"' : '' %>>
+        <img class="shelf-card-icon" src="https://www.google.com/s2/favicons?domain=<%= course.url ? new URL(course.url).hostname : 'coursera.org' %>&sz=32" alt="" width="20" height="20" loading="lazy">
         <div class="shelf-card-info">
           <h4><%= course.title %></h4>
           <p class="muted"><%= course.platform || '' %> <% if (course.instructor) { %>— <%= course.instructor %><% } %></p>
           <span class="status-badge status-<%= course.status %>"><%= course.status %></span>
         </div>
-      </div>
+      </a>
       <% }) %>
     </div>
   </section>
@@ -99,13 +104,14 @@
     </div>
     <div class="shelf-items shelf-items--articles">
       <% articles.slice(0, 8).forEach(article => { %>
-      <div class="shelf-card shelf-card--compact">
+      <a href="<%= article.url || '/articles-read' %>" class="shelf-card shelf-card--compact shelf-card--link" <%= article.url ? 'target="_blank" rel="noopener"' : '' %>>
+        <img class="shelf-card-icon" src="https://www.google.com/s2/favicons?domain=<%= article.url ? new URL(article.url).hostname : 'medium.com' %>&sz=32" alt="" width="20" height="20" loading="lazy">
         <div class="shelf-card-info">
-          <h4><% if (article.url) { %><a href="<%= article.url %>" target="_blank" rel="noopener"><%= article.title %></a><% } else { %><%= article.title %><% } %></h4>
+          <h4><%= article.title %></h4>
           <p class="muted"><%= article.source || '' %></p>
           <span class="status-badge status-<%= article.status %>"><%= article.status %></span>
         </div>
-      </div>
+      </a>
       <% }) %>
     </div>
   </section>
@@ -132,7 +138,7 @@
   <% } %>
 
   <% if (books.length === 0 && courses.length === 0 && articles.length === 0 && movies.length === 0 && (!iconicBitch || !iconicBitch.length)) { %>
-  <p class="empty-state">Nothing on the shelf yet.</p>
+  <p style="text-align: center; padding: 4rem 2rem; color: var(--ink-muted, #9B9B9B);">Nothing on the shelf yet.</p>
   <% } %>
 </main>
 

@@ -1,4 +1,6 @@
 const express = require('express');
+const { siteHero: SITE_HERO_IMAGE } = require('../data/topic-images');
+
 const router = express.Router();
 const { db, isConfigured } = require('../firebase-admin');
 const { renderMarkdown } = require('../utils/markdown');
@@ -36,6 +38,9 @@ const {
   getNotebook,
   getNotebookNotes,
   getNote,
+  getActivities,
+  getActivityBySlug,
+  getActivityKinds,
 } = require('../utils/library');
 
 router.get('/', async (req, res) => {
@@ -48,6 +53,7 @@ router.get('/', async (req, res) => {
   const popsciReels = await getPopSciReels();
   const reflections = await getReflections();
   const latestReflection = reflections[0] || null;
+  const activities = await getActivities();
 
   const courses = await getCourses();
   const articles = await getArticlesRead();
@@ -65,12 +71,42 @@ router.get('/', async (req, res) => {
     journalism,
     popsciReels,
     latestReflection,
+    activities,
     courses: courses.slice(0, 4),
     articles: articles.slice(0, 4),
     vocationalBooks,
     literaryBooks,
     formatDate,
-    heroImage: featured?.heroImageUrl || essays[0]?.heroImageUrl,
+    heroImage: SITE_HERO_IMAGE,
+  });
+});
+
+router.get('/activities', async (req, res) => {
+  const kind = req.query.kind || '';
+  const activities = await getActivities(kind ? { kind } : {});
+  res.render('public/activities', {
+    title: 'Activity',
+    activities,
+    formatDate,
+    currentKind: kind,
+    kinds: getActivityKinds(),
+    adminEditPath: '/admin/content/activities',
+  });
+});
+
+router.get('/activities/:slug', async (req, res) => {
+  const activity = await getActivityBySlug(req.params.slug);
+  if (!activity || activity.isPublic === false) return res.status(404).redirect('/activities');
+
+  const all = await getActivities();
+  const related = all.filter(a => a.slug !== activity.slug).slice(0, 3);
+
+  res.render('public/activity-single', {
+    title: activity.title,
+    activity,
+    related,
+    formatDate,
+    adminEditPath: `/admin/content/activities/${activity.id || activity.slug}/edit`,
   });
 });
 

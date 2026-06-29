@@ -1,0 +1,50 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <section class="page-hero page-hero--with-image">
+    <div class="page-hero-content">
+      <p class="hero-eyebrow"><a href="https://www.linkedin.com/in/zheen-salih-abdullah-b88854264/recent-activity/all/" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.7);">LinkedIn</a></p>
+      <h1>Activity</h1>
+      <p>Posts, projects, reposts, and videos — engineering, research, journalism, and campus leadership.</p>
+    </div>
+  </section>
+
+  <div class="filter-tabs">
+    <a href="/activities" class="filter-tab<%= !currentKind ? ' active' : '' %>">All</a>
+    <% const kindLabels = { post: 'Posts', repost: 'Reposts', video: 'Videos', project: 'Projects' }; %>
+    <% kinds.forEach(k => { %>
+    <a href="/activities?kind=<%= k %>" class="filter-tab<%= currentKind === k ? ' active' : '' %>"><%= kindLabels[k] || k %></a>
+    <% }) %>
+  </div>
+
+  <% if (!activities.length) { %>
+  <p class="empty-state" style="text-align: center; padding: 4rem 2rem; color: var(--ink-muted);">No activity published yet.</p>
+  <% } else { %>
+  <div class="activity-magazine" style="max-width: var(--max-width); margin: 0 auto; padding: 0 2rem 5rem;">
+    <% activities.forEach(activity => { %>
+    <article class="activity-magazine-card">
+      <a href="/activities/<%= activity.slug %>" class="activity-magazine-link">
+        <div class="activity-magazine-img">
+          <%- include('../partials/media-cover', { url: activity.heroImageUrl || activity.coverUrl, size: 'card', className: 'media-cover', variant: activity.kind === 'project' ? 'science' : 'journal' }) %>
+        </div>
+        <div class="activity-magazine-body">
+          <div class="tile-meta">
+            <span class="tile-badge tile-badge--<%= activity.kind %>"><%= activity.kind %></span>
+            <time><%= formatDate(activity.datePublished) %></time>
+          </div>
+          <% if (activity.repostOf) { %><p style="font-size: 0.6875rem; color: var(--ink-muted);">Reposted · <%= activity.repostOf %></p><% } %>
+          <h2><%= activity.title %></h2>
+          <p class="activity-excerpt"><%= activity.excerpt %></p>
+        </div>
+      </a>
+      <% if (activity.linkedinUrl && !activity.linkedinUrl.includes('recent-activity')) { %>
+      <a href="<%= activity.linkedinUrl %>" target="_blank" rel="noopener" class="activity-magazine-in" aria-label="View on LinkedIn">in</a>
+      <% } %>
+    </article>
+    <% }) %>
+  </div>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

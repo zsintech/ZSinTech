@@ -1,5 +1,6 @@
 const { db, isConfigured } = require('../firebase-admin');
 const staticContent = require('../data/writings');
+const { enrichProjects, enrichProject } = require('./enrichCover');
 
 async function fetchFromFirestore(filters = {}) {
   if (!isConfigured || !db) return null;
@@ -35,24 +36,41 @@ async function getPublicWritings(filters = {}) {
   else if (filters.excludeStories) items = items.filter(w => w.type !== 'story');
   if (filters.tag) items = items.filter(w => w.tags && w.tags.includes(filters.tag));
 
-  return items.sort((a, b) => {
+  let result = items.sort((a, b) => {
     const da = a.dateWritten?.toDate ? a.dateWritten.toDate() : a.dateWritten;
     const db = b.dateWritten?.toDate ? b.dateWritten.toDate() : b.dateWritten;
     return new Date(db) - new Date(da);
   });
+
+  if (filters.type === 'project') {
+    return enrichProjects(result);
+  }
+
+  const projects = result.filter((w) => w.type === 'project');
+  if (projects.length) {
+    const enriched = await enrichProjects(projects);
+    const map = new Map(enriched.map((p) => [p.slug, p]));
+    result = result.map((w) => (w.type === 'project' ? map.get(w.slug) || w : w));
+  }
+
+  return result;
 }
 
 async function getWritingBySlug(slug) {
-  if (!isConfigured || !db) return staticContent.getBySlug(slug);
-  try {
-    const snap = await db.collection('writings')
-      .where('slug', '==', slug)
-      .where('isPublic', '==', true)
-      .limit(1)
-      .get();
-    if (!snap.empty) return { id: snap.docs[0].id, ...snap.docs[0].data() };
-  } catch { /* fall through */ }
-  return staticContent.getBySlug(slug);
+  let item = null;
+  if (isConfigured && db) {
+    try {
+      const snap = await db.collection('writings')
+        .where('slug', '==', slug)
+        .where('isPublic', '==', true)
+        .limit(1)
+        .get();
+      if (!snap.empty) item = { id: snap.docs[0].id, ...snap.docs[0].data() };
+    } catch { /* fall through */ }
+  }
+  if (!item) item = staticContent.getBySlug(slug);
+  if (item?.type === 'project') return enrichProject(item);
+  return item;
 }
 
 module.exports = { getPublicWritings, getWritingBySlug };

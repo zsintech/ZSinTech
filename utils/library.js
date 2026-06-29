@@ -24,6 +24,10 @@ const staticCourses = require('../data/courses');
 
 const staticBooks = require('../data/books');
 
+const staticActivities = require('../data/activities');
+
+const { enrichActivities, enrichJournalism, enrichArticlesRead, enrichProjects } = require('./enrichCover');
+
 const { splitByReadingStatus } = require('./readingStatus');
 const notebookStore = require('./notebooks');
 
@@ -31,9 +35,8 @@ async function getArticlesRead(filters = {}) {
 
   const items = await contentStore.list('articles_read', { ...filters, publicOnly: true });
 
-  if (items.length) return items;
-
-  return staticArticles.getAll(filters.tag ? { tag: filters.tag } : {});
+  const source = items.length ? items : staticArticles.getAll(filters.tag ? { tag: filters.tag } : {});
+  return enrichArticlesRead(source);
 
 }
 
@@ -171,7 +174,8 @@ async function getJournalismArticles() {
 
   const items = await contentStore.list('journalism', { publicOnly: true });
 
-  return items.length ? items : staticJournalism.getAll();
+  const source = items.length ? items : staticJournalism.getAll();
+  return enrichJournalism(source);
 
 }
 
@@ -181,10 +185,37 @@ async function getJournalismBySlug(slug) {
 
   const item = await contentStore.getById('journalism', slug);
 
-  if (item) return item;
+  const found = item || staticJournalism.getBySlug(slug);
+  if (!found) return null;
+  const [enriched] = await enrichJournalism([found]);
+  return enriched;
 
-  return staticJournalism.getBySlug(slug);
+}
 
+
+
+function sortByDatePublished(items) {
+  return [...items].sort(
+    (a, b) => new Date(b.datePublished || 0) - new Date(a.datePublished || 0)
+  );
+}
+
+async function getActivities(filters = {}) {
+  const items = await contentStore.list('activities', { ...filters, publicOnly: true });
+  const source = items.length ? items : staticActivities.getAll(filters);
+  return enrichActivities(sortByDatePublished(source));
+}
+
+async function getActivityBySlug(slug) {
+  const item = await contentStore.getById('activities', slug);
+  const found = item || staticActivities.getBySlug(slug);
+  if (!found) return null;
+  const [enriched] = await enrichActivities([found]);
+  return enriched;
+}
+
+function getActivityKinds() {
+  return staticActivities.getKinds();
 }
 
 
@@ -300,6 +331,12 @@ module.exports = {
   getJournalismArticles,
 
   getJournalismBySlug,
+
+  getActivities,
+
+  getActivityBySlug,
+
+  getActivityKinds,
 
   getReflections,
 

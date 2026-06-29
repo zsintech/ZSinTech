@@ -1,0 +1,75 @@
+<%- include('../partials/head', { title, isAdmin: false }) %>
+<%- include('../partials/nav-public') %>
+
+<main class="public-main">
+  <article class="activity-single">
+    <% if (activity.heroImageUrl) { %>
+    <div class="activity-hero" style="background-image: url('<%= img(activity.heroImageUrl, 'hero') %>')">
+      <div class="activity-hero-overlay"></div>
+      <div class="activity-hero-content">
+        <span class="activity-kind activity-kind--<%= activity.kind %> activity-kind--hero"><%= activity.kind %></span>
+        <% if (activity.repostOf) { %><p class="activity-repost-of activity-repost-of--hero">Reposted · <%= activity.repostOf %></p><% } %>
+        <h1><%= activity.title %></h1>
+        <p class="activity-hero-meta"><%= formatDate(activity.datePublished) %></p>
+      </div>
+    </div>
+    <% } else { %>
+    <header class="activity-header-plain">
+      <span class="activity-kind activity-kind--<%= activity.kind %>"><%= activity.kind %></span>
+      <h1><%= activity.title %></h1>
+      <p class="activity-hero-meta"><%= formatDate(activity.datePublished) %></p>
+    </header>
+    <% } %>
+
+    <div class="activity-container prose">
+      <% activity.body.split('\n\n').forEach(para => { %>
+      <p><%= para %></p>
+      <% }) %>
+
+      <% if (activity.tags && activity.tags.length) { %>
+      <div class="tags activity-tags">
+        <% activity.tags.forEach(tag => { %>
+        <span class="tag"><%= tag %></span>
+        <% }) %>
+      </div>
+      <% } %>
+
+      <footer class="activity-footer">
+        <a href="/activities" class="back-link">&larr; Back to Activity</a>
+        <div class="activity-footer-actions">
+          <% if (activity.kind === 'project' && activity.projectSlug) { %>
+          <a href="/writings/<%= activity.projectSlug %>" class="btn btn-primary">View project page</a>
+          <% } %>
+          <% if (activity.projectUrl) { %>
+          <a href="<%= activity.projectUrl %>" target="_blank" rel="noopener" class="btn btn-primary">Visit live project &rarr;</a>
+          <% } %>
+          <% if (activity.linkedinUrl) { %>
+          <a href="<%= activity.linkedinUrl %>" target="_blank" rel="noopener" class="btn btn-linkedin">View on LinkedIn &rarr;</a>
+          <% } %>
+        </div>
+      </footer>
+
+      <% if (related && related.length) { %>
+      <section class="related-writings">
+        <h3>More activity</h3>
+        <div class="related-grid">
+          <% related.forEach(r => { %>
+          <a href="/activities/<%= r.slug %>" class="related-card">
+            <% if (r.heroImageUrl) { %>
+            <div class="related-card-image" style="background-image: url('<%= img(r.heroImageUrl, 'thumb') %>')"></div>
+            <% } %>
+            <div class="related-card-body">
+              <span class="activity-kind activity-kind--<%= r.kind %>"><%= r.kind %></span>
+              <h4><%= r.title %></h4>
+              <p><%= formatDate(r.datePublished) %></p>
+            </div>
+          </a>
+          <% }) %>
+        </div>
+      </section>
+      <% } %>
+    </div>
+  </article>
+</main>
+
+<%- include('../partials/footer') %>

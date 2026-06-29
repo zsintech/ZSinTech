@@ -33,6 +33,18 @@
           Visible on the public site
         </label>
 
+        <% } else if (field.type === 'url') { %>
+        <div class="url-field-group">
+          <input type="url" id="<%= field.name %>" name="<%= field.name %>"
+                 value="<%= item ? (item[field.name] || '') : '' %>"
+                 placeholder="<%= field.placeholder || 'https://...' %>">
+          <% if (item && item[field.name] && (field.name.includes('image') || field.name.includes('Image') || field.name.includes('cover') || field.name.includes('Cover'))) { %>
+          <div class="url-field-preview" style="margin-top: 0.5rem;">
+            <img src="<%= item[field.name] %>" alt="preview" style="max-width: 200px; max-height: 120px; border-radius: 8px; border: 1px solid var(--border, #e5e7eb);" onerror="this.style.display='none'">
+          </div>
+          <% } %>
+        </div>
+
         <% } else { %>
         <input type="<%= field.type === 'number' ? 'number' : 'text' %>"
                id="<%= field.name %>" name="<%= field.name %>"

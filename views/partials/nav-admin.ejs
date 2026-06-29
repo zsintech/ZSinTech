@@ -6,6 +6,10 @@
   <div class="sidebar-header">
     <a href="/admin" class="sidebar-logo">Z<span class="logo-accent">S</span>inTech</a>
     <span class="sidebar-badge">Admin</span>
+    <button class="theme-toggle" aria-label="Toggle dark mode" style="margin-left: auto;">
+      <span class="icon-moon">&#9790;</span>
+      <span class="icon-sun">&#9788;</span>
+    </button>
   </div>
   <nav class="sidebar-nav">
     <a href="/admin" class="sidebar-link<%= title === 'Dashboard' ? ' active' : '' %>">
@@ -43,6 +47,9 @@
     <p class="sidebar-section-label">Writing</p>
     <a href="/admin/writings" class="sidebar-link<%= title === 'Writings' ? ' active' : '' %>">
       <span class="sidebar-icon" aria-hidden="true">✍️</span> Writings
+    </a>
+    <a href="/admin/content/activities" class="sidebar-link<%= title === 'Activities' ? ' active' : '' %>">
+      <span class="sidebar-icon" aria-hidden="true">📣</span> Activities
     </a>
     <a href="/admin/content/writing_ideas" class="sidebar-link<%= title === 'Writing Ideas' ? ' active' : '' %>">
       <span class="sidebar-icon" aria-hidden="true">💡</span> Writing Ideas

@@ -1,77 +1,37 @@
 <%- include('../partials/head', { title, isAdmin: false }) %>
 <%- include('../partials/nav-public') %>
 
-<main class="public-main">
-  <section class="hero hero--image<%= heroImage ? '' : ' hero--mesh' %>" <% if (heroImage) { %>style="background-image: url('<%= img(heroImage, 'hero') %>')"<% } %>>
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <p class="hero-eyebrow">Science Communicator & Creator</p>
-      <h1 class="hero-title">Hello, I'm <span class="logo-accent">Z</span>sinTech</h1>
-      <p class="hero-desc">Essays, projects, and thoughts on making science accessible and fascinating for everyone — including <a href="/popsci">PopSci AI</a>.</p>
-      <div class="hero-actions">
-        <a href="/writings" class="btn btn-primary">Read My Essays</a>
-        <a href="/projects" class="btn btn-ghost">View My Projects</a>
+<main class="public-main dashboard-main">
+
+  <section class="dash-hero">
+    <div class="dash-hero-copy">
+      <p class="hero-eyebrow">Software Engineer · Science · Policy · Sustainability</p>
+      <h1 class="hero-title">Research.<br>Storytelling.<br>Impact.</h1>
+      <p class="hero-desc">Science communication, journalism, and engineering — including <a href="/writings/stories-of-khasa">Stories of Khasa</a>, <a href="/journalism">The AUIS Voice</a>, and <a href="/popsci">PopSci AI</a>.</p>
+      <div class="dash-hero-actions">
+        <a href="/activities" class="btn btn-primary">Explore My Work</a>
+        <a href="/about" class="btn btn-outline">About</a>
       </div>
     </div>
-  </section>
-
-  <% if (featured) { %>
-  <section class="featured-hero">
-    <a href="/writings/<%= featured.slug %>" class="featured-hero-link card-lift">
-      <%- include('../partials/media-cover', { url: featured.heroImageUrl, size: 'card', className: 'featured-hero-image media-cover', variant: 'science' }) %>
-      <div class="featured-hero-content">
-        <span class="featured-hero-type"><%= featured.type %></span>
-        <h2><%= featured.title %></h2>
-        <p><%= featured.excerpt %></p>
-        <span class="read-more">Read essay &rarr;</span>
-      </div>
-    </a>
-  </section>
-  <% } %>
-
-  <section class="essays-grid-section">
-    <div class="section-header">
-      <h2>Essays & Writings</h2>
-      <a href="/writings" class="section-link">View all &rarr;</a>
-    </div>
-    <div class="essays-grid">
-      <% essays.forEach((essay, i) => { %>
-      <article class="essay-card <%= i === 0 ? 'essay-card--wide' : '' %> card-lift">
-        <a href="/writings/<%= essay.slug %>" class="essay-card-link">
-          <div class="essay-card-image-wrap">
-            <%- include('../partials/media-cover', { url: essay.heroImageUrl, size: 'card', className: 'essay-card-image media-cover', variant: 'science' }) %>
-            <div class="essay-card-overlay"></div>
-          </div>
-          <div class="essay-card-body">
-            <div class="essay-card-meta">
-              <span class="essay-card-type"><%= essay.type %></span>
-              <time><%= formatDate(essay.dateWritten) %></time>
-            </div>
-            <h3><%= essay.title %></h3>
-            <p><%= essay.excerpt %></p>
-          </div>
-        </a>
-      </article>
-      <% }) %>
+    <div class="dash-hero-media">
+      <%- include('../partials/media-cover', { url: heroImage, size: 'hero', className: 'media-cover', variant: 'science' }) %>
     </div>
   </section>
 
   <% if (projects && projects.length) { %>
-  <section class="projects-grid-section">
-    <div class="section-header">
-      <h2>Projects</h2>
-      <a href="/projects" class="section-link">View all &rarr;</a>
+  <section class="dash-panel dash-row" style="margin-bottom: var(--gap-xl);">
+    <div class="dash-panel-header">
+      <h2 class="dash-panel-title">Featured Projects</h2>
+      <a href="/projects" class="dash-panel-link">All projects &rarr;</a>
     </div>
-    <div class="projects-grid">
-      <% projects.forEach(p => { %>
-      <article class="project-card card-lift">
-        <a href="/writings/<%= p.slug %>" class="project-card-link">
-          <div class="project-card-image-wrap">
-            <%- include('../partials/media-cover', { url: p.heroImageUrl, size: 'card', className: 'project-card-image media-cover', variant: 'science' }) %>
-            <div class="project-card-overlay"></div>
+    <div class="project-strip">
+      <% projects.slice(0, 3).forEach(p => { %>
+      <article class="project-tile">
+        <a href="/writings/<%= p.slug %>" class="project-tile-link">
+          <div class="project-tile-img">
+            <%- include('../partials/media-cover', { url: p.heroImageUrl || p.coverUrl, size: 'card', className: 'media-cover', variant: 'science' }) %>
           </div>
-          <div class="project-card-body">
-            <span class="project-card-label">Project</span>
+          <div class="project-tile-body">
             <h3><%= p.title %></h3>
             <p><%= p.excerpt %></p>
           </div>
@@ -82,201 +42,167 @@
   </section>
   <% } %>
 
-  <% if (journalism && journalism.length) { %>
-  <section class="journalism-home-section">
-    <div class="section-header">
-      <h2>Journalism — <a href="https://voice.auis.edu.krd/" target="_blank" rel="noopener" class="section-link-inline">The AUIS Voice</a></h2>
-      <a href="/journalism" class="section-link">All articles &rarr;</a>
-    </div>
-    <div class="journalism-home-grid">
-      <% journalism.slice(0, 3).forEach(article => { %>
-      <article class="journalism-home-card card-lift">
-        <a href="/journalism/<%= article.slug %>">
-          <%- include('../partials/media-cover', { url: article.heroImageUrl, size: 'thumb', className: 'journalism-home-image media-cover', variant: 'journal' }) %>
-          <div class="journalism-home-body">
-            <time><%= formatDate(article.datePublished) %></time>
-            <h3><%= article.title %></h3>
-            <p><%= article.excerpt.substring(0, 100) %>...</p>
-          </div>
-        </a>
-      </article>
-      <% }) %>
-    </div>
-  </section>
-  <% } %>
-
-  <% if (stories && stories.length) { %>
-  <section class="story-spotlight">
-    <% const story = stories[0]; %>
-    <div class="section-header">
-      <h2>Fiction</h2>
-      <a href="/stories" class="section-link">All stories &rarr;</a>
-    </div>
-    <a href="/stories/<%= story.slug %>" class="story-spotlight-link card-lift">
-      <div class="story-spotlight-inner-wrap">
-        <%- include('../partials/media-cover', { url: story.heroImageUrl, size: 'hero', className: 'story-spotlight-inner media-cover', variant: 'story' }) %>
-        <div class="story-spotlight-overlay"></div>
-        <div class="story-spotlight-content">
-          <span class="story-spotlight-label">Story · AUIS Literary Journal</span>
-          <h2><%= story.title %></h2>
-          <p><%= story.excerpt %></p>
-          <span class="read-more">Read story &rarr;</span>
-        </div>
+  <div class="dash-row dash-row--2">
+    <% if (activities && activities.length) { %>
+    <section class="dash-panel">
+      <div class="dash-panel-header">
+        <h2 class="dash-panel-title">Recent Activity</h2>
+        <a href="/activities" class="dash-panel-link">All &rarr;</a>
       </div>
-    </a>
-  </section>
-  <% } %>
-
-  <% if (popsciReels && popsciReels.length) { %>
-  <section class="popsci-home-section">
-    <div class="section-header">
-      <h2>PopSci AI</h2>
-      <a href="/popsci" class="section-link">All reels &rarr;</a>
-    </div>
-    <div class="popsci-home-scroll">
-      <% popsciReels.slice(0, 4).forEach(reel => { %>
-      <a href="/popsci/<%= reel.slug %>" class="popsci-home-card card-lift">
-        <%- include('../partials/media-cover', { url: reel.heroImageUrl, size: 'thumb', className: 'popsci-home-thumb media-cover', variant: 'popsci' }) %>
-        <span><%= reel.title %></span>
-      </a>
-      <% }) %>
-    </div>
-  </section>
-  <% } %>
-
-  <% if (latestReflection) { %>
-  <section class="reflection-teaser card-lift">
-    <div class="section-header">
-      <h2>Latest Reflection</h2>
-      <a href="/reflections" class="section-link">All reflections &rarr;</a>
-    </div>
-    <div class="reflection-teaser-body">
-      <% if (latestReflection.title) { %><h3><%= latestReflection.title %></h3><% } %>
-      <p><%= latestReflection.body.substring(0, 280) %>...</p>
-      <a href="/reflections" class="read-more">Read reflection &rarr;</a>
-    </div>
-  </section>
-  <% } %>
-
-  <% if (courses && courses.length || articles && articles.length || vocationalBooks && vocationalBooks.length) { %>
-  <section class="shelf-home-section">
-    <div class="section-header">
-      <h2>From the Shelf</h2>
-      <a href="/shelf" class="section-link">Full shelf &rarr;</a>
-    </div>
-
-    <% if (courses && courses.length) { %>
-    <div class="shelf-home-block">
-      <h3 class="shelf-home-label"><a href="/courses">Courses</a></h3>
-      <div class="shelf-home-items">
-        <% courses.forEach(course => { %>
-        <a href="/courses" class="shelf-home-chip">
-          <strong><%= course.title %></strong>
-          <span><%= course.status ? course.status.replace(/-/g, ' ') : 'queued' %></span>
-        </a>
+      <div class="tile-grid">
+        <% activities.slice(0, 5).forEach(activity => { %>
+        <article class="tile">
+          <a href="/activities/<%= activity.slug %>" class="tile-link">
+            <div class="tile-thumb">
+              <%- include('../partials/media-cover', { url: activity.heroImageUrl || activity.coverUrl, size: 'thumb', className: 'media-cover', variant: 'journal' }) %>
+            </div>
+            <div class="tile-body">
+              <div class="tile-meta">
+                <span class="tile-badge tile-badge--<%= activity.kind %>"><%= activity.kind %></span>
+                <time><%= formatDate(activity.datePublished) %></time>
+              </div>
+              <h3 class="tile-title"><%= activity.title %></h3>
+            </div>
+          </a>
+        </article>
         <% }) %>
       </div>
-    </div>
+    </section>
     <% } %>
 
-    <% if (articles && articles.length) { %>
-    <div class="shelf-home-block">
-      <h3 class="shelf-home-label"><a href="/articles-read">Articles</a></h3>
-      <div class="shelf-home-items">
-        <% articles.forEach(article => { %>
-        <a href="<%= article.url || '/articles-read' %>" class="shelf-home-chip" <%= article.url ? 'target="_blank" rel="noopener"' : '' %>>
-          <strong><%= article.title %></strong>
-          <span><%= article.source || 'reading log' %></span>
-        </a>
+    <section class="dash-panel">
+      <div class="dash-panel-header">
+        <h2 class="dash-panel-title">Essays</h2>
+        <a href="/writings" class="dash-panel-link">All &rarr;</a>
+      </div>
+      <div class="tile-grid">
+        <% essays.slice(0, 5).forEach(essay => { %>
+        <article class="tile">
+          <a href="/writings/<%= essay.slug %>" class="tile-link">
+            <div class="tile-thumb">
+              <%- include('../partials/media-cover', { url: essay.heroImageUrl, size: 'thumb', className: 'media-cover', variant: 'science' }) %>
+            </div>
+            <div class="tile-body">
+              <div class="tile-meta"><time><%= formatDate(essay.dateWritten) %></time></div>
+              <h3 class="tile-title"><%= essay.title %></h3>
+            </div>
+          </a>
+        </article>
         <% }) %>
       </div>
-    </div>
+    </section>
+  </div>
+
+  <div class="dash-row dash-row--2">
+    <% if (journalism && journalism.length) { %>
+    <section class="dash-panel">
+      <div class="dash-panel-header">
+        <h2 class="dash-panel-title">Journalism</h2>
+        <a href="/journalism" class="dash-panel-link">AUIS Voice &rarr;</a>
+      </div>
+      <div class="tile-grid">
+        <% journalism.slice(0, 4).forEach(article => { %>
+        <article class="tile">
+          <a href="/journalism/<%= article.slug %>" class="tile-link">
+            <div class="tile-thumb">
+              <%- include('../partials/media-cover', { url: article.heroImageUrl || article.coverUrl, size: 'thumb', className: 'media-cover', variant: 'journal' }) %>
+            </div>
+            <div class="tile-body">
+              <div class="tile-meta"><time><%= formatDate(article.datePublished) %></time></div>
+              <h3 class="tile-title"><%= article.title %></h3>
+            </div>
+          </a>
+        </article>
+        <% }) %>
+      </div>
+    </section>
     <% } %>
 
-    <% if (vocationalBooks && vocationalBooks.length) { %>
-    <div class="shelf-home-block">
-      <h3 class="shelf-home-label"><a href="/books/vocational">Vocational Books</a> · <a href="/books/literary">Literary</a></h3>
-      <div class="shelf-home-items shelf-home-items--books">
-        <% vocationalBooks.forEach(book => { %>
-        <a href="/books/vocational" class="shelf-home-book">
-          <%- include('../partials/media-cover', { url: book.coverUrl, size: 'thumb', className: 'shelf-home-book-cover media-cover', variant: 'book' }) %>
-          <div>
-            <strong><%= book.title %></strong>
-            <% if (book.category) { %><span class="shelf-home-book-cat"><%= book.category %></span><% } %>
-          </div>
-        </a>
-        <% }) %>
-        <% if (literaryBooks && literaryBooks.length) { literaryBooks.forEach(book => { %>
-        <a href="/books/literary" class="shelf-home-book">
-          <%- include('../partials/media-cover', { url: book.coverUrl, size: 'thumb', className: 'shelf-home-book-cover media-cover', variant: 'book' }) %>
-          <div>
-            <strong><%= book.title %></strong>
-            <% if (book.category) { %><span class="shelf-home-book-cat"><%= book.category %></span><% } %>
-          </div>
-        </a>
-        <% }) } %>
+    <section class="dash-panel">
+      <div class="dash-panel-header">
+        <h2 class="dash-panel-title">Browse</h2>
+      </div>
+      <div class="tile-grid">
+        <article class="tile">
+          <a href="/popsci" class="tile-link">
+            <div class="tile-thumb" style="background: #EFF6FF; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">🔬</div>
+            <div class="tile-body">
+              <h3 class="tile-title">PopSci AI</h3>
+              <p class="tile-excerpt">Science reels & explainers</p>
+            </div>
+          </a>
+        </article>
+        <article class="tile">
+          <a href="/notes" class="tile-link">
+            <div class="tile-thumb" style="background: #F5F3FF; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">📓</div>
+            <div class="tile-body">
+              <h3 class="tile-title">Notebooks</h3>
+              <p class="tile-excerpt">Course notes and study journals</p>
+            </div>
+          </a>
+        </article>
+        <article class="tile">
+          <a href="/writing-ideas" class="tile-link">
+            <div class="tile-thumb" style="background: #FFFBEB; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">💡</div>
+            <div class="tile-body">
+              <h3 class="tile-title">Ideas</h3>
+              <p class="tile-excerpt">Essay seeds and research clusters</p>
+            </div>
+          </a>
+        </article>
+        <article class="tile">
+          <a href="/about" class="tile-link">
+            <div class="tile-thumb" style="background: #F0FDF4; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">👤</div>
+            <div class="tile-body">
+              <h3 class="tile-title">About</h3>
+              <p class="tile-excerpt">Background, links, and contact</p>
+            </div>
+          </a>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <% if (courses && courses.length || articles && articles.length) { %>
+  <section class="dash-panel" style="margin-top: var(--gap-lg);">
+    <div class="dash-panel-header">
+      <h2 class="dash-panel-title">From the Shelf</h2>
+      <a href="/shelf" class="dash-panel-link">Full shelf &rarr;</a>
+    </div>
+    <div class="shelf-compact">
+      <% if (courses && courses.length) { %>
+      <div class="shelf-col">
+        <h4><a href="/courses">Courses</a></h4>
+        <ul class="shelf-list">
+          <% courses.slice(0, 4).forEach(course => { %>
+          <li><a href="<%= course.url || '/courses' %>" <%= course.url ? 'target="_blank" rel="noopener"' : '' %>><strong><%= course.title %></strong><span><%= course.platform || (course.status ? course.status.replace(/-/g, ' ') : 'queued') %></span></a></li>
+          <% }) %>
+        </ul>
+      </div>
+      <% } %>
+      <% if (articles && articles.length) { %>
+      <div class="shelf-col">
+        <h4><a href="/articles-read">Reading Log</a></h4>
+        <ul class="shelf-list">
+          <% articles.slice(0, 4).forEach(article => { %>
+          <li><a href="<%= article.url || '/articles-read' %>" <%= article.url ? 'target="_blank" rel="noopener"' : '' %>><strong><%= article.title %></strong><span><%= article.source || 'article' %></span></a></li>
+          <% }) %>
+        </ul>
+      </div>
+      <% } %>
+      <div class="shelf-col">
+        <h4>More</h4>
+        <ul class="shelf-list">
+          <li><a href="/research-papers"><strong>Research Papers</strong><span>Academic references</span></a></li>
+          <li><a href="/stories"><strong>Fiction</strong><span>AUIS Literary Journal</span></a></li>
+          <li><a href="/travel"><strong>Travel</strong><span>Itineraries & plans</span></a></li>
+          <li><a href="/reflections"><strong>Reflections</strong><span>Personal notes</span></a></li>
+        </ul>
       </div>
     </div>
-    <% } %>
   </section>
   <% } %>
 
-  <section class="reading-spaces">
-    <div class="section-header">
-      <h2>Reading & Research</h2>
-    </div>
-    <div class="reading-spaces-grid">
-      <div class="reading-space-card card-lift">
-        <a href="/articles-read">
-          <span class="reading-space-label">Reading Log</span>
-          <h3>Articles Read</h3>
-          <p>Journalism, essays, and long reads — with personal notes on each.</p>
-        </a>
-      </div>
-      <div class="reading-space-card card-lift">
-        <a href="/writing-ideas">
-          <span class="reading-space-label">Idea Garden</span>
-          <h3>Writing Ideas</h3>
-          <p>Research clusters and essay seeds waiting to become full pieces.</p>
-        </a>
-      </div>
-      <div class="reading-space-card card-lift">
-        <a href="/iconic-bitch">
-          <span class="reading-space-label">Curated Shelf</span>
-          <h3>Iconic Bitch</h3>
-          <p>Books that shaped how I think about science and absurdity.</p>
-        </a>
-      </div>
-      <div class="reading-space-card card-lift">
-        <a href="/research-papers">
-          <span class="reading-space-label">Academic</span>
-          <h3>Research Papers</h3>
-          <p>Peer-reviewed studies and references behind my research.</p>
-        </a>
-      </div>
-      <div class="reading-space-card card-lift">
-        <a href="/solo-date">
-          <span class="reading-space-label">Self & Care</span>
-          <h3>Solo Date</h3>
-          <p>Adventures taken alone — museums, walks, and quiet joy.</p>
-        </a>
-      </div>
-      <div class="reading-space-card card-lift">
-        <a href="/travel">
-          <span class="reading-space-label">Plan All the Way</span>
-          <h3>Travel</h3>
-          <p>Itineraries, dream destinations, and trip notes from Notion.</p>
-        </a>
-      </div>
-      <div class="reading-space-card card-lift">
-        <a href="/notes">
-          <span class="reading-space-label">Study</span>
-          <h3>Notes</h3>
-          <p>Published notebooks and course notes from my studies.</p>
-        </a>
-      </div>
-    </div>
-  </section>
 </main>
 
 <%- include('../partials/footer') %>
