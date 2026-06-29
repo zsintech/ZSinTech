@@ -1215,6 +1215,184 @@ a.shelf-card--link:hover h4 { color: var(--accent); }
   background: linear-gradient(135deg, #0A0E17 0%, #111827 50%, #1E293B 100%) !important;
 }
 
+/* ─── About page — CV / credentials ───────────────────────────────────────── */
+.about-page {
+  max-width: var(--max-width, 1100px);
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+}
+
+.about-lead-inline {
+  font-size: 1.1rem;
+  line-height: 1.75;
+  color: var(--ink-secondary, var(--text-soft));
+  margin-bottom: 0.5rem;
+}
+
+.about-credential {
+  margin-bottom: 2rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.about-credential:last-of-type {
+  border-bottom: none;
+}
+
+.about-credential-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.about-credential-head h3 {
+  font-family: var(--font-heading, 'DM Serif Display', Georgia, serif);
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--ink, var(--text));
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.about-credential-date {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--ink-muted, var(--muted));
+  white-space: nowrap;
+}
+
+.about-credential-org {
+  font-size: 0.88rem;
+  color: var(--ink-tertiary, var(--muted));
+  margin-bottom: 0.65rem;
+}
+
+.about-credential ul,
+.about-experience-list {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+.about-credential li,
+.about-experience-list li {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--ink-secondary, var(--text-soft));
+  margin-bottom: 0.4rem;
+}
+
+.about-experience-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.about-experience-list li {
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.about-experience-list li:last-child {
+  border-bottom: none;
+}
+
+.about-skill-group-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted, var(--muted));
+  font-weight: 600;
+  margin: 0.85rem 0 0.45rem;
+}
+
+.about-skill-group-label:first-child {
+  margin-top: 0;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.skill-tag {
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+  background: var(--accent-soft, rgba(37, 99, 235, 0.08));
+  color: var(--accent, #2563EB);
+  border: 1px solid transparent;
+}
+
+.about-lang-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.about-lang-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0;
+  font-size: 0.88rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--border);
+}
+
+.about-lang-list li:last-child {
+  border-bottom: none;
+}
+
+.about-lang-list .muted {
+  font-weight: 400;
+  font-size: 0.78rem;
+}
+
+[data-theme="dark"] .about-credential {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .about-credential-head h3 {
+  color: #F5F5F7 !important;
+}
+
+[data-theme="dark"] .about-credential-org,
+[data-theme="dark"] .about-credential li,
+[data-theme="dark"] .about-experience-list li {
+  color: #D1D1D6 !important;
+}
+
+[data-theme="dark"] .about-credential-date {
+  color: #A1A1A6 !important;
+}
+
+[data-theme="dark"] .about-experience-list li {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .skill-tag {
+  background: rgba(91, 163, 245, 0.12) !important;
+  color: #5BA3F5 !important;
+}
+
+[data-theme="dark"] .about-lang-list li {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+  color: #F5F5F7 !important;
+}
+
+[data-theme="dark"] .about-lead-inline {
+  color: #D1D1D6 !important;
+}
+
+@media (max-width: 768px) {
+  .about-page { padding: 0 1.25rem 3rem; }
+  .about-credential-head { flex-direction: column; gap: 0.15rem; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .project-tile:hover,
   .activity-magazine-card:hover,
