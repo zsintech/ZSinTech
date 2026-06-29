@@ -312,6 +312,52 @@
 
 [data-theme="dark"] .stat-card .stat-number { color: #F5F5F7 !important; }
 [data-theme="dark"] .stat-card .stat-label { color: #A1A1A6 !important; }
+[data-theme="dark"] .stat-icon { background: rgba(91, 163, 245, 0.12) !important; }
+
+[data-theme="dark"] .section-header h2 { color: #D1D1D6 !important; }
+[data-theme="dark"] .section-link { color: #5BA3F5 !important; }
+
+[data-theme="dark"] .recent-item { border-bottom-color: rgba(255, 255, 255, 0.06) !important; }
+[data-theme="dark"] .recent-item:hover { background: rgba(255, 255, 255, 0.03) !important; }
+[data-theme="dark"] .recent-title { color: #E5E5E7 !important; }
+[data-theme="dark"] .recent-date { color: #6E6E73 !important; }
+[data-theme="dark"] .recent-collection { background: rgba(91, 163, 245, 0.12) !important; color: #5BA3F5 !important; }
+
+[data-theme="dark"] .dashboard-section {
+  background: #1C1C1E !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .shortcut-card {
+  background: #1C1C1E !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+[data-theme="dark"] .shortcut-card:hover {
+  border-color: rgba(91, 163, 245, 0.3) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+}
+[data-theme="dark"] .shortcut-info strong { color: #F5F5F7 !important; }
+[data-theme="dark"] .shortcut-info span { color: #A1A1A6 !important; }
+[data-theme="dark"] .shortcut-card--featured {
+  background: linear-gradient(135deg, #1E3A5F 0%, #0F2744 100%) !important;
+  border-color: rgba(91, 163, 245, 0.2) !important;
+}
+[data-theme="dark"] .shortcut-card--featured strong { color: #F5F5F7 !important; }
+[data-theme="dark"] .shortcut-card--featured span { color: rgba(255, 255, 255, 0.6) !important; }
+[data-theme="dark"] .shortcuts-title { color: #D1D1D6 !important; }
+
+[data-theme="dark"] .empty-state { color: #6E6E73 !important; }
+
+[data-theme="dark"] .quick-link-card {
+  background: #1C1C1E !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+[data-theme="dark"] .quick-link-card strong { color: #F5F5F7 !important; }
+[data-theme="dark"] .quick-link-card span { color: #A1A1A6 !important; }
+[data-theme="dark"] .quick-link-card:hover { border-color: rgba(91, 163, 245, 0.3) !important; }
+[data-theme="dark"] .quick-link-card--featured {
+  background: linear-gradient(135deg, #1E3A5F 0%, #0F2744 100%) !important;
+}
 
 [data-theme="dark"] .quick-link-card { background: #1C1C1E !important; border-color: rgba(255, 255, 255, 0.08) !important; }
 [data-theme="dark"] .quick-link-card h3 { color: #F5F5F7 !important; }
@@ -358,8 +404,78 @@
 
 [data-theme="dark"] .hub-card h3,
 [data-theme="dark"] .hub-card .hub-name { color: #F5F5F7 !important; }
-[data-theme="dark"] .hub-card .hub-desc,
-[data-theme="dark"] .hub-card .hub-link { color: #A1A1A6 !important; }
+[data-theme="dark"] .hub-card p,
+[data-theme="dark"] .hub-card .hub-desc { color: #A1A1A6 !important; }
+[data-theme="dark"] .hub-card .hub-link { color: #5BA3F5 !important; }
+
+[data-theme="dark"] .hub-card:hover {
+  border-color: rgba(91, 163, 245, 0.2) !important;
+}
+
+[data-theme="dark"] .hub-card--featured {
+  background: linear-gradient(135deg, rgba(91, 163, 245, 0.08), rgba(91, 163, 245, 0.04)) !important;
+}
+
+[data-theme="dark"] .hub-group h2 {
+  color: #D1D1D6 !important;
+  border-bottom-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-theme="dark"] .content-hub-grid { color: #E5E5E7; }
+
+[data-theme="dark"] .import-bar p { color: #A1A1A6 !important; }
+
+[data-theme="dark"] .admin-alert {
+  background: rgba(245, 158, 11, 0.08) !important;
+  border-color: rgba(245, 158, 11, 0.15) !important;
+  color: #FBBF24 !important;
+}
+
+[data-theme="dark"] .admin-alert code {
+  background: rgba(245, 158, 11, 0.12) !important;
+  color: #FCD34D !important;
+}
+
+[data-theme="dark"] .form-group label { color: #D1D1D6 !important; }
+[data-theme="dark"] .form-hint { color: #6E6E73 !important; }
+
+[data-theme="dark"] .content-form,
+[data-theme="dark"] .admin-panel {
+  background: #1C1C1E !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .btn-outline {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #D1D1D6 !important;
+}
+
+[data-theme="dark"] .btn-outline:hover {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+[data-theme="dark"] .btn-ghost { color: #A1A1A6 !important; }
+[data-theme="dark"] .btn-ghost:hover { background: rgba(255, 255, 255, 0.06) !important; color: #F5F5F7 !important; }
+
+[data-theme="dark"] .btn-danger {
+  background: rgba(220, 38, 38, 0.12) !important;
+  color: #FCA5A5 !important;
+  border-color: rgba(220, 38, 38, 0.2) !important;
+}
+
+[data-theme="dark"] .btn-danger:hover {
+  background: rgba(220, 38, 38, 0.18) !important;
+}
+
+[data-theme="dark"] table.generic-table th {
+  background: #2C2C2E !important;
+}
+
+[data-theme="dark"] .admin-mobile-toggle {
+  background: #1C1C1E !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
 
 /* ─── Dark mode toggle button ─────────────────────────────────────────────── */
 .theme-toggle {
