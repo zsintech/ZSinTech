@@ -23,7 +23,9 @@ function pexelsUrl(url, size = 'hero') {
     url.includes('storiesofkhasa.xyz') ||
     url.includes('pbs.twimg.com') ||
     url.includes('i.ibb.co') ||
-    url.includes('upload.wikimedia.org')
+    url.includes('upload.wikimedia.org') ||
+    url.includes('opengraph.githubassets.com') ||
+    url.includes('cdninstagram.com')
   ) {
     return url.split('?')[0];
   }

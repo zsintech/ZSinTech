@@ -700,7 +700,7 @@ router.post('/notebooks', async (req, res) => {
     res.redirect(`/admin/notebooks/${id}`);
   } catch (err) {
     console.error('Create notebook error:', err);
-    res.redirect('/admin/notebooks/new');
+    res.redirect('/admin/notebooks/new?error=' + encodeURIComponent(err.message || 'Save failed'));
   }
 });
 
@@ -733,7 +733,7 @@ router.post('/notebooks/:id', async (req, res) => {
     res.redirect(`/admin/notebooks/${req.params.id}`);
   } catch (err) {
     console.error('Update notebook error:', err);
-    res.redirect(`/admin/notebooks/${req.params.id}/edit`);
+    res.redirect(`/admin/notebooks/${req.params.id}/edit?error=` + encodeURIComponent(err.message || 'Save failed'));
   }
 });
 
@@ -755,36 +755,42 @@ router.post('/notebooks/:id/toggle-public', async (req, res) => {
   }
 });
 
-router.get('/notebooks/:notebookId/notes/new', async (req, res) => {
-  const notebook = await notebookStore.getNotebook(req.params.notebookId);
-  if (!notebook) return res.redirect('/admin/notebooks');
-  res.render('admin/note-form', { title: 'New Note', notebook, note: null });
-});
-
 router.get('/notebooks/:notebookId/notes/:noteId/edit', async (req, res) => {
   const notebook = await notebookStore.getNotebook(req.params.notebookId);
   const note = await notebookStore.getNote(req.params.noteId);
   if (!notebook || !note) return res.redirect(`/admin/notebooks/${req.params.notebookId}`);
-    res.render('admin/note-form', { title: 'Edit Note', notebook, note, saved: req.query.saved === '1' });
+  res.render('admin/note-form', {
+    title: 'Edit Note',
+    notebook,
+    note,
+    saved: req.query.saved === '1',
+    error: req.query.error || null,
+  });
+});
+
+router.get('/notebooks/:notebookId/notes/new', async (req, res) => {
+  const notebook = await notebookStore.getNotebook(req.params.notebookId);
+  if (!notebook) return res.redirect('/admin/notebooks');
+  res.render('admin/note-form', { title: 'New Note', notebook, note: null, error: req.query.error || null });
 });
 
 router.post('/notebooks/:notebookId/notes', async (req, res) => {
   try {
     const id = await notebookStore.createNote(req.params.notebookId, req.body);
-    res.redirect(`/admin/notebooks/${req.params.notebookId}/notes/${id}/edit`);
+    res.redirect(`/admin/notebooks/${req.params.notebookId}/notes/${id}/edit?saved=1`);
   } catch (err) {
     console.error('Create note error:', err);
-    res.redirect(`/admin/notebooks/${req.params.notebookId}/notes/new`);
+    res.redirect(`/admin/notebooks/${req.params.notebookId}/notes/new?error=` + encodeURIComponent(err.message || 'Save failed'));
   }
 });
 
 router.post('/notebooks/:notebookId/notes/:noteId', async (req, res) => {
   try {
-    await notebookStore.updateNote(req.params.noteId, req.body);
+    await notebookStore.updateNote(req.params.noteId, { ...req.body, notebookId: req.params.notebookId });
     res.redirect(`/admin/notebooks/${req.params.notebookId}/notes/${req.params.noteId}/edit?saved=1`);
   } catch (err) {
     console.error('Update note error:', err);
-    res.redirect(`/admin/notebooks/${req.params.notebookId}/notes/${req.params.noteId}/edit`);
+    res.redirect(`/admin/notebooks/${req.params.notebookId}/notes/${req.params.noteId}/edit?error=` + encodeURIComponent(err.message || 'Save failed'));
   }
 });
 

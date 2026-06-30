@@ -59,7 +59,7 @@
       <div class="form-group">
         <label class="checkbox-label">
           <input type="hidden" name="isPublic" value="false">
-          <input type="checkbox" name="isPublic" value="true" <%= item && item.isPublic ? 'checked' : '' %>>
+          <input type="checkbox" name="isPublic" value="true" <%= item && item.isPublic ? 'checked' : (!item ? 'checked' : '') %>>
           Make public
         </label>
       </div>

@@ -1,5 +1,12 @@
 const staticJournalism = require('../data/auis-voice');
-const { enrichMany, enrichWithCover, isGenericSiteOg, isDirectImageUrl } = require('./linkPreview');
+const staticWritings = require('../data/writings');
+const {
+  enrichMany,
+  enrichWithCover,
+  isGenericSiteOg,
+  isDirectImageUrl,
+  isUnreliableCoverUrl,
+} = require('./linkPreview');
 
 function pickJournalismCover(item) {
   const staticItem =
@@ -40,14 +47,41 @@ async function enrichArticlesRead(items) {
   return enrichMany(items, { allowPexelsFallback: false });
 }
 
+function pickProjectCover(item) {
+  const staticItem =
+    staticWritings.getBySlug(item.slug) ||
+    staticWritings.getAll().find((w) => w.id === item.id);
+
+  const candidates = [
+    item.heroImageUrl,
+    staticItem?.heroImageUrl,
+    item.ogImageUrl,
+    staticItem?.ogImageUrl,
+  ].filter(Boolean);
+
+  for (const url of candidates) {
+    if (isUnreliableCoverUrl(url)) continue;
+    if (isDirectImageUrl(url) || url.includes('i.ibb.co')) return url;
+  }
+  return null;
+}
+
 async function enrichProject(project) {
   if (usesPexels(project)) return project;
+  const cover = pickProjectCover(project);
+  if (cover) return { ...project, heroImageUrl: cover, coverUrl: cover };
   return enrichWithCover(project, { allowPexelsFallback: false });
 }
 
 async function enrichProjects(items) {
   const projects = items.filter((i) => i.type === 'project');
-  const enriched = await enrichMany(projects, { allowPexelsFallback: false });
+  const enriched = projects.map((project) => {
+    if (usesPexels(project)) return project;
+    const cover = pickProjectCover(project);
+    return cover
+      ? { ...project, heroImageUrl: cover, coverUrl: cover }
+      : { ...project, heroImageUrl: null, coverUrl: null };
+  });
   const map = new Map(enriched.map((p) => [p.id || p.slug, p]));
   return items.map((i) => map.get(i.id || i.slug) || i);
 }

@@ -71,6 +71,19 @@ function isGenericSiteOg(url) {
   );
 }
 
+/** Hotlink-fragile or expiring URLs that should not be used as card covers. */
+function isUnreliableCoverUrl(url) {
+  if (!url || typeof url !== 'string') return false;
+  const u = url.toLowerCase();
+  return (
+    u.includes('cdninstagram.com') ||
+    u.includes('scontent.cdninstagram.com') ||
+    u.includes('opengraph.githubassets.com') ||
+    u.includes('avatars.githubusercontent.com') ||
+    isGenericSiteOg(url)
+  );
+}
+
 function isValidOgImage(url) {
   if (!url || typeof url !== 'string') return false;
   const u = url.toLowerCase();
@@ -151,11 +164,16 @@ function externalUrlForItem(item) {
 }
 
 async function resolveCoverImage(item, { allowPexelsFallback = false } = {}) {
-  if (item.heroImageUrl && isDirectImageUrl(item.heroImageUrl)) {
+  if (item.heroImageUrl && isDirectImageUrl(item.heroImageUrl) && !isUnreliableCoverUrl(item.heroImageUrl)) {
     return item.heroImageUrl;
   }
 
-  if (item.ogImageUrl && isValidOgImage(item.ogImageUrl) && isDirectImageUrl(item.ogImageUrl)) {
+  if (
+    item.ogImageUrl &&
+    isValidOgImage(item.ogImageUrl) &&
+    isDirectImageUrl(item.ogImageUrl) &&
+    !isUnreliableCoverUrl(item.ogImageUrl)
+  ) {
     return item.ogImageUrl;
   }
 
@@ -169,7 +187,11 @@ async function resolveCoverImage(item, { allowPexelsFallback = false } = {}) {
     if (og && isValidOgImage(og) && !isGenericSiteOg(og)) return og;
   }
 
-  if (item.heroImageUrl && !String(item.heroImageUrl).includes('favicon') && !isGenericSiteOg(item.heroImageUrl)) {
+  if (
+    item.heroImageUrl &&
+    !String(item.heroImageUrl).includes('favicon') &&
+    !isUnreliableCoverUrl(item.heroImageUrl)
+  ) {
     return item.heroImageUrl;
   }
 
@@ -196,4 +218,5 @@ module.exports = {
   isValidOgImage,
   isDirectImageUrl,
   isGenericSiteOg,
+  isUnreliableCoverUrl,
 };

@@ -36,6 +36,7 @@
             </div>
             <a href="/admin/notebooks/<%= nb.id %>" class="notebook-card-link">
               <h3><%= nb.title %></h3>
+              <% if (nb._staticOnly) { %><p class="notebook-static-hint" style="font-size: 0.72rem; color: #D97706; font-weight: 600;">Placeholder — save a note to sync to database</p><% } %>
               <% if (nb.description) { %><p><%= nb.description %></p><% } %>
               <span class="notebook-meta">
                 <%= noteCounts[nb.id] || 0 %> note<%= (noteCounts[nb.id] || 0) === 1 ? '' : 's' %>

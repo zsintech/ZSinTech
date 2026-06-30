@@ -84,7 +84,7 @@
       <div class="form-group">
         <label class="checkbox-label">
           <input type="checkbox" name="isPublic" value="true"
-                 <%= notebook && notebook.isPublic ? 'checked' : '' %>>
+                 <%= notebook && notebook.isPublic ? 'checked' : (!notebook ? 'checked' : '') %>>
           Publish notebook (public notes will appear on the site)
         </label>
         <p class="form-hint">Individual notes also have their own publish toggle.</p>

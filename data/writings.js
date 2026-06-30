@@ -2,6 +2,114 @@
 
 const writings = [
   {
+    id: 'scientist-communicators',
+    title: 'Scientists Must Become Their Own Communicators',
+    slug: 'scientists-must-become-their-own-communicators',
+    type: 'essay',
+    excerpt: 'Why scientists and engineers cannot treat communication as external to their work — a case for making knowledge visible, accountable, and findable in the age of SEO and AEO.',
+    body: `I had a heart-sinking conversation as a new student about why I concern myself with science communication. As a student studying software engineering, I was seeking guidance about my work on using artificial intelligence for science communication as part of BMSIS, the NASA initiative. The response I received from a superior was quietly devastating: "Okay Miss. Zheen, we scientists will need people like you to communicate it for us."
+
+At first glance, the sentence appears complimentary. It seems to acknowledge communication as useful, perhaps even necessary. However, beneath the politeness of its phrasing lies a dangerous divide: the assumption that science happens in one room, and communication happens in another. The scientists produce knowledge; the writers translate it. The engineers build systems; someone else explains them. The researchers discover, model, test, and publish; another class of people carries the burden of public understanding.
+
+This division is not only intellectually weak, but ethically insufficient.
+
+At the risk of appealing to authority, it is not a coincidence that science communication has become a core pillar for major global institutions. Nor is it a coincidence that science historians, journalists, archivists, and oral historians have long worked to preserve the stories around scientific discovery. These stories matter because science does not develop in a vacuum. Scientific paradigms shift, evolve, collapse, and reappear through argument, conflict, public anxiety, institutional funding, political conditions, and historical memory. To understand science only as a set of final results is to misunderstand the actual process by which knowledge becomes meaningful.
+
+The existence of science historians and journalists does not prove that scientists should abandon communication. It proves the opposite. It proves that the making of knowledge and the narration of knowledge have always been connected. The problem begins when researchers treat communication as external to their work rather than as part of the work itself.
+
+Since then, I have returned to this question repeatedly. In a cyber project, for example, we tried to communicate the immense responsibility of scientific and technological creation through debates around the accountability of scientists for nuclear war and its impact on global discourse. That debate was not merely historical. It was not only about Oppenheimer, laboratories, weapons, governments, or the moment a discovery escapes the control of its creator. It was about the recurring ethical question that follows every powerful technology: once you create something capable of reshaping the world, are you still responsible for how the world understands it?
+
+I argue that you are.
+
+But why, exactly, does science communication in the age of answer engine optimization and search engine optimization matter so deeply?
+
+I love to write argumentatively. I was taught, and still practice, the art of the argument in any piece I write. I joke that I cannot read fiction without dissecting the author's underlying argument. Therefore, to answer why scientists and engineers must communicate their own work, I submit the following proof.
+
+## Scientific validity is not inherent; it must be rigorously argued
+
+Far too early in my career, I watched Ben Goldacre's TED Talk about which research gets funded and what does not. It permanently complicated my view of science. Before that, it was easy to imagine research as a simple movement toward truth: ask a question, design a method, collect results, publish the answer. However, science in practice is never that clean. Scientists and engineers have to make rigorous arguments not only for what they believe is true, but for why their work deserves attention, funding, replication, publication, and public trust.
+
+This does not make science weaker. In fact, it is one of its strengths. Scientific knowledge becomes credible because it survives argument. A claim has to be defended through evidence, method, peer review, reproducibility, and careful interpretation. A theory does not become valid because a scientist says it is valid. It becomes valid because it can withstand scrutiny.
+
+However, this means that communication is not decoration added after discovery. Communication is embedded in the scientific process itself. A grant proposal is an argument. A research paper is an argument. A conference presentation is an argument. A methods section is an argument about credibility. A literature review is an argument about intellectual positioning. Even a graph is an argument about what should be seen, compared, and understood.
+
+The work of having to sell research to a prospective funder is not a corruption of science; it is a foundational requirement of the scientific method in practice. Truth does not speak for itself. Truth requires structure, context, evidence, and an active champion who knows how to defend it without distorting it.
+
+This is where the separation between "scientist" and "communicator" becomes unstable. If a scientist can argue for the validity of their work to a funder, a journal, or a review committee, why should they be absent from the broader public argument around that same work? If an engineer can explain a system well enough to justify its construction, why should they not also explain its risks, limits, and social consequences?
+
+## The modern digital ecosystem actively buries objective research
+
+The challenge of securing funding and presenting research has become exponentially more arduous because communicating science now requires more than clarity. It also requires visibility. In order to communicate any science at all, one must not only explain the actual work in accessible language, but also make it findable.
+
+This is where the age of SEO and AEO becomes significant. Search engine optimization shaped an internet where being discoverable often mattered as much as being accurate. Answer engine optimization now intensifies that problem by training platforms to compress, summarize, and present information as final answers. In theory, this should help people access knowledge faster. In practice, it often creates a new hierarchy of visibility where the source most easily retrieved becomes the source most easily believed.
+
+Too much excellent, objective, and scientifically rigorous research is buried in the massive black box of platform algorithms. Yes, that includes Google as rented land too. A researcher can spend years producing careful work, only for it to be outranked, misrepresented, simplified beyond recognition, or hidden beneath more commercially optimized content. A public reader may not encounter the best explanation, the most ethical explanation, or the most accurate explanation. They encounter what the system surfaces.
+
+This is not a minor inconvenience. It changes the public life of science.
+
+When credible research is difficult to find, the vacuum is filled by whoever communicates most aggressively. Misinformation does not always win because it is more convincing. Sometimes it wins because it is more available, more emotional, more repeated, and more compatible with the incentives of the platform. In such a landscape, refusing to communicate is not neutrality. It is surrender.
+
+Scientists and engineers cannot assume that accuracy alone will protect their work. Accuracy that cannot be found, understood, or trusted by the public becomes politically fragile. The digital ecosystem does not automatically reward scientific integrity. It rewards engagement, optimization, speed, and authority signals that are often detached from actual expertise.
+
+Therefore, the scientist who says "someone else will communicate this for us" misunderstands the terrain. The problem is no longer only translation. The problem is discoverability, framing, credibility, and survival inside systems that do not necessarily care whether something is true.
+
+## Standard search mechanisms prioritize commercial intent over scientific integrity
+
+While conducting research for articles, independent studies, and technical papers, I have repeatedly encountered the severe limitations of digital search. These limitations range from heavily sponsored results to a staggering lack of findable, untainted digital sources. The more specific the question, the more obvious the problem becomes. The internet appears infinite until one tries to find a precise, credible, non-commercial, well-contextualized source.
+
+This is especially concerning for students and early researchers, who often learn through what they can access. If the visible internet becomes saturated with sponsored content, shallow explainers, AI-generated summaries, and search-optimized repetition, then the first layer of knowledge becomes polluted. The problem is not simply that bad sources exist. Bad sources have always existed. The problem is that modern search often makes the boundary between credibility and visibility harder to detect.
+
+A beautifully written article may not be rigorous. A high-ranking answer may not be correct. A confident summary may erase uncertainty. A simplified explanation may remove the very conditions that make the science meaningful.
+
+This is why scientists and engineers need to participate in public communication. Not because every scientist must become a journalist, and not because every engineer must write personal essays. Rather, they must understand that their work enters a public information economy the moment it is published, applied, funded, commercialized, or debated. If they do not help shape the language around their work, other forces will.
+
+And those forces may not be careful.
+
+## Abdicating communication responsibility fractures the ethical duty of the scientist
+
+Returning to the debate on nuclear warfare, the creator of a technology or scientific discovery holds an inherent ethical burden to shape its global discourse and societal application. This does not mean scientists control every consequence of their work. No individual researcher can fully determine how governments, corporations, militaries, or publics will use a discovery. However, lack of total control does not equal lack of responsibility.
+
+Scientific and technological work changes the conditions under which society makes decisions. Nuclear physics changed the vocabulary of war. Artificial intelligence is changing the vocabulary of labor, creativity, authorship, surveillance, and education. Cybersecurity changes the vocabulary of trust, privacy, national security, and harm. Biotechnology changes the vocabulary of life itself. These fields do not merely solve problems; they create new moral landscapes.
+
+To create within these landscapes and then refuse to communicate is to fracture the ethical role of the scientist. It suggests that responsibility ends at discovery or implementation. It allows the researcher to say: I made the thing, but I am not responsible for how it is understood.
+
+That position is not sustainable.
+
+Relegating communication to a separate class of writers, as suggested by the dismissive phrase "we scientists will need people like you," strips the researcher of agency and accountability. It implies that the scientist's duty is technical, while the communicator's duty is social. However, science has never been purely technical. The decision of what to study, what to fund, what to publish, what to ignore, what to simplify, and what to name are all social decisions as much as technical ones.
+
+This is especially true for software engineers. Software is not only code. Software is infrastructure, behavior design, automation, governance, and power. A model, platform, database, or algorithm does not remain inside the machine. It enters classrooms, hospitals, workplaces, elections, legal systems, and family conversations. Therefore, the engineer who builds without communicating leaves society to interpret the system through marketing, panic, speculation, or misuse.
+
+Communication is not a soft skill added to technical work. It is part of technical responsibility.
+
+## The creators of science must also become its communicators
+
+This does not mean science historians, journalists, educators, and professional communicators are unnecessary. On the contrary, their work is essential. They preserve memory, translate across audiences, investigate institutions, challenge authority, and connect discoveries to their historical and human consequences. However, their existence should not become an excuse for scientists and engineers to retreat from public explanation.
+
+The stronger model is collaborative rather than hierarchical. Scientists need communicators, but communicators also need scientists who understand that language is part of knowledge production. Engineers need writers, but writers also need engineers who are willing to explain not only what a system does, but what assumptions, risks, and values are built into it.
+
+In this sense, science communication is not merely about making complex ideas simple. It is about making complex ideas accountable.
+
+It asks: Who is this research for? Who can access it? Who benefits from its visibility? Who is harmed by its misinterpretation? What assumptions does it carry? What uncertainty remains? What language will the public inherit when they speak about it?
+
+These questions cannot be left entirely to platforms, search engines, answer engines, or institutional press releases. Algorithms can organize information, but they cannot assume ethical responsibility for meaning. Search engines can retrieve sources, but they cannot care whether the public understands the stakes. Answer engines can generate confident summaries, but confidence is not the same as judgment.
+
+That in itself is the argument for why the creators of science must also be its communicators.
+
+We cannot treat communication as an afterthought or relegate it entirely to a separate class of external translators. Given how compromised the modern landscape of finding exceptional, credible, well-communicated, and objective resources has become, scientists and software engineers must actively participate in making their work visible. They must construct the arguments for their own research because no search engine or algorithm will ever do it for them.
+
+The sentence that once devastated me now clarifies the exact problem I want to resist. "We scientists will need people like you to communicate it for us" assumes that communication is service work performed after knowledge is complete. But knowledge is not complete when it is discovered. It is not complete when it is published. It is not even complete when it is indexed by a search engine.
+
+Knowledge becomes socially real when it is argued, understood, questioned, remembered, and responsibly communicated.
+
+And for that reason, scientists do not simply need people like me.
+
+They need to become people like me too.`,
+    tags: ['science communication', 'ethics', 'BMSIS', 'SEO', 'software engineering'],
+    heroImageUrl: 'https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    dateWritten: new Date('2026-06-29'),
+    isPublic: true,
+  },
+  {
     id: 'kuhn-paradigm',
     title: 'Paradigm Shifts or Paradigm Evolution?',
     slug: 'kuhn-paradigm',
@@ -364,30 +472,30 @@ Club leader and co-founder — organizing sessions, mentoring first-time builder
     isPublic: true,
   },
   {
-    id: 'adventure-club',
-    title: 'AUIS Adventure Club',
-    slug: 'adventure-club',
+    id: 'grey-area-club',
+    title: 'Grey Area Club',
+    slug: 'grey-area-club',
     type: 'project',
-    excerpt: 'Co-founded the Adventure Club to promote biodiversity awareness and outdoor learning around Sulaymaniyah.',
-    body: `## AUIS Adventure Club
+    excerpt: 'Co-founded Grey Area at AUIS — entrepreneurship and technology talks connecting students with builders and founders in Kurdistan.',
+    body: `## Grey Area Club
 
-Co-founded the **Adventure Club** at AUIS to promote biodiversity awareness and get students outside the lecture hall — hikes, field notes, and environmental consciousness as a shared practice.
+Co-founded **Grey Area** at AUIS to hold space for entrepreneurship and technology — seminars, guest speakers, and conversations at the edge of what campus coursework usually covers.
 
 ### Mission
 
-- Explore Kurdistan's landscapes with respect and curiosity
-- Connect ecology coursework to what we can see, hear, and document on the ground
-- Build a student community that treats nature as something to steward, not backdrop
+- Host entrepreneurship and technology talks with practitioners from Kurdistan and beyond
+- Connect engineering, business, and creative students around startup culture and civic tech
+- Create opportunities for cross-club collaboration — often alongside Creative Writing, CyberProject, and Wikimedians
 
 ### Highlights
 
-- Organized group outings and biodiversity-themed discussions
-- Partnered with peers interested in science communication and sustainability
-- Part of a broader pattern of co-founding student projects that blend activism, education, and community
+- Guest sessions on creative tech entrepreneurship and the Kurdistan startup ecosystem
+- Part of University Day showcases where four AUIS clubs presented interdisciplinary student-led work together
+- One of four clubs co-led across campus — see [About](/about) for the full picture
 
-From campus co-founding work described on my [About](/about) page and [LinkedIn profile](https://www.linkedin.com/in/zheen-salih-abdullah-b88854264).`,
-    tags: ['AUIS', 'biodiversity', 'outdoors', 'community'],
-    heroImageUrl: 'https://images.pexels.com/photos/957024/forest-trees-perspective-bright-957024.jpeg?auto=compress&cs=tinysrgb&w=1920',
+Listed among student leadership on my [LinkedIn profile](https://www.linkedin.com/in/zheen-salih-abdullah-b88854264).`,
+    tags: ['AUIS', 'entrepreneurship', 'technology', 'club'],
+    heroImageUrl: 'https://images.pexels.com/photos/7688336/pexels-photo-7688336.jpeg?auto=compress&cs=tinysrgb&w=1920',
     dateWritten: new Date('2023-06-01'),
     isPublic: true,
   },
@@ -471,10 +579,9 @@ Listed among my professional projects on [LinkedIn](https://www.linkedin.com/in/
 Meet people where they already scroll. Build scientific literacy without dumbing science down — wonder beats jargon.
 
 Explore reel write-ups on [/popsci](/popsci) or follow live on Instagram.`,
-    ogImageUrl: 'https://scontent.cdninstagram.com/v/t51.82787-19/706676860_18077178074645961_4056300157723781850_n.jpg?stp=dst-jpg_s100x100_tt6&_nc_cat=110&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy42NjUuQzMifQ%3D%3D&_nc_ohc=bvo2UDf8TusQ7kNvwF-NEjq&_nc_oc=Adr3sac4vqlrm2p--ZuihZEwK3jGg8cmkXWxW1dnON8PpRGQWOpTUR3_ukGj-tF4Af4&_nc_zt=24&_nc_ht=scontent.cdninstagram.com&_nc_gid=50mmKCoJbBaU_nrFnlABXg&_nc_ss=7ca8c&oh=00_Af-iqOwCwe-YkqEkCywAy9Orp8OF2NM1AbaJMBgZL00cBQ&oe=6A479310',
-    imageSource: 'external',
+    imageSource: 'pexels',
     tags: ['Instagram', 'science communication', 'content creation', 'brand'],
-    heroImageUrl: 'https://scontent.cdninstagram.com/v/t51.82787-19/706676860_18077178074645961_4056300157723781850_n.jpg?stp=dst-jpg_s100x100_tt6&_nc_cat=110&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy42NjUuQzMifQ%3D%3D&_nc_ohc=bvo2UDf8TusQ7kNvwF-NEjq&_nc_oc=Adr3sac4vqlrm2p--ZuihZEwK3jGg8cmkXWxW1dnON8PpRGQWOpTUR3_ukGj-tF4Af4&_nc_zt=24&_nc_ht=scontent.cdninstagram.com&_nc_gid=50mmKCoJbBaU_nrFnlABXg&_nc_ss=7ca8c&oh=00_Af-iqOwCwe-YkqEkCywAy9Orp8OF2NM1AbaJMBgZL00cBQ&oe=6A479310',
+    heroImageUrl: 'https://images.pexels.com/photos/8382618/pexels-photo-8382618.jpeg?auto=compress&cs=tinysrgb&w=1920',
     dateWritten: new Date('2024-02-01'),
     projectUrl: 'https://www.instagram.com/zsintech/',
     isPublic: true,
@@ -500,10 +607,9 @@ Open-source web companion to [PopSci AI](/writings/popsci-ai) — the site behin
 Instagram is for discovery; the web is for depth. Each reel points somewhere durable — a place to read, cite, and share without algorithmic decay.
 
 Part of my science-communication toolchain alongside BMSIS scholarship and The AUIS Voice.`,
-    ogImageUrl: 'https://opengraph.githubassets.com/0bb0d02e69ed92796fda3b045961d59e875a2f117f9c8760fb2828ce39a3f576/zsintech/popsci.ai',
-    imageSource: 'external',
+    imageSource: 'pexels',
     tags: ['web', 'PopSci AI', 'open source', 'GitHub'],
-    heroImageUrl: 'https://opengraph.githubassets.com/0bb0d02e69ed92796fda3b045961d59e875a2f117f9c8760fb2828ce39a3f576/zsintech/popsci.ai',
+    heroImageUrl: 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1920',
     dateWritten: new Date('2024-06-01'),
     projectUrl: 'https://github.com/zsintech/popsci.ai',
     isPublic: true,
@@ -530,7 +636,7 @@ That experience is the through-line in everything since: PopSci AI, AUIS Voice s
 
 Described in my [About](/about) page and professional narrative on [LinkedIn](https://www.linkedin.com/in/zheen-salih-abdullah-b88854264).`,
     tags: ['activism', 'public health', 'misinformation', 'science communication'],
-    heroImageUrl: 'https://images.pexels.com/photos/5991770/pexels-photo-5991770.jpeg?auto=compress&cs=tinysrgb&w=1920',
+    heroImageUrl: 'https://images.pexels.com/photos/4031818/pexels-photo-4031818.jpeg?auto=compress&cs=tinysrgb&w=1920',
     dateWritten: new Date('2022-06-01'),
     isPublic: true,
   },

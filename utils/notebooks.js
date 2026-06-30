@@ -1,5 +1,6 @@
 const { db, isConfigured, admin } = require('../firebase-admin');
 const { createSlug } = require('./slug');
+const { parseIsPublic } = require('./parsePublic');
 const staticNotebooks = require('../data/notebooks');
 const staticNotes = require('../data/notebook-notes');
 
@@ -13,6 +14,91 @@ function normalizeItem(item) {
   return copy;
 }
 
+function parseTags(raw) {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  return String(raw).split(',').map(t => t.trim()).filter(Boolean);
+}
+
+function toTimestamp(val) {
+  if (!val) return admin.firestore.Timestamp.now();
+  if (val.toDate) return val;
+  if (val instanceof Date) return admin.firestore.Timestamp.fromDate(val);
+  return admin.firestore.Timestamp.fromDate(new Date(val));
+}
+
+function parseNotebookFields(data) {
+  return {
+    title: data.title || '',
+    subject: data.subject || '',
+    description: data.description || '',
+    emoji: data.emoji || '',
+    color: data.color || '',
+    category: data.category || '',
+    semester: data.semester || '',
+    coverUrl: data.coverUrl || '',
+    tags: parseTags(data.tags),
+    isPublic: parseIsPublic(data.isPublic),
+  };
+}
+
+function parseNoteFields(data) {
+  return {
+    title: data.title || 'Untitled',
+    body: data.body || '',
+    category: data.category || '',
+    coverUrl: data.coverUrl || '',
+    sourceUrl: data.sourceUrl || '',
+    excerpt: data.excerpt || '',
+    tags: parseTags(data.tags),
+    isPublic: parseIsPublic(data.isPublic),
+  };
+}
+
+async function ensureNotebookInFirestore(notebookId) {
+  if (!isConfigured || !db || !notebookId) return;
+  const ref = db.collection(COL_NOTEBOOKS).doc(notebookId);
+  const doc = await ref.get();
+  if (doc.exists) return;
+
+  const staticNb = staticNotebooks.getById(notebookId);
+  const now = admin.firestore.Timestamp.now();
+  if (staticNb) {
+    const payload = {
+      title: staticNb.title || '',
+      subject: staticNb.subject || '',
+      description: staticNb.description || '',
+      slug: staticNb.slug || staticNb.id,
+      isPublic: staticNb.isPublic === true,
+      dateAdded: toTimestamp(staticNb.dateAdded),
+      dateUpdated: now,
+    };
+    await ref.set(payload, { merge: true });
+    return;
+  }
+
+  await ref.set({
+    title: notebookId,
+    slug: notebookId,
+    isPublic: false,
+    dateAdded: now,
+    dateUpdated: now,
+  }, { merge: true });
+}
+
+async function touchNotebook(notebookId, now) {
+  if (!notebookId) return;
+  await ensureNotebookInFirestore(notebookId);
+  await db.collection(COL_NOTEBOOKS).doc(notebookId).set({ dateUpdated: now }, { merge: true });
+}
+
+async function uniqueNoteId(preferred) {
+  let id = preferred || createSlug('note');
+  const existing = await db.collection(COL_NOTES).doc(id).get();
+  if (!existing.exists) return id;
+  return `${id}-${Date.now()}`;
+}
+
 async function listNotebooks(filters = {}) {
   if (isConfigured && db) {
     try {
@@ -23,7 +109,16 @@ async function listNotebooks(filters = {}) {
       if (!snap.empty) {
         return snap.docs.map(d => normalizeItem({ id: d.id, ...d.data() }));
       }
-    } catch { /* fall through */ }
+    } catch {
+      try {
+        const snap = await db.collection(COL_NOTEBOOKS).get();
+        if (!snap.empty) {
+          let items = snap.docs.map(d => normalizeItem({ id: d.id, ...d.data() }));
+          if (filters.publicOnly) items = items.filter(n => n.isPublic === true);
+          return items.sort((a, b) => new Date(b.dateUpdated || b.dateAdded) - new Date(a.dateUpdated || a.dateAdded));
+        }
+      } catch { /* fall through */ }
+    }
   }
   return staticNotebooks.getAll(filters);
 }
@@ -44,19 +139,40 @@ async function getNotebook(id) {
 }
 
 async function adminListNotebooks() {
-  return listNotebooks({});
+  const firestoreItems = [];
+  if (isConfigured && db) {
+    try {
+      const snap = await db.collection(COL_NOTEBOOKS).orderBy('dateUpdated', 'desc').get();
+      firestoreItems.push(...snap.docs.map(d => normalizeItem({ id: d.id, ...d.data(), _inFirestore: true })));
+    } catch {
+      try {
+        const snap = await db.collection(COL_NOTEBOOKS).get();
+        firestoreItems.push(...snap.docs.map(d => normalizeItem({ id: d.id, ...d.data(), _inFirestore: true })));
+      } catch { /* fall through */ }
+    }
+  }
+
+  const map = new Map();
+  staticNotebooks.getAll().forEach(nb => {
+    map.set(nb.id, { ...nb, _inFirestore: false, _staticOnly: true });
+  });
+  firestoreItems.forEach(nb => {
+    map.set(nb.id, { ...map.get(nb.id), ...nb, _inFirestore: true, _staticOnly: false });
+  });
+
+  return [...map.values()].sort((a, b) =>
+    new Date(b.dateUpdated || b.dateAdded) - new Date(a.dateUpdated || a.dateAdded)
+  );
 }
 
 async function createNotebook(data) {
   if (!isConfigured || !db) throw new Error('Database not configured');
   const id = data.slug || createSlug(data.title || 'notebook');
   const now = admin.firestore.Timestamp.now();
+  const fields = parseNotebookFields(data);
   const payload = {
-    title: data.title || '',
-    subject: data.subject || '',
-    description: data.description || '',
+    ...fields,
     slug: id,
-    isPublic: data.isPublic === true || data.isPublic === 'true',
     dateAdded: now,
     dateUpdated: now,
   };
@@ -66,15 +182,14 @@ async function createNotebook(data) {
 
 async function updateNotebook(id, data) {
   if (!isConfigured || !db) throw new Error('Database not configured');
+  await ensureNotebookInFirestore(id);
+  const fields = parseNotebookFields(data);
   const payload = {
-    title: data.title || '',
-    subject: data.subject || '',
-    description: data.description || '',
-    isPublic: data.isPublic === true || data.isPublic === 'true',
+    ...fields,
     dateUpdated: admin.firestore.Timestamp.now(),
   };
   if (data.slug) payload.slug = data.slug;
-  await db.collection(COL_NOTEBOOKS).doc(id).update(payload);
+  await db.collection(COL_NOTEBOOKS).doc(id).set(payload, { merge: true });
 }
 
 async function deleteNotebook(id) {
@@ -88,10 +203,12 @@ async function deleteNotebook(id) {
 
 async function toggleNotebookPublic(id) {
   if (!isConfigured || !db) throw new Error('Database not configured');
-  const doc = await db.collection(COL_NOTEBOOKS).doc(id).get();
+  await ensureNotebookInFirestore(id);
+  const ref = db.collection(COL_NOTEBOOKS).doc(id);
+  const doc = await ref.get();
   if (!doc.exists) throw new Error('Not found');
   const current = doc.data().isPublic || false;
-  await db.collection(COL_NOTEBOOKS).doc(id).update({
+  await ref.update({
     isPublic: !current,
     dateUpdated: admin.firestore.Timestamp.now(),
   });
@@ -109,12 +226,11 @@ async function listNotes(notebookId, filters = {}) {
         return snap.docs.map(d => normalizeItem({ id: d.id, ...d.data() }));
       }
     } catch {
-      /* composite index may be missing — fetch and filter in memory */
       try {
         const snap = await db.collection(COL_NOTES).where('notebookId', '==', notebookId).get();
         if (!snap.empty) {
           let items = snap.docs.map(d => normalizeItem({ id: d.id, ...d.data() }));
-          if (filters.publicOnly) items = items.filter(n => n.isPublic !== false);
+          if (filters.publicOnly) items = items.filter(n => n.isPublic === true);
           return items.sort((a, b) => new Date(b.dateUpdated || b.dateAdded) - new Date(a.dateUpdated || a.dateAdded));
         }
       } catch { /* fall through */ }
@@ -140,46 +256,62 @@ async function getNote(id) {
 
 async function createNote(notebookId, data) {
   if (!isConfigured || !db) throw new Error('Database not configured');
-  const id = data.slug || createSlug(data.title || 'note');
+  await ensureNotebookInFirestore(notebookId);
+
+  const fields = parseNoteFields(data);
+  const preferredId = data.slug || createSlug(fields.title);
+  const id = await uniqueNoteId(preferredId);
   const now = admin.firestore.Timestamp.now();
   const payload = {
+    ...fields,
     notebookId,
-    title: data.title || 'Untitled',
-    body: data.body || '',
     slug: id,
-    isPublic: data.isPublic === true || data.isPublic === 'true',
     dateAdded: now,
     dateUpdated: now,
   };
   await db.collection(COL_NOTES).doc(id).set(payload);
-  await db.collection(COL_NOTEBOOKS).doc(notebookId).update({ dateUpdated: now });
+  await touchNotebook(notebookId, now);
   return id;
 }
 
 async function updateNote(id, data) {
   if (!isConfigured || !db) throw new Error('Database not configured');
+
+  const fields = parseNoteFields(data);
   const now = admin.firestore.Timestamp.now();
+  const noteRef = db.collection(COL_NOTES).doc(id);
+  const doc = await noteRef.get();
+
+  const notebookId = (doc.exists && doc.data().notebookId) || data.notebookId;
+  if (notebookId) await ensureNotebookInFirestore(notebookId);
+
   const payload = {
-    title: data.title || 'Untitled',
-    body: data.body || '',
-    isPublic: data.isPublic === true || data.isPublic === 'true',
+    ...fields,
     dateUpdated: now,
   };
   if (data.slug) payload.slug = data.slug;
-  const doc = await db.collection(COL_NOTES).doc(id).get();
-  if (doc.exists && doc.data().notebookId) {
-    await db.collection(COL_NOTEBOOKS).doc(doc.data().notebookId).update({ dateUpdated: now });
+
+  if (doc.exists) {
+    await noteRef.update(payload);
+  } else {
+    const staticNote = staticNotes.getById(id);
+    await noteRef.set({
+      ...(staticNote || {}),
+      ...payload,
+      notebookId: notebookId || staticNote?.notebookId,
+      slug: staticNote?.slug || id,
+      dateAdded: staticNote?.dateAdded ? toTimestamp(staticNote.dateAdded) : now,
+    }, { merge: true });
   }
-  await db.collection(COL_NOTES).doc(id).update(payload);
+
+  if (notebookId) await touchNotebook(notebookId, now);
 }
 
 async function deleteNote(id) {
   if (!isConfigured || !db) throw new Error('Database not configured');
   const doc = await db.collection(COL_NOTES).doc(id).get();
   if (doc.exists && doc.data().notebookId) {
-    await db.collection(COL_NOTEBOOKS).doc(doc.data().notebookId).update({
-      dateUpdated: admin.firestore.Timestamp.now(),
-    });
+    await touchNotebook(doc.data().notebookId, admin.firestore.Timestamp.now());
   }
   await db.collection(COL_NOTES).doc(id).delete();
 }

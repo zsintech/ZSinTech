@@ -1,6 +1,16 @@
 const { db, isConfigured } = require('../firebase-admin');
 const staticContent = require('../data/writings');
 const { enrichProjects, enrichProject } = require('./enrichCover');
+const { isUnreliableCoverUrl } = require('./linkPreview');
+
+function preferStaticCover(firestoreItem, staticItem) {
+  if (!staticItem?.heroImageUrl) return firestoreItem;
+  if (!firestoreItem?.heroImageUrl) return { ...firestoreItem, heroImageUrl: staticItem.heroImageUrl };
+  if (isUnreliableCoverUrl(firestoreItem.heroImageUrl) && !isUnreliableCoverUrl(staticItem.heroImageUrl)) {
+    return { ...firestoreItem, heroImageUrl: staticItem.heroImageUrl };
+  }
+  return firestoreItem;
+}
 
 async function fetchFromFirestore(filters = {}) {
   if (!isConfigured || !db) return null;
@@ -27,6 +37,8 @@ async function getPublicWritings(filters = {}) {
     for (const s of staticItems) {
       if (!bySlug.has(s.slug)) {
         bySlug.set(s.slug, { id: s.id || s.slug, ...s });
+      } else {
+        bySlug.set(s.slug, preferStaticCover(bySlug.get(s.slug), s));
       }
     }
     items = [...bySlug.values()];

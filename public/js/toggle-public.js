@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const contentCollections = new Set([
     'writing_ideas', 'research_papers', 'iconic_bitch', 'articles_read',
-    'journalism', 'popsci_reels', 'solo_dates',
+    'journalism', 'popsci_reels', 'solo_dates', 'activities', 'courses',
   ]);
 
   document.querySelectorAll('.toggle-public-btn').forEach(btn => {
