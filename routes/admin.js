@@ -312,11 +312,124 @@ buildCrudRoutes('articles_saved', {
   statusValues: ['want-to-read', 'read'],
 });
 
-buildCrudRoutes('writings', {
-  singular: 'writing',
-  title: 'Writings',
-  statusValues: [],
-  hasSlug: true,
+// ─── Writings (essays, projects, stories — contentStore + static merge) ───────
+function parseWritingFields(body) {
+  const data = { ...body };
+  data.tags = parseTags(data.tags);
+  data.isPublic = parseIsPublic(data.isPublic);
+  if (data.slug) data.slug = String(data.slug).trim();
+  return data;
+}
+
+router.get('/writings', async (req, res) => {
+  try {
+    const { type, tag } = req.query;
+    let items = await contentStore.adminList('writings', type ? { type } : {});
+    if (tag) items = items.filter(i => i.tags && i.tags.includes(tag));
+
+    res.render('admin/writings', {
+      title: 'Writings',
+      items,
+      formatDate,
+      currentType: type || '',
+      currentTag: tag || '',
+      dbConfigured: isConfigured,
+    });
+  } catch (err) {
+    console.error('List writings error:', err);
+    res.render('admin/writings', {
+      title: 'Writings',
+      items: [],
+      formatDate,
+      currentType: '',
+      currentTag: '',
+      dbConfigured: isConfigured,
+    });
+  }
+});
+
+router.get('/writings/new', (req, res) => {
+  res.render('admin/writing-form', {
+    title: 'Add Writing',
+    item: null,
+    error: req.query.error || null,
+  });
+});
+
+router.post('/writings', async (req, res) => {
+  try {
+    let data = parseWritingFields(req.body);
+    if (!data.title) return res.redirect('/admin/writings/new?error=title');
+
+    data.slug = data.slug || await generateSlug(data.title, 'writings');
+    data.dateWritten = admin.firestore.Timestamp.now();
+    if (data.isPublic && !data.datePublished) {
+      data.datePublished = admin.firestore.Timestamp.now();
+    }
+
+    if (!data.heroImageUrl && data.title) {
+      try {
+        const image = await fetchImage(data.title, data.excerpt || '');
+        if (image) data.heroImageUrl = image.url;
+      } catch { /* optional */ }
+    }
+
+    await contentStore.create('writings', data);
+    res.redirect('/admin/writings');
+  } catch (err) {
+    console.error('Create writing error:', err);
+    res.redirect('/admin/writings/new?error=save');
+  }
+});
+
+router.get('/writings/:id/edit', async (req, res) => {
+  const item = await contentStore.getByIdForAdmin('writings', req.params.id);
+  if (!item) return res.redirect('/admin/writings');
+
+  res.render('admin/writing-form', {
+    title: 'Edit Writing',
+    item,
+    error: req.query.error || null,
+  });
+});
+
+router.post('/writings/:id', async (req, res) => {
+  try {
+    let data = parseWritingFields(req.body);
+    if (!data.title) {
+      return res.redirect(`/admin/writings/${req.params.id}/edit?error=title`);
+    }
+
+    if (!data.slug) data.slug = req.params.id;
+    if (data.isPublic && !data.datePublished) {
+      data.datePublished = admin.firestore.Timestamp.now();
+    }
+
+    await contentStore.update('writings', req.params.id, data);
+    res.redirect('/admin/writings');
+  } catch (err) {
+    console.error('Update writing error:', err);
+    res.redirect(`/admin/writings/${req.params.id}/edit?error=save`);
+  }
+});
+
+router.post('/writings/:id/delete', async (req, res) => {
+  try {
+    await contentStore.remove('writings', req.params.id);
+  } catch (err) {
+    console.error('Delete writing error:', err);
+  }
+  res.redirect('/admin/writings');
+});
+
+router.post('/writings/:id/toggle-public', async (req, res) => {
+  try {
+    const isPublic = await contentStore.togglePublic('writings', req.params.id);
+    res.json({ success: true, isPublic });
+  } catch (err) {
+    console.error('Toggle writing error:', err);
+    res.status(500).json({ error: 'Failed to toggle' });
+  }
 });
 
 buildCrudRoutes('movies', {

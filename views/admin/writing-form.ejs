@@ -7,18 +7,27 @@
       <a href="/admin/writings" class="btn btn-outline">&larr; Back</a>
     </div>
 
+    <% if (typeof error !== 'undefined' && error) { %>
+    <p class="admin-alert admin-alert--error">
+      <% if (error === 'save') { %>Save failed — check that Firebase is configured and try again.<% } %>
+      <% if (error === 'title') { %>Title is required.<% } %>
+    </p>
+    <% } %>
+
+    <% if (item && item._staticOnly) { %>
+    <p class="admin-alert">This essay lives in static seed data only. Saving will copy it to the database so future edits sync remotely.</p>
+    <% } %>
+
     <form action="<%= item ? '/admin/writings/' + item.id : '/admin/writings' %>" method="POST" class="content-form">
       <div class="form-group">
         <label for="title">Title *</label>
         <input type="text" id="title" name="title" value="<%= item ? item.title : '' %>" required>
       </div>
 
-      <% if (item && item.slug) { %>
       <div class="form-group">
         <label for="slug">Slug</label>
-        <input type="text" id="slug" name="slug" value="<%= item.slug %>">
+        <input type="text" id="slug" name="slug" value="<%= item ? item.slug || item.id || '' : '' %>" placeholder="auto-generated from title if blank">
       </div>
-      <% } %>
 
       <div class="form-row">
         <div class="form-group">

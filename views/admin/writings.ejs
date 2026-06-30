@@ -3,18 +3,25 @@
   <%- include('../partials/nav-admin') %>
   <main class="admin-main">
     <div class="admin-header">
-      <h1>Writings</h1>
+      <div class="admin-header-text">
+        <h1>Writings</h1>
+        <p class="page-desc">Essays, projects, and stories — edits save to the database and appear on the public site when published.</p>
+      </div>
       <a href="/admin/writings/new" class="btn btn-primary">+ Add Writing</a>
     </div>
 
+    <% if (typeof dbConfigured !== 'undefined' && !dbConfigured) { %>
+    <p class="admin-alert admin-alert--warn">Database not configured — you can browse static content but saves will not persist. Set FIREBASE_* env vars on Render.</p>
+    <% } %>
+
     <div class="filters">
-      <select onchange="location.href='/admin/writings?category='+this.value">
-        <option value="">All Types</option>
-        <option value="essay">Essays</option>
-        <option value="project">Projects</option>
-        <option value="research">Research</option>
-        <option value="story">Stories</option>
-        <option value="note">Notes</option>
+      <select onchange="location.href='/admin/writings' + (this.value ? '?type=' + this.value : '')">
+        <option value="" <%= !currentType ? 'selected' : '' %>>All Types</option>
+        <option value="essay" <%= currentType === 'essay' ? 'selected' : '' %>>Essays</option>
+        <option value="project" <%= currentType === 'project' ? 'selected' : '' %>>Projects</option>
+        <option value="research" <%= currentType === 'research' ? 'selected' : '' %>>Research</option>
+        <option value="story" <%= currentType === 'story' ? 'selected' : '' %>>Stories</option>
+        <option value="note" <%= currentType === 'note' ? 'selected' : '' %>>Notes</option>
       </select>
     </div>
 
@@ -30,6 +37,9 @@
             <h4><%= item.title %></h4>
             <p class="muted"><%= item.excerpt || '' %></p>
             <p class="muted small"><%= item.slug ? '/writings/' + item.slug : '' %></p>
+            <% if (item._staticOnly) { %>
+            <p class="muted small">Not in database yet — open Edit and Save once to sync.</p>
+            <% } %>
           </div>
           <button class="toggle-public-btn <%= item.isPublic ? 'is-public' : '' %>"
                   data-collection="writings" data-id="<%= item.id %>">
@@ -39,10 +49,12 @@
         <div class="item-card-actions">
           <span class="muted"><%= formatDate(item.dateWritten) %></span>
           <a href="/admin/writings/<%= item.id %>/edit" class="btn btn-small">Edit</a>
+          <% if (!item._staticOnly) { %>
           <form action="/admin/writings/<%= item.id %>/delete" method="POST" style="display:inline"
-                onsubmit="return confirm('Delete this writing?')">
+                onsubmit="return confirm('Delete this writing from the database?')">
             <button type="submit" class="btn btn-small btn-danger">Delete</button>
           </form>
+          <% } %>
         </div>
       </div>
       <% }) %>

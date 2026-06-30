@@ -58,6 +58,71 @@ function mergeById(staticItems, storedItems) {
   });
 }
 
+/** Merge static seed data with Firestore for admin lists (Firestore wins on conflict). */
+function mergeAdminList(staticItems, storedItems) {
+  const map = new Map();
+  staticItems.forEach(item => {
+    const key = item.slug || item.id;
+    map.set(key, { ...item, id: item.id || item.slug, _staticOnly: true });
+  });
+  storedItems.forEach(item => {
+    const key = item.slug || item.id;
+    const prev = map.get(key);
+    map.set(key, {
+      ...(prev || {}),
+      ...item,
+      id: item.id || key,
+      _staticOnly: false,
+    });
+  });
+  return [...map.values()].sort((a, b) => {
+    const aTime = new Date(a.dateWritten || a.dateAdded || 0).getTime();
+    const bTime = new Date(b.dateWritten || b.dateAdded || 0).getTime();
+    return bTime - aTime;
+  });
+}
+
+function toFirestorePayload(item) {
+  const payload = { ...item };
+  delete payload.id;
+  delete payload._staticOnly;
+  if (payload.dateAdded instanceof Date) {
+    payload.dateAdded = admin.firestore.Timestamp.fromDate(payload.dateAdded);
+  } else if (!payload.dateAdded) {
+    payload.dateAdded = admin.firestore.Timestamp.now();
+  }
+  if (payload.dateWritten instanceof Date) {
+    payload.dateWritten = admin.firestore.Timestamp.fromDate(payload.dateWritten);
+  }
+  if (payload.datePublished instanceof Date) {
+    payload.datePublished = admin.firestore.Timestamp.fromDate(payload.datePublished);
+  }
+  if (payload.date instanceof Date) {
+    payload.date = admin.firestore.Timestamp.fromDate(payload.date);
+  }
+  return payload;
+}
+
+async function ensureFromStatic(collection, id) {
+  if (!isConfigured || !db || !id) return null;
+  const ref = db.collection(collection).doc(id);
+  const doc = await ref.get();
+  if (doc.exists) return normalizeItem({ id: doc.id, ...doc.data() });
+
+  const staticItem = getStaticList(collection).find(i => i.id === id || i.slug === id);
+  if (!staticItem) return null;
+
+  const docId = staticItem.slug || staticItem.id || id;
+  const payload = toFirestorePayload({
+    ...staticItem,
+    slug: staticItem.slug || docId,
+    isPublic: staticItem.isPublic !== false,
+  });
+  await db.collection(collection).doc(docId).set(payload, { merge: true });
+  const saved = await db.collection(collection).doc(docId).get();
+  return saved.exists ? normalizeItem({ id: saved.id, ...saved.data() }) : null;
+}
+
 async function listFromFirestore(collection, filters = {}) {
   if (!isConfigured || !db) return null;
 
@@ -119,43 +184,76 @@ async function getById(collection, id) {
   return staticItems.find(i => i.id === id || i.slug === id) || null;
 }
 
+async function getByIdForAdmin(collection, id) {
+  const item = await getById(collection, id);
+  if (!item) return null;
+
+  if (!isConfigured || !db) {
+    return { ...item, id: item.id || item.slug, _staticOnly: true };
+  }
+
+  const doc = await db.collection(collection).doc(id).get();
+  if (doc.exists) return { ...normalizeItem({ id: doc.id, ...doc.data() }), _staticOnly: false };
+
+  if (item.slug) {
+    const bySlug = await db.collection(collection).where('slug', '==', item.slug).limit(1).get();
+    if (!bySlug.empty) {
+      const d = bySlug.docs[0];
+      return { ...normalizeItem({ id: d.id, ...d.data() }), _staticOnly: false };
+    }
+  }
+
+  return { ...item, id: item.id || item.slug, _staticOnly: true };
+}
+
 async function adminList(collection, filters = {}) {
-  if (!isConfigured || !db) return getStaticList(collection, filters);
+  const staticItems = getStaticList(collection);
+  if (!isConfigured || !db) {
+    return applyFilters(staticItems.map(i => ({ ...i, _staticOnly: true })), filters);
+  }
   try {
-    let query = db.collection(collection);
-    if (filters.status) query = query.where('status', '==', filters.status);
-    query = query.orderBy('dateAdded', 'desc');
-    const snap = await query.get();
-    if (snap.empty) return getStaticList(collection, filters);
-    return applyFilters(
-      snap.docs.map(d => normalizeItem({ id: d.id, ...d.data() })),
-      filters
-    );
+    const snap = await db.collection(collection).get();
+    const stored = snap.docs.map(d => normalizeItem({ id: d.id, ...d.data() }));
+    return applyFilters(mergeAdminList(staticItems, stored), filters);
   } catch {
-    return getStaticList(collection, filters);
+    return applyFilters(staticItems.map(i => ({ ...i, _staticOnly: true })), filters);
   }
 }
 
 async function create(collection, data) {
   if (!isConfigured || !db) throw new Error('Database not configured');
   const id = data.id || data.slug || createSlug(data.title || 'item');
-  const payload = {
+  const payload = toFirestorePayload({
     ...data,
     slug: data.slug || id,
     isPublic: parseIsPublic(data.isPublic),
-    dateAdded: admin.firestore.Timestamp.now(),
-  };
-  delete payload.id;
-  await db.collection(collection).doc(id).set(payload);
+  });
+  await db.collection(collection).doc(id).set(payload, { merge: true });
   return id;
 }
 
 async function update(collection, id, data) {
   if (!isConfigured || !db) throw new Error('Database not configured');
+  const docId = id;
+  const ref = db.collection(collection).doc(docId);
+  const doc = await ref.get();
   const payload = { ...data };
   delete payload.id;
+  delete payload._staticOnly;
   payload.isPublic = parseIsPublic(payload.isPublic);
-  await db.collection(collection).doc(id).update(payload);
+
+  if (!doc.exists) {
+    const staticItem = getStaticList(collection).find(i => i.id === id || i.slug === id);
+    const merged = toFirestorePayload({
+      ...(staticItem || {}),
+      ...payload,
+      slug: payload.slug || staticItem?.slug || id,
+    });
+    await ref.set(merged, { merge: true });
+    return;
+  }
+
+  await ref.update(payload);
 }
 
 async function remove(collection, id) {
@@ -165,10 +263,23 @@ async function remove(collection, id) {
 
 async function togglePublic(collection, id) {
   if (!isConfigured || !db) throw new Error('Database not configured');
-  const doc = await db.collection(collection).doc(id).get();
+  let doc = await db.collection(collection).doc(id).get();
+  if (!doc.exists) {
+    await ensureFromStatic(collection, id);
+    doc = await db.collection(collection).doc(id).get();
+    if (!doc.exists) {
+      const bySlug = await db.collection(collection).where('slug', '==', id).limit(1).get();
+      if (!bySlug.empty) doc = bySlug.docs[0];
+    }
+  }
   if (!doc.exists) throw new Error('Not found');
+
   const current = doc.data().isPublic || false;
-  await db.collection(collection).doc(id).update({ isPublic: !current });
+  const update = { isPublic: !current };
+  if (!current && !doc.data().datePublished) {
+    update.datePublished = admin.firestore.Timestamp.now();
+  }
+  await db.collection(collection).doc(doc.id).update(update);
   return !current;
 }
 
@@ -208,6 +319,7 @@ async function importAllStatic() {
 module.exports = {
   list,
   getById,
+  getByIdForAdmin,
   adminList,
   create,
   update,
@@ -216,5 +328,6 @@ module.exports = {
   importStaticCollection,
   importAllStatic,
   getStaticList,
+  ensureFromStatic,
   STATIC_LOADERS,
 };
