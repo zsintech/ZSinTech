@@ -52,6 +52,34 @@
   --gradient-accent: linear-gradient(135deg, #5BA3F5 0%, #7AB8FF 100%);
   --gradient-card: linear-gradient(145deg, #1C1C1E 0%, #2C2C2E 100%);
 
+  /* Admin tokens — keep admin + public on the same theme */
+  --admin-bg: #0F0F0F;
+  --admin-bg-subtle: #141414;
+  --card-bg: #1C1C1E;
+  --paper-bg: #1C1C1E;
+  --input-bg: #2C2C2E;
+  --table-head-bg: #2C2C2E;
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --hub-featured-bg: linear-gradient(135deg, rgba(91, 163, 245, 0.08), rgba(91, 163, 245, 0.04));
+  --btn-primary-bg: #F5F5F7;
+  --btn-primary-text: #111111;
+  --btn-primary-hover: #E5E5E7;
+  --btn-outline-border: rgba(255, 255, 255, 0.12);
+  --btn-outline-hover-bg: rgba(255, 255, 255, 0.04);
+  --btn-ghost-hover-bg: rgba(255, 255, 255, 0.06);
+  --btn-danger-bg: rgba(220, 38, 38, 0.12);
+  --btn-danger-text: #FCA5A5;
+  --btn-danger-hover-bg: rgba(220, 38, 38, 0.18);
+  --alert-bg: rgba(245, 158, 11, 0.08);
+  --alert-text: #FBBF24;
+  --alert-border: rgba(245, 158, 11, 0.15);
+  --admin-gradient:
+    radial-gradient(ellipse 100% 60% at 50% -20%, rgba(91, 163, 245, 0.04), transparent 55%),
+    linear-gradient(180deg, #111111 0%, #0F0F0F 50%, #0A0A0A 100%);
+  --danger-soft: rgba(220, 38, 38, 0.12);
+
   color-scheme: dark;
 }
 
@@ -271,11 +299,9 @@
 
 /* ─── Admin dark mode ─────────────────────────────────────────────────────── */
 [data-theme="dark"] body.admin-body {
-  background: #0F0F0F !important;
-  background-image:
-    radial-gradient(ellipse 100% 60% at 50% -20%, rgba(91, 163, 245, 0.04), transparent 55%),
-    linear-gradient(180deg, #111 0%, #0F0F0F 50%, #0A0A0A 100%) !important;
-  color: #E5E5E7;
+  background: var(--admin-bg) !important;
+  background-image: var(--admin-gradient) !important;
+  color: var(--text);
 }
 
 [data-theme="dark"] .admin-sidebar {
@@ -484,6 +510,7 @@
   border-radius: 8px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   background: transparent;
+  color: var(--text, #1A1A1A);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -897,14 +924,55 @@
   border-color: var(--border) !important;
 }
 
-[data-theme="dark"] .login-card h1 { color: #F5F5F7 !important; }
-[data-theme="dark"] .login-card p { color: #A1A1A6 !important; }
-[data-theme="dark"] .login-card label { color: #D1D1D6 !important; }
+[data-theme="dark"] .login-card h1,
+[data-theme="dark"] .login-title { color: #F5F5F7 !important; }
+[data-theme="dark"] .login-card p,
+[data-theme="dark"] .login-subtitle { color: #A1A1A6 !important; }
+[data-theme="dark"] .login-card label,
+[data-theme="dark"] .login-form label { color: #D1D1D6 !important; }
 
-[data-theme="dark"] .login-card input {
-  background: #2C2C2E !important;
+[data-theme="dark"] .login-card input,
+[data-theme="dark"] .login-form input {
+  background: var(--input-bg) !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
   color: #F5F5F7 !important;
+}
+
+/* ─── Admin note lists ─────────────────────────────────────────────────────── */
+[data-theme="dark"] .note-list-paper {
+  background: var(--paper-bg) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .note-list-paper h3 {
+  color: var(--text) !important;
+}
+
+[data-theme="dark"] .note-preview,
+[data-theme="dark"] .note-list-meta {
+  color: var(--muted) !important;
+}
+
+[data-theme="dark"] .kanban-column,
+[data-theme="dark"] .tab-section,
+[data-theme="dark"] .item-card,
+[data-theme="dark"] .toggle-public-btn,
+[data-theme="dark"] .filters select {
+  background: var(--card-bg) !important;
+  border-color: var(--border) !important;
+  color: var(--text);
+}
+
+[data-theme="dark"] .item-card-header h4,
+[data-theme="dark"] .kanban-title,
+[data-theme="dark"] .tab-title {
+  color: var(--text-soft) !important;
+}
+
+[data-theme="dark"] .toggle-public-btn.is-public {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-color: transparent !important;
 }
 
 /* ─── Section headers & page-header ──────────────────────────────────────── */
@@ -938,3 +1006,24 @@
 [data-theme="dark"] .idea-status { color: #A1A1A6 !important; }
 [data-theme="dark"] .idea-excerpt { color: #A1A1A6 !important; }
 [data-theme="dark"] .idea-notes { color: #D1D1D6 !important; }
+
+[data-theme="dark"] .markdown-preview {
+  background: var(--card-bg) !important;
+  border-color: var(--border) !important;
+  color: var(--text-soft) !important;
+}
+
+[data-theme="dark"] .markdown-preview h2,
+[data-theme="dark"] .markdown-preview h3,
+[data-theme="dark"] .markdown-preview strong {
+  color: var(--text) !important;
+}
+
+[data-theme="dark"] .idea-status--idea,
+[data-theme="dark"] .idea-status--unresolved,
+[data-theme="dark"] .status-want-to-read,
+[data-theme="dark"] .status-want-to-watch,
+[data-theme="dark"] .status-want-to-take {
+  background: var(--accent-soft) !important;
+  color: var(--accent-light) !important;
+}

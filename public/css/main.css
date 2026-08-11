@@ -69,7 +69,7 @@ img { max-width: 100%; display: block; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(247, 246, 242, 0.92);
+  background: var(--surface-glass);
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -2556,6 +2556,8 @@ img { max-width: 100%; display: block; }
   border-radius: var(--radius-sm);
   font-size: 0.95rem;
   font-family: var(--font-body);
+  background: var(--surface);
+  color: var(--text);
   transition: border-color var(--transition);
 }
 .login-form input:focus { outline: none; border-color: var(--accent); }
@@ -3263,8 +3265,14 @@ img { max-width: 100%; display: block; }
 }
 
 .site-header {
-  background: rgba(247, 246, 242, 0.92);
-  border-bottom-color: rgba(224, 221, 212, 0.75);
+  border-bottom-color: var(--border);
+}
+
+.login-theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 20;
 }
 
 .public-notebook-paper,

@@ -35,6 +35,27 @@
   --transition: 0.2s ease;
   --sidebar-width: 272px;
   --topbar-height: 56px;
+  --input-bg: #FFFFFF;
+  --table-head-bg: #F9FAFB;
+  --card-border: rgba(0, 0, 0, 0.06);
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  --card-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.08);
+  --hub-featured-bg: linear-gradient(135deg, #EEF2FF, #F0F9FF);
+  --btn-primary-bg: #111111;
+  --btn-primary-text: #FFFFFF;
+  --btn-primary-hover: #1E293B;
+  --btn-outline-border: rgba(0, 0, 0, 0.12);
+  --btn-outline-hover-bg: rgba(0, 0, 0, 0.02);
+  --btn-ghost-hover-bg: rgba(0, 0, 0, 0.04);
+  --btn-danger-bg: #FEE2E2;
+  --btn-danger-text: #DC2626;
+  --btn-danger-hover-bg: #FECACA;
+  --alert-bg: #FFFBEB;
+  --alert-text: #92400E;
+  --alert-border: rgba(245, 158, 11, 0.2);
+  --admin-gradient:
+    radial-gradient(ellipse 100% 60% at 50% -20%, rgba(37, 99, 235, 0.04), transparent 55%),
+    linear-gradient(180deg, #FAFAFA 0%, #F5F5F7 50%, #EFEFEF 100%);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -686,6 +707,7 @@ a:hover { color: var(--accent-light); }
   font-family: var(--font-prose);
   font-size: 1.05rem;
   margin-bottom: 0.35rem;
+  color: var(--text);
 }
 
 .note-preview {

@@ -1,16 +1,15 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    ZsinTech Admin — Editorial Glass Overlay
+   Uses admin.css theme tokens so dark mode stays in sync with the public site.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 body.admin-body {
-  background: #F8F8FA;
-  background-image:
-    radial-gradient(ellipse 100% 60% at 50% -20%, rgba(37, 99, 235, 0.04), transparent 55%),
-    linear-gradient(180deg, #FAFAFA 0%, #F5F5F7 50%, #EFEFEF 100%);
+  background: var(--admin-bg);
+  background-image: var(--admin-gradient);
   background-attachment: fixed;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
-  color: #1A1A1A;
+  color: var(--text);
 }
 
 /* ─── Sidebar refinements ──────────────────────────────────────────────────── */
@@ -97,6 +96,15 @@ body.admin-body {
   color: #EF4444 !important;
 }
 
+.admin-sidebar .theme-toggle {
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.admin-sidebar .theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
 /* ─── Main area ────────────────────────────────────────────────────────────── */
 .admin-main {
   padding: 2rem 2.5rem 3rem;
@@ -106,16 +114,17 @@ body.admin-body {
   margin-bottom: 1.75rem;
 }
 
-.admin-header h1 {
+.admin-header h1,
+.admin-header-text h1 {
   font-family: 'DM Serif Display', Georgia, serif !important;
   letter-spacing: -0.02em;
   font-weight: 400;
   font-size: 1.75rem;
-  color: #111;
+  color: var(--text);
 }
 
 .page-desc {
-  color: #6B7280;
+  color: var(--muted);
   font-size: 0.9rem;
   margin-top: 0.25rem;
 }
@@ -131,10 +140,10 @@ body.admin-body {
   font-family: 'DM Serif Display', Georgia, serif !important;
   font-size: 1.15rem;
   font-weight: 400;
-  color: #374151;
+  color: var(--text-soft);
   margin-bottom: 0.75rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--card-border);
 }
 
 .hub-cards {
@@ -145,11 +154,11 @@ body.admin-body {
 
 /* ─── Hub Card ─────────────────────────────────────────────────────────────── */
 .hub-card {
-  background: #FFFFFF !important;
-  border: 1px solid rgba(0, 0, 0, 0.06) !important;
-  border-radius: 14px !important;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
   padding: 1rem 1.1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+  box-shadow: var(--card-shadow);
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   display: flex;
   flex-direction: column;
@@ -160,14 +169,14 @@ body.admin-body {
 
 .hub-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
-  border-color: rgba(37, 99, 235, 0.2) !important;
+  box-shadow: var(--card-shadow-hover);
+  border-color: rgba(91, 163, 245, 0.2);
 }
 
 .hub-card--featured {
   grid-column: 1 / -1;
-  background: linear-gradient(135deg, #EEF2FF, #F0F9FF) !important;
-  border-color: rgba(37, 99, 235, 0.1) !important;
+  background: var(--hub-featured-bg);
+  border-color: rgba(91, 163, 245, 0.1);
 }
 
 .hub-icon {
@@ -178,20 +187,20 @@ body.admin-body {
 .hub-card h3 {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #111 !important;
+  color: var(--text);
   margin: 0;
 }
 
 .hub-card p {
   font-size: 0.72rem;
-  color: #6B7280 !important;
+  color: var(--muted);
   margin: 0;
   line-height: 1.4;
 }
 
 .hub-link {
   font-size: 0.68rem;
-  color: #2563EB !important;
+  color: var(--accent);
   font-weight: 500;
   margin-top: auto;
 }
@@ -201,38 +210,38 @@ body.admin-body {
 .dashboard-card,
 .admin-card,
 .notebook-card {
-  background: #FFFFFF !important;
-  border: 1px solid rgba(0, 0, 0, 0.06) !important;
-  border-radius: 14px !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  box-shadow: var(--card-shadow);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .stat-card:hover,
 .dashboard-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
+  box-shadow: var(--card-shadow-hover);
 }
 
 .stat-card .stat-number {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #111;
+  color: var(--text);
 }
 
 .stat-card .stat-label {
   font-size: 0.75rem;
-  color: #6B7280;
+  color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 /* ─── Import bar ───────────────────────────────────────────────────────────── */
 .import-bar {
-  background: #FFFFFF !important;
-  border: 1px solid rgba(0, 0, 0, 0.06) !important;
-  border-radius: 14px !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  box-shadow: var(--card-shadow);
   padding: 1rem 1.25rem;
   display: flex;
   align-items: center;
@@ -243,31 +252,32 @@ body.admin-body {
 
 .import-bar p {
   font-size: 0.82rem;
-  color: #6B7280;
+  color: var(--muted);
 }
 
 /* ─── Buttons ──────────────────────────────────────────────────────────────── */
 .btn-primary,
 .admin-main .btn-primary {
-  background: #111111 !important;
-  color: #fff !important;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
   border-radius: 8px;
   border: none;
-  box-shadow: none !important;
+  box-shadow: none;
   font-weight: 600;
   font-size: 0.82rem;
   padding: 0.55rem 1.1rem;
   transition: all 0.15s ease;
 }
 
-.btn-primary:hover {
-  background: #1E293B !important;
+.btn-primary:hover,
+.admin-main .btn-primary:hover {
+  background: var(--btn-primary-hover);
   transform: translateY(-1px);
 }
 
 .btn-outline {
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  color: #374151;
+  border: 1px solid var(--btn-outline-border);
+  color: var(--text-soft);
   border-radius: 8px;
   font-weight: 500;
   font-size: 0.82rem;
@@ -276,12 +286,12 @@ body.admin-body {
 }
 
 .btn-outline:hover {
-  border-color: rgba(0, 0, 0, 0.2);
-  background: rgba(0, 0, 0, 0.02);
+  border-color: var(--border-strong, var(--btn-outline-border));
+  background: var(--btn-outline-hover-bg);
 }
 
 .btn-ghost {
-  color: #6B7280;
+  color: var(--muted);
   font-size: 0.82rem;
   padding: 0.45rem 0.75rem;
   border-radius: 8px;
@@ -289,28 +299,28 @@ body.admin-body {
 }
 
 .btn-ghost:hover {
-  background: rgba(0, 0, 0, 0.04);
-  color: #111;
+  background: var(--btn-ghost-hover-bg);
+  color: var(--text);
 }
 
 .btn-danger {
-  background: #FEE2E2 !important;
-  color: #DC2626 !important;
+  background: var(--btn-danger-bg);
+  color: var(--btn-danger-text);
   border: 1px solid rgba(220, 38, 38, 0.2);
   border-radius: 8px;
 }
 
 .btn-danger:hover {
-  background: #FECACA !important;
+  background: var(--btn-danger-hover-bg);
 }
 
 /* ─── Tables ───────────────────────────────────────────────────────────────── */
 .generic-list-table-wrap,
 .admin-table-wrap {
-  background: #FFFFFF !important;
-  border: 1px solid rgba(0, 0, 0, 0.06) !important;
-  border-radius: 14px !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  box-shadow: var(--card-shadow);
   overflow: hidden;
 }
 
@@ -323,8 +333,8 @@ table.generic-table th {
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #6B7280;
-  background: #F9FAFB;
+  color: var(--muted);
+  background: var(--table-head-bg);
   font-weight: 600;
 }
 
@@ -333,23 +343,23 @@ table.generic-table tbody tr {
 }
 
 table.generic-table tbody tr:hover {
-  background: rgba(37, 99, 235, 0.02);
+  background: var(--accent-soft);
 }
 
 /* ─── Forms ────────────────────────────────────────────────────────────────── */
 .content-form,
 .admin-panel {
-  background: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
   border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--card-shadow);
 }
 
 .form-group label {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-soft);
   margin-bottom: 0.35rem;
   display: block;
 }
@@ -361,9 +371,10 @@ table.generic-table tbody tr:hover {
 .admin-main input[type='date'],
 .admin-main textarea,
 .admin-main select {
-  border-radius: 10px !important;
-  border: 1px solid rgba(0, 0, 0, 0.1) !important;
-  background: #FFFFFF !important;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  background: var(--input-bg);
+  color: var(--text);
   font-size: 0.85rem;
   padding: 0.6rem 0.85rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -373,29 +384,29 @@ table.generic-table tbody tr:hover {
 .admin-main input:focus,
 .admin-main textarea:focus,
 .admin-main select:focus {
-  border-color: rgba(37, 99, 235, 0.5) !important;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08) !important;
+  border-color: rgba(91, 163, 245, 0.5);
+  box-shadow: 0 0 0 3px rgba(91, 163, 245, 0.12);
   outline: none;
 }
 
 /* ─── Quick link cards ─────────────────────────────────────────────────────── */
 .quick-link-card {
-  border-radius: 14px !important;
-  background: #FFFFFF !important;
-  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  border-radius: 14px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
 }
 
-.quick-link-card h3 { color: #111 !important; font-size: 0.85rem; }
-.quick-link-card p { color: #6B7280 !important; font-size: 0.75rem; }
+.quick-link-card h3 { color: var(--text); font-size: 0.85rem; }
+.quick-link-card p { color: var(--muted); font-size: 0.75rem; }
 
 /* ─── Admin alert ──────────────────────────────────────────────────────────── */
 .admin-alert {
-  background: #FFFBEB;
-  border: 1px solid rgba(245, 158, 11, 0.2);
+  background: var(--alert-bg);
+  border: 1px solid var(--alert-border);
   border-radius: 12px;
   padding: 0.85rem 1.1rem;
   font-size: 0.82rem;
-  color: #92400E;
+  color: var(--alert-text);
   margin-bottom: 1.5rem;
 }
 
@@ -407,7 +418,7 @@ table.generic-table tbody tr:hover {
 
 /* ─── Mobile toggle button ─────────────────────────────────────────────────── */
 .admin-mobile-toggle {
-  background: #111 !important;
+  background: #111111;
   border-radius: 10px;
 }
 
