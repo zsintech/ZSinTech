@@ -2891,11 +2891,11 @@ img { max-width: 100%; display: block; }
 }
 
 .public-notebook-paper {
-  background: #FDFCF8;
+  background: var(--surface-warm);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.5rem 1.65rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  box-shadow: var(--shadow-sm);
   min-height: 160px;
   display: flex;
   flex-direction: column;
@@ -2916,6 +2916,7 @@ img { max-width: 100%; display: block; }
   font-size: 1.25rem;
   margin-bottom: 0.45rem;
   line-height: 1.3;
+  color: var(--text);
 }
 
 .public-notebook-paper p {
@@ -2946,11 +2947,11 @@ img { max-width: 100%; display: block; }
 .public-note-card:hover { color: inherit; }
 
 .public-note-paper {
-  background: #FDFCF8;
+  background: var(--surface-warm);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 1.35rem 1.5rem;
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .public-note-card:hover .public-note-paper {
@@ -2961,11 +2962,12 @@ img { max-width: 100%; display: block; }
   font-family: var(--font-prose);
   font-size: 1.1rem;
   margin-bottom: 0.4rem;
+  color: var(--text);
 }
 
 .public-note-paper p {
   font-size: 0.9rem;
-  color: var(--text-soft, #444);
+  color: var(--text-soft);
   line-height: 1.55;
   margin-bottom: 0.5rem;
 }
@@ -2981,11 +2983,11 @@ img { max-width: 100%; display: block; }
 }
 
 .note-reading {
-  background: #FDFCF8;
+  background: var(--surface-warm);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 2rem 2.25rem 2.5rem;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+  box-shadow: var(--shadow-sm);
 }
 
 .note-reading-header { margin-bottom: 2rem; }
@@ -3015,6 +3017,29 @@ img { max-width: 100%; display: block; }
 .note-reading-body.prose ul, .note-reading-body.prose ol { margin: 0 0 1.25rem 1.25rem; }
 .note-reading-body.prose li { margin-bottom: 0.35rem; }
 .note-reading-body.prose strong { font-weight: 600; }
+.note-reading-body.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.92rem;
+}
+.note-reading-body.prose th,
+.note-reading-body.prose td {
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+.note-reading-body.prose th {
+  background: var(--surface-alt);
+  font-weight: 600;
+}
+.note-reading-body.prose blockquote {
+  margin: 1.25rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--text-soft);
+}
+.note-reading-body.prose a { color: var(--accent); }
 .note-reading-body.prose code {
   background: rgba(0,0,0,0.05);
   padding: 0.15rem 0.35rem;

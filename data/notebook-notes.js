@@ -1,4 +1,9 @@
+const javaNotes = require('./java-programming-notes').notes;
+const webNotes = require('./web-applications-notes').notes;
+
 const notes = [
+  ...webNotes,
+  ...javaNotes,
   {
     id: 'welcome-note',
     slug: 'welcome-note',

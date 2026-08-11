@@ -15,10 +15,18 @@
   <% } else { %>
     <div class="public-note-list">
       <% notes.forEach(note => { %>
+      <% const previewSource = note.excerpt || (note.body || '')
+            .replace(/^#+\s+/gm, '')
+            .replace(/\*\*/g, '')
+            .replace(/`/g, '')
+            .replace(/\|/g, ' ')
+            .replace(/\n/g, ' ')
+            .trim();
+         const preview = previewSource.substring(0, 160) + (previewSource.length > 160 ? '…' : ''); %>
       <a href="/notes/<%= notebook.slug || notebook.id %>/<%= note.slug || note.id %>" class="public-note-card">
         <article class="public-note-paper">
           <h2><%= note.title %></h2>
-          <p><%= (note.body || '').replace(/\n/g, ' ').substring(0, 160) %><%= (note.body || '').length > 160 ? '…' : '' %></p>
+          <% if (preview) { %><p><%= preview %></p><% } %>
           <time><%= formatDate(note.dateUpdated || note.dateAdded) %></time>
         </article>
       </a>
