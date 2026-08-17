@@ -2,6 +2,51 @@
 
 const writings = [
   {
+    id: 'kurdish-nlp-coverage',
+    title: 'Structural Complexity and Data Bottlenecks: Why Machines Continue to Struggle with Human Language',
+    slug: 'structural-complexity-data-bottlenecks-kurdish-nlp',
+    type: 'essay',
+    excerpt: 'For digitally underrepresented languages like Kurdish, collecting text is indispensable — yet data volume does not equal linguistic coverage. On volume, dialect, feedback loops, and why collection is never neutral.',
+    body: `When a multilingual model performs poorly, conventional wisdom preaches: if it's failing, it's starving. A mantra takes hold. It sings: Digitize archives. Compile regional corpora. Sweep up media posts. Capture stray comments. Digitize, compile, sweep, capture. We drive ourselves frantically, accelerating the scrape, piling volume onto volume, tirelessly feeding a hollow machine.
+
+In reality, this mantra becomes a pedagogy. For digitally underrepresented languages like Kurdish, with all its dialectal richness, collecting text is undeniably indispensable. Yet a pedagogy born purely of scarcity is the pedagogy of the oppressed; we end up mistaking survival for well-designed solutions. Yet, the underlying science of Natural Language Processing yanks us out of the mines with a simple fact: data volume does not equal linguistic coverage.
+
+Language morphology, orthography, dialect, diglossia, code-switching, and the human ability to understand context affect what a dataset has captured, how it is represented by the model, and which evaluation eventually calls it a success. If true multilingual AI is the next milestone, postponing these structural questions in favor of conventional wisdom will simply possess us further.
+
+## The data bottleneck is closest to home
+
+Kurdish NLP research repeats the mantra: there's a shortage of corpora and tools… any one of us may receive an ad to "teach AI Kurdish" as we are scrolling.
+
+In 2019, the Kurdish Corpus project explicitly enumerated the lack of extensive corpora as one of the obstacles to Kurdish language processing, noting, of course, the second missing limb of this argument: that Kurdish is often treated monolithically, and the many varieties that exist have disparities in how well they are represented digitally. The warrant is simple: how can a model adequately learn linguistic patterns when it is scarcely represented, especially in a computationally recyclable way? This leads us to the same conventional instinct: that between two datasets, A containing 100,000 Kurdish sentences and B containing 10,000,000, dataset B is a better candidate.
+
+But what if B is mostly formal Sorani journalism from overrepresented and well known publishers? The real questions become: Which varieties? Which regions? Who gets to be represented well? The first distinction then, the first nuance, becomes that of volume and coverage. Coverage asks us a more nuanced question: how much of the language's variation did we actually sample?
+
+## Feedback loops enlarge datasets — but not always coverage
+
+Of course, when this question is ignored in favor of conventional wisdom, another solution we come up with, beyond just scraping every stray comment on the internet, is to make use of the feedback loop to enlarge our datasets. This solution is what we see adopted in Fastlink's KI, which, applaudably, supports several Kurdish varieties as well as Arabic and English. A look at their privacy policy will confirm that collected data may be used to improve KI's services.
+
+The product owner's KPI could be as follows: in the spirit of iterative improvement, by the end of this quarter, a million interactions is valuable, and the potential of that is really, truly impressive. However, a million interactions that are produced mainly by young, urban Sorani dialect speakers, who may or may not discuss a narrow set of tasks, and who most definitely have similar orthographic habits, would, in a loop, produce a large volume of data that is not well covered. That is, the interactions may not result in data that is distributed well across Kurmanji, Badini, or even across age groups, spoken language, code-switching, or different domains, regardless of the vast volumes of data it could produce.
+
+And what if I told you the science tells us that models learn better from well-distributed yet scarce data as opposed to simply reducing data scarcity? Coverage scarcity needs to not only address these linguistic differences; it also needs to be able to survive computational representation.
+
+## The complexity problem
+
+You see, on top of these structural differences, languages contain structures that a computational system should understand. It is our task, then, to not only solve an inherent design flaw of coverage scarcity, but also to explicitly represent these structures in ways that a computational system can process. The very natural language we want to process does not care about the computational categories that we need to impose on it in order to process it. This is the 21st-century complexity problem, and this complexity is what makes our current approach problematic.
+
+Surely, asking to solve coverage scarcity is asking too much too early. It is a very compelling objection. You might say: before multilingual AI can worry about a solution architecture that is sensitive to dialect and morphology, our needs are far more primitive! We have a real issue of data scarcity; nuance can come later. And the fact is, data scarcity was and remains consequential. Kurdish is a great example because the different varieties are unevenly populated, and this is not an illusion.
+
+## Collection is never neutral
+
+However, the underlying assumption is the real elusive bugger: we are assuming that the collection is neutral. Think about our hypothetical million interactions with KI and how they are not randomly sampled Kurdish sentences. They come as representations of whichever demographic Fastlink has convinced to use its product; they come as representations of age groups familiar with AI use and age groups familiar with Fastlink applications.
+
+That is, the Kurdish data collected, I can guarantee, will be majority urban, Sorani-speaking, college-educated students. So, although a million interactions would hypothetically be an incredible increase in data volume, it is poor in linguistic coverage and results in poorly performing models.`,
+    tags: ['Kurdish NLP', 'NLP', 'linguistics', 'AI', 'Sorani', 'Kurmanji', 'data'],
+    heroImageUrl: '/images/writings/kurdistan-newspaper-hero.jpg',
+    coverUrl: '/images/writings/kurdistan-newspaper-cover.jpg',
+    dateWritten: new Date('2026-08-17'),
+    isPublic: true,
+  },
+  {
     id: 'scientist-communicators',
     title: 'Scientists Must Become Their Own Communicators',
     slug: 'scientists-must-become-their-own-communicators',

@@ -80,7 +80,7 @@
         <article class="tile">
           <a href="/writings/<%= essay.slug %>" class="tile-link">
             <div class="tile-thumb">
-              <%- include('../partials/media-cover', { url: essay.heroImageUrl, size: 'thumb', className: 'media-cover', variant: 'science' }) %>
+              <%- include('../partials/media-cover', { url: essay.coverUrl || essay.heroImageUrl, size: 'thumb', className: 'media-cover', variant: 'science' }) %>
             </div>
             <div class="tile-body">
               <div class="tile-meta"><time><%= formatDate(essay.dateWritten) %></time></div>

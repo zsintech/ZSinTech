@@ -24,7 +24,7 @@
     <article class="masonry-card <%= i % 5 === 0 ? 'masonry-card--featured' : '' %> card-lift">
       <a href="/writings/<%= writing.slug %>" class="masonry-card-link">
         <div class="masonry-card-image-wrap">
-          <%- include('../partials/media-cover', { url: writing.heroImageUrl, size: 'card', className: 'masonry-card-image media-cover', variant: writing.type === 'story' ? 'story' : 'science' }) %>
+          <%- include('../partials/media-cover', { url: writing.coverUrl || writing.heroImageUrl, size: 'card', className: 'masonry-card-image media-cover', variant: writing.type === 'story' ? 'story' : 'science' }) %>
           <div class="masonry-card-overlay"></div>
           <span class="masonry-card-type"><%= writing.type %></span>
         </div>
